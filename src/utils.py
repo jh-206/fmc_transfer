@@ -1,4 +1,5 @@
 import numpy as np
+import yaml
 
 def time_intp(t1, v1, t2):
     # Check if t1 v1 t2 are 1D arrays
@@ -32,3 +33,32 @@ def time_intp(t1, v1, t2):
         raise ValueError("")
 
     return v2_interpolated
+
+
+# Generic helper function to read yaml files
+def read_yml(yaml_path, subkey=None):
+    """
+    Reads a YAML file and optionally retrieves a specific subkey.
+
+    Parameters:
+    -----------
+    yaml_path : str
+        The path to the YAML file to be read.
+    subkey : str, optional
+        A specific key within the YAML file to retrieve. If provided, only the value associated 
+        with this key will be returned. If not provided, the entire YAML file is returned as a 
+        dictionary. Default is None.
+
+    Returns:
+    --------
+    dict or any
+        The contents of the YAML file as a dictionary, or the value associated with the specified 
+        subkey if provided.
+
+    """    
+    with open(yaml_path, 'r') as file:
+        d = yaml.safe_load(file)
+        if subkey is not None:
+            d = d[subkey]
+    return d
+    
