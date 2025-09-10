@@ -107,6 +107,55 @@ FUELS_QUERY = """
 """
 
 
+STATIONS_QUERY = """
+    query GetSites(
+        $returnAll: Boolean!,
+        $groupId: Int,
+        $siteId: String,
+        $sortBy: String
+        $sortOrder: String
+        $page: Int,
+        $perPage: Int) {
+        getSites(
+            returnAll: $returnAll
+            groupId: $groupId
+            siteId: $siteId
+            sortBy: $sortBy
+            sortOrder: $sortOrder
+            page: $page
+            perPage: $perPage
+            ) {
+            pageInfo{
+                page
+                per_page
+                page_count
+                total_count
+            }
+            sites {
+                siteId
+                stateId
+                siteName
+                siteStatus
+                longitude
+                latitude
+                elevation
+                groupName
+                areaId
+            }
+        }
+    }
+"""
+
+
+SITES_QUERY_VARS = {
+    "returnAll": "false",
+    "sortBy": "site_name",
+    "sortOrder": "desc",
+    "page": 0,
+    "perPage": 1000000,
+}
+
+
 def fuelQueryVars(page, fuel_params):
     startDate = fuel_params["startDate"]
     endDate = fuel_params["endDate"]
@@ -191,7 +240,6 @@ def get_fuel_data(fuel_params, access_token=None):
 
 
     """
-    breakpoint()
     request_headers = api_request_headers(access_token)
     pages = get_fuel_request_page_count(fuel_params, access_token)
 
@@ -226,3 +274,74 @@ def get_fuel_request_page_count(fuel_params, access_token=None):
         "page_count"
     ]
     return pages
+
+
+def get_sites_in_polygon(polygon, access_token=None):
+    """
+    Filter station data from FEMS API by provided polygon
+
+    Parameters
+    ----------
+    polgyon: Array[Point] in clockwise orientation defining a polygon
+        Point of form:
+            {
+                    "latitude": Float,
+                    "longitude": Float,
+            }
+
+    access_token: str
+        Access token for the FEMS API (optional)
+
+    Returns
+    ----------
+    Array of sites from FEMS API within a bounding box
+    """
+    sites = get_sites(access_token)
+    return filter_sites(sites, polygon)
+
+
+def get_sites(access_token=None):
+    """
+    Request station data from the FEMS API
+
+    Parameters
+    ----------
+    access_token: str
+        Access token for the FEMS API (optional)
+
+    Returns
+    ----------
+    Array of sites from FEMS API
+    """
+    request_headers = api_request_headers(access_token)
+    request_json = {
+        "query": STATIONS_QUERY,
+        "variables": SITES_QUERY_VARS,
+    }
+    response = requests.post(url=API_URL, json=request_json, headers=request_headers)
+    sites = response.json()["data"]["getSites"]["sites"]
+
+    return sites
+
+
+def filter_sites(sites, polygon):
+    return [site for site in sites if site_in_polygon(site, polygon)]
+
+
+def site_in_polygon(site, polygon):
+    x = site["longitude"]
+    y = site["latitude"]
+    isInside = False
+    j = len(polygon) - 1
+    for i in range(len(polygon)):
+        xi = polygon[i]["longitude"]
+        yi = polygon[i]["latitude"]
+        xj = polygon[j]["longitude"]
+        yj = polygon[j]["latitude"]
+        intersect = ((yi > y) != (yj > y)) and (
+            x < ((xj - xi) * (y - yi)) / (yj - yi) + xi
+        )
+        if intersect:
+            isInside = not isInside
+        j = i
+    return isInside
