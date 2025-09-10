@@ -4,10 +4,14 @@ The goal of this repo is to effectively train machine learning models of dead fu
 
 Corresponding email: jonathon.hirschi@ucdenver.edu
 
+Advisor: Jan Mandel, CU Denver
+
 ## Datasets
 
 - Larger Fuels: 100h and 1000h datasets are built using the FEMS API with code originally developed by Angel Farguell and collaborators at WIRC.
 - Fine fuels datasets: these data come from small-scale academic studies. Please email the listed correspondance in this document for access to these datasets
+	- Oklahoma field study 1996-1997 (Carlson 2007): study used to calibrate Nelson model
+	- Hawaii field study 2000-2001 (Weise 2004): study used to compare 1h models, including Nelson
 
 ## Methods
 
