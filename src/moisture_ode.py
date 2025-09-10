@@ -12,14 +12,14 @@ from dateutil.relativedelta import relativedelta
 # Set up project paths
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CURRENT_DIR = osp.dirname(osp.normpath(osp.abspath(__file__)))
-PROJECT_ROOT = osp.dirname(osp.dirname(osp.normpath(CURRENT_DIR)))
+PROJECT_ROOT = osp.dirname(osp.normpath(CURRENT_DIR))
 sys.path.append(osp.join(PROJECT_ROOT, "src"))
 CONFIG_DIR = osp.join(PROJECT_ROOT, "etc")
 
 # Read Project Module Code
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-from utils import Dict, time_range, read_yml, print_dict_summary, is_consecutive_hours, read_pkl
-import reproducibility
+from utils import Dict, read_yml
+# import reproducibility
 
 
 # Read Metadata
@@ -31,6 +31,14 @@ rs = ode_params.rs # saturation rain intensity [mm/h]
 Tr = ode_params.Tr # time constant for rain wetting model [h]
 S = ode_params.S   # saturation intensity [dimensionless]
 T = ode_params.T   # time constant for wetting/drying
+
+
+H = np.array([[1., 0.]]) # Observation matrix
+process_variance = np.float64(ode_params.process_variance)
+Q = np.array([[process_variance, 0.],
+                           [0., process_variance]])
+R = np.array([np.float64(ode_params['data_variance'])]) # data variance
+
 
 
 
@@ -86,6 +94,7 @@ def ext_kf(u,P,F,Q=0,d=None,H=None,R=None):
         return np.atleast_1d(a) # convert to at least 1d array
 
     # forecast
+    
     uf, J  = F(u)          # advance the model state in time and get the Jacobian
     uf = d1(uf)            # if scalar, make state a 1D array
     J = d2(J)              # if scalar, make jacobian a 2D array
@@ -149,7 +158,7 @@ def model_moisture(m0,Eqd,Eqw,r,t=None,partials=0,T=10.0,tlen=1.0):
         return m1, dm1_dm0, dm1_dE
     raise('bad partials')
 
-def model_augmented(u0,Ed,Ew,r,t):
+def model_augmented(u0,Ed,Ew,r,t, T=10.0):
     # state u is the vector [m,dE] with dE correction to equilibria Ed and Ew at t
     # 
     m0, Ec = u0  # decompose state u0
@@ -164,12 +173,49 @@ def model_augmented(u0,Ed,Ew,r,t):
     #   if partials==0: m1 = fuel moisture contents after time 1 hour
     #              ==1: m1, dm0/dm0 
     #              ==2: m1, dm1/dm0, dm1/dE 
-    m1, dm1_dm0, dm1_dE  = model_moisture(m0,Ed + Ec, Ew + Ec, r, t, partials=2)
+    m1, dm1_dm0, dm1_dE  = model_moisture(m0,Ed + Ec, Ew + Ec, r, t, partials=2, T=T)
     u1 = np.array([m1,Ec])   # dE is just copied
     J =  np.array([[dm1_dm0, dm1_dE],
                    [0.     ,     1.]])
     return u1, J
 
+
+# Stand-alone function to run model
+def run_augmented_kf(dat,h2=None,hours=None, H=H, Q=Q, R=R, T=10.0):
+    """
+        - dat: dataframe
+        - h2: spinup hours
+    """
+    d = dat['fm'].astype(np.float64)
+    Ed = dat['Ed'].astype(np.float64)
+    Ew = dat['Ew'].astype(np.float64)
+    rain = dat['rain'].astype(np.float64)
+    
+    u = np.zeros((2,hours))
+    u[:,0]=[0.1,0.0]       # initialize,background state  
+    P = np.zeros((2,2,hours))
+    P[:,:,0] = np.array([[1e-3, 0.],
+                      [0.,  1e-3]]) # background state covariance
+    # Q = np.array([[1e-3, 0.],
+    #             [0,  1e-3]]) # process noise covariance
+    # H = np.array([[1., 0.]])  # first component observed
+    # R = np.array([1e-3]) # data variance
+
+    for t in range(1,h2):
+      # use lambda construction to pass additional arguments to the model 
+        u[:,t],P[:,:,t] = ext_kf(u[:,t-1],P[:,:,t-1],
+                                  lambda uu: model_augmented(uu,Ed[t],Ew[t],rain[t],t, T=T),
+                                  Q,d[t],H=H,R=R)
+      # print('time',t,'data',d[t],'filtered',u[0,t],'Ec',u[1,t])
+    for t in range(h2,hours):
+        u[:,t],P[:,:,t] = ext_kf(u[:,t-1],P[:,:,t-1],
+                                  lambda uu: model_augmented(uu,Ed[t],Ew[t],rain[t],t, T=T),
+                                  Q*0.0)
+      # print('time',t,'data',d[t],'forecast',u[0,t],'Ec',u[1,t])
+    return u
+
+
+# Model Class
 
 def ODEData(dict0, sts, test_times, spinup=24):
     """
@@ -238,11 +284,12 @@ class ODE_FMC:
         Q = self.Q
         R = self.R
         H = self.H
-        
-        fm = dat["data"]["fm"].to_numpy().astype(np.float64)
-        Ed = dat["data"]["Ed"].to_numpy().astype(np.float64)
-        Ew = dat["data"]["Ew"].to_numpy().astype(np.float64)
-        rain = dat["data"]["rain"].to_numpy().astype(np.float64)
+        T = self.T
+
+        fm = dat["fm"].astype(np.float64)
+        Ed = dat["Ed"].astype(np.float64)
+        Ew = dat["Ew"].astype(np.float64)
+        rain = dat["rain"].astype(np.float64)
 
         u = np.zeros((2,hours))
         u[:,0]=[0.1,0.0]       # initialize,background state  
@@ -254,13 +301,13 @@ class ODE_FMC:
         for t in range(1,h2):
           # use lambda construction to pass additional arguments to the model 
             u[:,t],P[:,:,t] = ext_kf(u[:,t-1],P[:,:,t-1],
-                                    lambda uu: model_augmented(uu,Ed[t],Ew[t],rain[t],t),
+                                    lambda uu: model_augmented(uu,Ed[t],Ew[t],rain[t],t, T=T),
                                     Q,d=fm[t],H=H,R=R)
 
         # Run in forecast mode
         for t in range(h2,hours):
             u[:,t],P[:,:,t] = ext_kf(u[:,t-1],P[:,:,t-1],
-                                      lambda uu: model_augmented(uu,Ed[t],Ew[t],rain[t],t),
+                                      lambda uu: model_augmented(uu,Ed[t],Ew[t],rain[t],t, T=T),
                                       Q*0.0)
           
         return u
