@@ -3,6 +3,16 @@ import yaml
 from datetime import datetime
 import pandas as pd
 
+plot_styles = {
+    'fm': {'color': '#468a29', 'linestyle': '-', 'label': 'Observed FMC'},
+    'fm_preds': {'color': '#468a29', 'linestyle': '-', 'label': 'Observed FMC'},
+    'Ed': {'color': '#EF847C', 'linestyle': '--', 'alpha':.8, 'label': 'drying EQ'},
+    'Ew': {'color': '#7CCCEF', 'linestyle': '--', 'alpha':.8, 'label': 'wetting EQ'},
+    'rain': {'color': 'b', 'linestyle': '-', 'alpha':.9, 'label': 'Rain'},
+    'model': {'color': 'k', 'linestyle': '-', 'label': 'Predicted FMC'}
+}
+
+
 class Dict(dict):
     """
     A dictionary that allows member access to its keys.

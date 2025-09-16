@@ -286,7 +286,8 @@ class ODE_FMC:
         H = self.H
         T = self.T
 
-        fm = dat["fm"].astype(np.float64)
+        if dat["fm"] is not None:
+            fm = dat["fm"].astype(np.float64)
         Ed = dat["Ed"].astype(np.float64)
         Ew = dat["Ew"].astype(np.float64)
         rain = dat["rain"].astype(np.float64)
