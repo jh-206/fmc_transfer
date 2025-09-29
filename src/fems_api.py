@@ -1,6 +1,52 @@
-import requests as requests
+# Set of tools to query FEMS API for fuel samples
+# Modified from fems_wirc.py provided by Angel and Chase
 
+import requests as requests
+import pandas as pd
+import yaml
+import time
+
+
+# General API 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 API_URL = "https://fems.fs2c.usda.gov/fuelmodel/apis/graphql"
+
+SITES_QUERY_VARS = {
+    "returnAll": "false",
+    "sortBy": "site_name",
+    "sortOrder": "desc",
+    "page": 0,
+    "perPage": 1000000,
+}
+
+
+def fuelQueryVars(page, fuel_params):
+    startDate = fuel_params["startDate"]
+    endDate = fuel_params["endDate"]
+    siteId = fuel_params["siteId"]
+    fuelType = fuel_params["fuelType"]
+    return {
+        "endDate": endDate,
+        "filterByCategory": "All",
+        "filterByMethod": "All",
+        "filterBySampleType": fuelType,
+        "filterByStatus": "All",
+        "filterBySubCategory": "All",
+        "page": page,
+        "perPage": 100000,
+        "returnAll": "false",
+        "siteId": siteId,
+        "sortBy": "date_time",
+        "sortOrder": "desc",
+        "startDate": startDate,
+    }
+
+def api_request_headers(access_token):
+    headers = {"User-Agent": ""}
+    if access_token != None:
+        auth_header = f"Bearer {access_token}"
+        headers.update({"Authorization": auth_header})
+    return headers
 
 FUELS_PAGES_QUERY = """
     query GetFuelSamples(
@@ -106,158 +152,224 @@ FUELS_QUERY = """
              }
 """
 
+# Site-Related Functions
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-STATIONS_QUERY = """
+def get_site_fields(api_url: str = API_URL, verbose=False) -> list[str]:
+    """
+    Retrieve all available field names from the SiteDTO type
+    via GraphQL introspection.
+    """
+    introspection_query = """
+    query {
+      __type(name: "SiteDTO") {
+        fields {
+          name
+        }
+      }
+    }
+    """
+    if verbose:
+        print(f"Getting all available field names from url: {api_url}")
+        print(f"Query: {introspection_query}")
+    resp = requests.post(api_url, json={"query": introspection_query})
+    resp.raise_for_status()
+    fields = [f["name"] for f in resp.json()["data"]["__type"]["fields"]]
+    fields.remove("fuelSampleMetadata")
+    if verbose:
+        print(f"Response: {resp}")
+        print(f"Number of Fields: {len(fields)}")
+    
+    return fields
+
+def build_sites_query(fields: list[str]) -> str:
+    """
+    Build a GraphQL query string for getSites using a dynamic list of fields.
+    """
+    fields_str = "\n                ".join(fields)
+    return f"""
     query GetSites(
         $returnAll: Boolean!,
         $groupId: Int,
         $siteId: String,
-        $sortBy: String
-        $sortOrder: String
+        $sortBy: String,
+        $sortOrder: String,
         $page: Int,
-        $perPage: Int) {
+        $perPage: Int) {{
         getSites(
-            returnAll: $returnAll
-            groupId: $groupId
-            siteId: $siteId
-            sortBy: $sortBy
-            sortOrder: $sortOrder
-            page: $page
+            returnAll: $returnAll,
+            groupId: $groupId,
+            siteId: $siteId,
+            sortBy: $sortBy,
+            sortOrder: $sortOrder,
+            page: $page,
             perPage: $perPage
-            ) {
-            pageInfo{
+        ) {{
+            pageInfo {{
                 page
                 per_page
                 page_count
                 total_count
-            }
-            sites {
-                siteId
-                stateId
-                siteName
-                siteStatus
-                longitude
-                latitude
-                elevation
-                groupName
-                areaId
-            }
-        }
-    }
-"""
-
-
-SITES_QUERY_VARS = {
-    "returnAll": "false",
-    "sortBy": "site_name",
-    "sortOrder": "desc",
-    "page": 0,
-    "perPage": 1000000,
-}
-
-
-def fuelQueryVars(page, fuel_params):
-    startDate = fuel_params["startDate"]
-    endDate = fuel_params["endDate"]
-    siteId = fuel_params["siteId"]
-    fuelType = fuel_params["fuelType"]
-    return {
-        "endDate": endDate,
-        "filterByCategory": "All",
-        "filterByMethod": "All",
-        "filterBySampleType": fuelType,
-        "filterByStatus": "All",
-        "filterBySubCategory": "All",
-        "page": page,
-        "perPage": 100000,
-        "returnAll": "false",
-        "siteId": siteId,
-        "sortBy": "date_time",
-        "sortOrder": "desc",
-        "startDate": startDate,
-    }
-
-
-def api_request_headers(access_token):
-    headers = {"User-Agent": ""}
-    if access_token != None:
-        auth_header = f"Bearer {access_token}"
-        headers.update({"Authorization": auth_header})
-    return headers
-
-
-def get_fuel_data_of_sites(fuel_params, access_token=None):
+            }}
+            sites {{
+                {fields_str}
+            }}
+        }}
+    }}
     """
+
+
+def get_all_sites(fields = None, access_token=None, verbose=False, stash_path = None):
+    """
+    Request all station data from the FEMS API
+
     Parameters
     ----------
-    fuel_params: dict of form
-        {
-                "startDate": datetime str of format "%Y-%m-%dT%H%M%S+00",
-                "endDate": datetime str of format "%Y-%m-%dT%H%M%S+00",
-                "fuelTypes": Array[str] representing fuel from FEMS,
-                "siteIds": Array[int] for the id of the site
-        }
     access_token: str
         Access token for the FEMS API (optional)
 
     Returns
     ----------
-        Array of results for provided fuel_params from FEMS API
-
-
-    """
-    results = []
-    for siteId in fuel_params["siteIds"]:
-        for fuelType in fuel_params["fuelTypes"]:
-            fuel_param = {
-                "fuelType": fuelType,
-                "siteId": siteId,
-                "startDate": fuel_params["startDate"],
-                "endDate": fuel_params["endDate"],
-            }
-            results += get_fuel_data(fuel_param, access_token)
-
-    return results
-
-
-def get_fuel_data(fuel_params, access_token=None):
-    """
-    Parameters
-    ----------
-    fuel_params: dict of form
-        {
-                "startDate": datetime str of format "%Y-%m-%dT%H%M%S+00",
-                "endDate": datetime str of format "%Y-%m-%dT%H%M%S+00",
-                "fuelType": str representing fuel from FEMS,
-                "siteId": int for the id of the site
-        }
-    access_token: str
-        Access token for the FEMS API (optional)
-
-    Returns
-    ----------
-        Array of results for provided fuel_params from FEMS API
-
-
+    Array of sites from FEMS API
     """
     request_headers = api_request_headers(access_token)
-    pages = get_fuel_request_page_count(fuel_params, access_token)
+    if fields is None:
+        fields = get_site_fields(verbose=verbose)
+    st_query = build_sites_query(fields)
+    q_vars = {**SITES_QUERY_VARS, "returnAll": True}
+    request_json = {
+        "query": st_query,
+        "variables": q_vars,
+    }
+    response = requests.post(url=API_URL, json=request_json, headers=request_headers)
+    sites = pd.DataFrame(response.json()["data"]["getSites"]["sites"])
 
-    results = []
-    for page in range(pages + 1):
-        request_json = {
-            "query": FUELS_QUERY,
-            "variables": fuelQueryVars(page, fuel_params),
-        }
-        response = requests.post(
-            url=API_URL,
-            json=request_json,
-            headers=request_headers,
-        )
-        results = results + response.json()["data"]["getFuelSamples"]["fuelSamples"]
+    if stash_path is not None:
+        print(f"Saving stations to {stash_path}")
+        sites.to_excel(stash_path)
 
-    return results
+    return sites
 
+def get_single_site(siteId, fields=None, access_token=None, verbose=False):
+    """
+    Request all station data from the FEMS API
+
+    Parameters
+    ----------
+    access_token: str
+        Access token for the FEMS API (optional)
+
+    Returns
+    ----------
+    Array of sites from FEMS API
+    """
+    request_headers = api_request_headers(access_token)
+    if fields is None:
+        fields = get_site_fields(verbose=verbose)
+    st_query = build_sites_query(fields)
+    q_vars = {**SITES_QUERY_VARS, "returnAll": False, "siteId": str(siteId)}
+    request_json = {
+        "query": st_query,
+        "variables": q_vars,
+    }
+    response = requests.post(url=API_URL, json=request_json, headers=request_headers)
+    site = pd.DataFrame(response.json()["data"]["getSites"]["sites"])
+    
+    return site
+
+
+def get_sites_in_bbox(bbox, source="api", stash_path = None, access_token = None):
+    """
+    Retrieve sites within a bounding box.
+
+    Parameters
+    ----------
+    bbox : list[float]
+        Bounding box in the form [min_lat, min_lon, max_lat, max_lon].
+    source : str
+        Data source to use. Must be one of:
+        - "api": Query data from the FEMS API.
+        - "stash": Query data from a local stash/cache.
+    stash_path : str, optional
+        Path to an Excel file used as a local stash of site data. If provided
+        during an API call, results will also be written to this path. If using
+        "stash" as the source, this path will be read from instead. Defaults to
+        "data/fems_sts.xlsx" if not provided when source="stash".
+    access_token : str, optional
+        Access token for the FEMS API. Required if the API endpoint enforces
+        authentication. Ignored if source="stash".
+
+    Returns
+    -------
+    list
+        List of sites within the bounding box.
+
+    Raises
+    ------
+    ValueError
+        If 'source' is not one of the accepted values.
+    """
+
+    if source == "stash":
+        if stash_path is None: stash_path = "data/fems_sts.xlsx"; print(f"Searching for stash path at: {stash_path}")
+        df = pd.read_excel(stash_path)
+    elif source == "api":
+        sts = get_all_sites(access_token = access_token, verbose=True, stash_path = stash_path)
+        df = pd.DataFrame(sts)
+    else:
+        raise ValueError(f"Invalid source '{source}'. Must be 'api' or 'stash'.")
+
+    # Filter by bbox
+    print(f"Filtering Stations to Bounding Box: {bbox}")
+    df = df[(df["latitude"] >= bbox[0]) & (df["latitude"] <= bbox[2]) & (df["longitude"] >= bbox[1]) & (df["longitude"] <= bbox[3])]
+    print(f"Stations found within bbox: {df.shape[0]}")
+    
+    return df
+
+
+# Fuel Sample Functions
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def get_fuel_types(stash_path=None):
+    """
+    Retrieve all fuel types from the FEMS API and optionally write to a YAML file.
+
+    Parameters
+    ----------
+    stash_path : str, optional
+        If provided, the resulting dictionary will be written to this YAML file.
+
+    Returns
+    -------
+    dict
+        Dictionary of fuels keyed by fuel_type.
+    """
+    query = """
+    query {
+      getFuels(returnAll: true) {
+        fuel_id
+        fuel_type
+        category
+        scientific_name
+        modified_time
+        modified_by
+        created_time
+        created_by
+      }
+    }
+    """
+
+    resp = requests.post(API_URL, json={"query": query})
+    resp.raise_for_status()
+    fuels = resp.json()["data"]["getFuels"]
+
+    fuels_by_type = {f["fuel_type"]: f for f in fuels}
+
+    if stash_path is not None:
+        with open(stash_path, "w") as f:
+            yaml.safe_dump(fuels_by_type, f, sort_keys=False)
+
+    return fuels_by_type
 
 def get_fuel_request_page_count(fuel_params, access_token=None):
     request_headers = api_request_headers(access_token)
@@ -275,73 +387,60 @@ def get_fuel_request_page_count(fuel_params, access_token=None):
     ]
     return pages
 
-
-def get_sites_in_polygon(polygon, access_token=None):
+def get_fuel_data(fuel_params, access_token=None):
     """
-    Filter station data from FEMS API by provided polygon
+    Request fuel sample data from the FEMS API.
 
     Parameters
     ----------
-    polgyon: Array[Point] in clockwise orientation defining a polygon
-        Point of form:
-            {
-                    "latitude": Float,
-                    "longitude": Float,
-            }
-
-    access_token: str
-        Access token for the FEMS API (optional)
-
-    Returns
-    ----------
-    Array of sites from FEMS API within a bounding box
-    """
-    sites = get_sites(access_token)
-    return filter_sites(sites, polygon)
-
-
-def get_sites(access_token=None):
-    """
-    Request station data from the FEMS API
-
-    Parameters
-    ----------
-    access_token: str
-        Access token for the FEMS API (optional)
+    fuel_params : dict
+        {
+            "startDate": datetime str of format "%Y-%m-%dT%H%M%S+00",
+            "endDate": datetime str of format "%Y-%m-%dT%H%M%S+00",
+            "fuelTypes": str or list[str],
+            "siteIds": int or list[int]
+        }
+    access_token : str, optional
+        Access token for the FEMS API.
 
     Returns
-    ----------
-    Array of sites from FEMS API
+    -------
+    list
+        Aggregated results for the given site(s) and fuel type(s).
     """
     request_headers = api_request_headers(access_token)
-    request_json = {
-        "query": STATIONS_QUERY,
-        "variables": SITES_QUERY_VARS,
-    }
-    response = requests.post(url=API_URL, json=request_json, headers=request_headers)
-    sites = response.json()["data"]["getSites"]["sites"]
 
-    return sites
+    # Normalize to lists
+    site_ids = fuel_params["siteIds"]
+    if not isinstance(site_ids, (list, tuple)):
+        site_ids = [site_ids]
+
+    fuel_types = fuel_params["fuelTypes"]
+    if not isinstance(fuel_types, (list, tuple)):
+        fuel_types = [fuel_types]
+
+    results = []
+    for siteId in site_ids:
+        print("~"*50)
+        print(f"Collecting Data for {siteId}=")
+        for fuelType in fuel_types:
+            print(f"{fuelType=}")
+            single_params = {
+                "siteId": siteId,
+                "fuelType": fuelType,
+                "startDate": fuel_params["startDate"],
+                "endDate": fuel_params["endDate"],
+            }
+            pages = get_fuel_request_page_count(single_params, access_token)
+            for page in range(pages + 1):
+                request_json = {
+                    "query": FUELS_QUERY,
+                    "variables": fuelQueryVars(page, single_params),
+                }
+                response = requests.post(API_URL, json=request_json, headers=request_headers)
+                results += response.json()["data"]["getFuelSamples"]["fuelSamples"]
+                time.sleep(0.2)  # sleep after each request
+
+    return pd.DataFrame(results)
 
 
-def filter_sites(sites, polygon):
-    return [site for site in sites if site_in_polygon(site, polygon)]
-
-
-def site_in_polygon(site, polygon):
-    x = site["longitude"]
-    y = site["latitude"]
-    isInside = False
-    j = len(polygon) - 1
-    for i in range(len(polygon)):
-        xi = polygon[i]["longitude"]
-        yi = polygon[i]["latitude"]
-        xj = polygon[j]["longitude"]
-        yj = polygon[j]["latitude"]
-        intersect = ((yi > y) != (yj > y)) and (
-            x < ((xj - xi) * (y - yi)) / (yj - yi) + xi
-        )
-        if intersect:
-            isInside = not isInside
-        j = i
-    return isInside
