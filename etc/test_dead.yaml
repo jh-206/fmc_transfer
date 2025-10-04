@@ -1,0 +1,13 @@
+# Sample config file to use to retrieve FEMS data
+# 
+
+
+startDate: "2024-01-01T00:00:00+00"
+endDate: "2024-01-30T23:00:00+00"
+bbox: "[40, -110, 45, -100]"
+fuelTypes:
+  - "1-Hour"
+  - "10-Hour"
+  - "100-Hour"
+
+  

@@ -1,0 +1,7101 @@
+1-Hour:
+  fuel_id: 1
+  fuel_type: 1-Hour
+  category: Dead
+  scientific_name: null
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+10-Hour:
+  fuel_id: 2
+  fuel_type: 10-Hour
+  category: Dead
+  scientific_name: null
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+100-Hour:
+  fuel_id: 3
+  fuel_type: 100-Hour
+  category: Dead
+  scientific_name: null
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+1000-Hour:
+  fuel_id: 4
+  fuel_type: 1000-Hour
+  category: Dead
+  scientific_name: null
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Acacia, Catclaw:
+  fuel_id: 5
+  fuel_type: Acacia, Catclaw
+  category: Tree
+  scientific_name: Acacia greggii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Acacia, Whitehorn:
+  fuel_id: 6
+  fuel_type: Acacia, Whitehorn
+  category: Tree
+  scientific_name: Acacia constricta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Agarito:
+  fuel_id: 7
+  fuel_type: Agarito
+  category: Shrub
+  scientific_name: Mahonia trifoliolata (Moric.) Fedde algerita
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Agave, Utah:
+  fuel_id: 8
+  fuel_type: Agave, Utah
+  category: Shrub
+  scientific_name: Agave utahensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Alder, European:
+  fuel_id: 9
+  fuel_type: Alder, European
+  category: Tree
+  scientific_name: Alnus glutinosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Alder, Gray:
+  fuel_id: 10
+  fuel_type: Alder, Gray
+  category: Tree
+  scientific_name: Alnus incana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Alder, Hazle:
+  fuel_id: 11
+  fuel_type: Alder, Hazle
+  category: Tree
+  scientific_name: Alnus serrulata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Alder, Mountain:
+  fuel_id: 12
+  fuel_type: Alder, Mountain
+  category: Tree
+  scientific_name: Alnus viridis ssp. crispa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Alder, Red:
+  fuel_id: 13
+  fuel_type: Alder, Red
+  category: Tree
+  scientific_name: Alnus rubra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Alder, Seaside:
+  fuel_id: 14
+  fuel_type: Alder, Seaside
+  category: Tree
+  scientific_name: Alnus rhombifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Alder, Sitka:
+  fuel_id: 15
+  fuel_type: Alder, Sitka
+  category: Tree
+  scientific_name: Alnus viridis ssp. sinuata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Alder, Speckled:
+  fuel_id: 16
+  fuel_type: Alder, Speckled
+  category: Tree
+  scientific_name: Alnus incana ssp. rugosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Alder, Thinleaf:
+  fuel_id: 17
+  fuel_type: Alder, Thinleaf
+  category: Tree
+  scientific_name: Alnus incana ssp. tenuifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+American Beautyberry:
+  fuel_id: 18
+  fuel_type: American Beautyberry
+  category: Shrub
+  scientific_name: Callicarpa americana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+American Hornbeam:
+  fuel_id: 19
+  fuel_type: American Hornbeam
+  category: Tree
+  scientific_name: Carpinus caroliniana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Arrowweed:
+  fuel_id: 20
+  fuel_type: Arrowweed
+  category: Shrub
+  scientific_name: Pluchea sericea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ash, Black:
+  fuel_id: 21
+  fuel_type: Ash, Black
+  category: Tree
+  scientific_name: Fraxinus nigra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ash, Carolina:
+  fuel_id: 22
+  fuel_type: Ash, Carolina
+  category: Tree
+  scientific_name: Fraxinus caroliniana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ash, Green:
+  fuel_id: 23
+  fuel_type: Ash, Green
+  category: Tree
+  scientific_name: Fraxinus pennsylvanica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ash, Oregon:
+  fuel_id: 24
+  fuel_type: Ash, Oregon
+  category: Tree
+  scientific_name: Fraxinus latifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ash, Pumpkin:
+  fuel_id: 25
+  fuel_type: Ash, Pumpkin
+  category: Tree
+  scientific_name: Fraxinus profunda
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ash, Singleleaf:
+  fuel_id: 26
+  fuel_type: Ash, Singleleaf
+  category: Tree
+  scientific_name: Fraxinus anomala
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ash, Velvet:
+  fuel_id: 27
+  fuel_type: Ash, Velvet
+  category: Tree
+  scientific_name: Fraxinus velutina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ash, White:
+  fuel_id: 28
+  fuel_type: Ash, White
+  category: Tree
+  scientific_name: Fraxinus americana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Aspen, Bigtooth:
+  fuel_id: 29
+  fuel_type: Aspen, Bigtooth
+  category: Tree
+  scientific_name: Populus grandidentata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Aspen, Quaking:
+  fuel_id: 30
+  fuel_type: Aspen, Quaking
+  category: Tree
+  scientific_name: Populus tremuloides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Aster, Bigleaf:
+  fuel_id: 31
+  fuel_type: Aster, Bigleaf
+  category: Forb
+  scientific_name: Eurybia macrophylla
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Azalea, Cascade:
+  fuel_id: 32
+  fuel_type: Azalea, Cascade
+  category: Shrub
+  scientific_name: Rhododendron albiflorum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Azalea, Mountain:
+  fuel_id: 33
+  fuel_type: Azalea, Mountain
+  category: Shrub
+  scientific_name: Rhododendron canescens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Azalea, Smooth:
+  fuel_id: 34
+  fuel_type: Azalea, Smooth
+  category: Shrub
+  scientific_name: Rhododendron arborescens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Azalea, Swamp:
+  fuel_id: 35
+  fuel_type: Azalea, Swamp
+  category: Shrub
+  scientific_name: Rhododendron viscosum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Baccharis:
+  fuel_id: 36
+  fuel_type: Baccharis
+  category: Shrub
+  scientific_name: Baccharis L
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Basswood, American:
+  fuel_id: 37
+  fuel_type: Basswood, American
+  category: Tree
+  scientific_name: Tilia americana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bastardsage:
+  fuel_id: 38
+  fuel_type: Bastardsage
+  category: Shrub
+  scientific_name: Eriogonum wrightii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Beaked Spikerush:
+  fuel_id: 39
+  fuel_type: Beaked Spikerush
+  category: Grass
+  scientific_name: Eleocharis rostellata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bearberry, Apline:
+  fuel_id: 40
+  fuel_type: Bearberry, Apline
+  category: Shrub
+  scientific_name: Arctostaphylos alpina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bearberry, Red Fruit:
+  fuel_id: 41
+  fuel_type: Bearberry, Red Fruit
+  category: Shrub
+  scientific_name: Arctostaphylos rubra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bearbrush:
+  fuel_id: 42
+  fuel_type: Bearbrush
+  category: Tree
+  scientific_name: Garrya fremontii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Beargrass, Common:
+  fuel_id: 43
+  fuel_type: Beargrass, Common
+  category: Forb
+  scientific_name: Xerophyllum tenax
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bedstraw, Northern:
+  fuel_id: 44
+  fuel_type: Bedstraw, Northern
+  category: Shrub
+  scientific_name: Galium boreale
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Beech, American:
+  fuel_id: 45
+  fuel_type: Beech, American
+  category: Tree
+  scientific_name: Fagus grandifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bentgrass, Redtop:
+  fuel_id: 46
+  fuel_type: Bentgrass, Redtop
+  category: Grass
+  scientific_name: Agrostis gigantea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bentgrass, Spike:
+  fuel_id: 47
+  fuel_type: Bentgrass, Spike
+  category: Grass
+  scientific_name: Agrostis exarata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Big Galleta:
+  fuel_id: 48
+  fuel_type: Big Galleta
+  category: Grass
+  scientific_name: Pleuraphis rigida
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Big Sacaton:
+  fuel_id: 49
+  fuel_type: Big Sacaton
+  category: Grass
+  scientific_name: Sporobolus wrightii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bilberry, Dwarf:
+  fuel_id: 50
+  fuel_type: Bilberry, Dwarf
+  category: Shrub
+  scientific_name: Vaccinium cespitosum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Birch, Bog:
+  fuel_id: 51
+  fuel_type: Birch, Bog
+  category: Shrub
+  scientific_name: Betula pumila
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Birch, European White:
+  fuel_id: 52
+  fuel_type: Birch, European White
+  category: Tree
+  scientific_name: Betula pendula
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Birch, Gray:
+  fuel_id: 53
+  fuel_type: Birch, Gray
+  category: Tree
+  scientific_name: Betula populifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Birch, Paper:
+  fuel_id: 54
+  fuel_type: Birch, Paper
+  category: Tree
+  scientific_name: Betula papyrifera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Birch, Resin:
+  fuel_id: 55
+  fuel_type: Birch, Resin
+  category: Shrub
+  scientific_name: Betula glandulosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Birch, River:
+  fuel_id: 56
+  fuel_type: Birch, River
+  category: Tree
+  scientific_name: Betula nigra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Birch, Sweet:
+  fuel_id: 57
+  fuel_type: Birch, Sweet
+  category: Tree
+  scientific_name: Betula lenta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Birch, Yellow:
+  fuel_id: 58
+  fuel_type: Birch, Yellow
+  category: Tree
+  scientific_name: Betula alleghaniensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bitterbrush, Antelope:
+  fuel_id: 59
+  fuel_type: Bitterbrush, Antelope
+  category: Shrub
+  scientific_name: Purshia tridentata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bitterbrush, Desert:
+  fuel_id: 60
+  fuel_type: Bitterbrush, Desert
+  category: Shrub
+  scientific_name: Purshia glandulosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Black Hawthorn:
+  fuel_id: 61
+  fuel_type: Black Hawthorn
+  category: Tree
+  scientific_name: Crataegus douglasii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Blackberry, California:
+  fuel_id: 62
+  fuel_type: Blackberry, California
+  category: Shrub
+  scientific_name: Rubus ursinus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Blackbrush:
+  fuel_id: 63
+  fuel_type: Blackbrush
+  category: Shrub
+  scientific_name: Coleogyne ramosissima
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Blackgum:
+  fuel_id: 64
+  fuel_type: Blackgum
+  category: Tree
+  scientific_name: Nyssa sylvatica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Blueberry:
+  fuel_id: 65
+  fuel_type: Blueberry
+  category: Shrub
+  scientific_name: Vaccinium L.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Blueberry, Oval-Leaf:
+  fuel_id: 66
+  fuel_type: Blueberry, Oval-Leaf
+  category: Shrub
+  scientific_name: Vaccinium ovalifolium
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluegrass, Bulbous:
+  fuel_id: 67
+  fuel_type: Bluegrass, Bulbous
+  category: Grass
+  scientific_name: Poa bulbosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluegrass, Canada:
+  fuel_id: 68
+  fuel_type: Bluegrass, Canada
+  category: Grass
+  scientific_name: Poa compressa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluegrass, Kentucky:
+  fuel_id: 69
+  fuel_type: Bluegrass, Kentucky
+  category: Grass
+  scientific_name: Poa pratensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluegrass, Sandberg:
+  fuel_id: 70
+  fuel_type: Bluegrass, Sandberg
+  category: Grass
+  scientific_name: Poa secunda
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluegum, Sydney:
+  fuel_id: 71
+  fuel_type: Bluegum, Sydney
+  category: Tree
+  scientific_name: Eucalyptus saligna
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluegum, Tasmanian:
+  fuel_id: 72
+  fuel_type: Bluegum, Tasmanian
+  category: Tree
+  scientific_name: Eucalyptus globulus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluestem, Big:
+  fuel_id: 73
+  fuel_type: Bluestem, Big
+  category: Grass
+  scientific_name: Andropogon gerardii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluestem, Broomsedge:
+  fuel_id: 74
+  fuel_type: Bluestem, Broomsedge
+  category: Grass
+  scientific_name: Andropogon virginicus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluestem, Cane:
+  fuel_id: 75
+  fuel_type: Bluestem, Cane
+  category: Grass
+  scientific_name: Bothriochloa barbinodis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluestem, Little:
+  fuel_id: 76
+  fuel_type: Bluestem, Little
+  category: Grass
+  scientific_name: Schizachyrium scoparium
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluestem, Slender Little:
+  fuel_id: 77
+  fuel_type: Bluestem, Slender Little
+  category: Grass
+  scientific_name: Schizachyrium tenerum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluestem, Splitbeard:
+  fuel_id: 78
+  fuel_type: Bluestem, Splitbeard
+  category: Grass
+  scientific_name: Andropogon ternarius
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bluewood, Brazilian:
+  fuel_id: 79
+  fuel_type: Bluewood, Brazilian
+  category: Tree
+  scientific_name: Condalia hookeri
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Boxelder:
+  fuel_id: 80
+  fuel_type: Boxelder
+  category: Tree
+  scientific_name: Acer negundo
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bristlegrass, Foxtail:
+  fuel_id: 81
+  fuel_type: Bristlegrass, Foxtail
+  category: Grass
+  scientific_name: Setaria italica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Bristlegrass, Plains:
+  fuel_id: 82
+  fuel_type: Bristlegrass, Plains
+  category: Grass
+  scientific_name: Setaria vulpiseta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brittlebrush:
+  fuel_id: 83
+  fuel_type: Brittlebrush
+  category: Shrub
+  scientific_name: Encelia farinosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brome, California:
+  fuel_id: 84
+  fuel_type: Brome, California
+  category: Grass
+  scientific_name: Bromus carinatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brome, Columbia:
+  fuel_id: 85
+  fuel_type: Brome, Columbia
+  category: Grass
+  scientific_name: Bromus vulgaris
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brome, Compact:
+  fuel_id: 86
+  fuel_type: Brome, Compact
+  category: Grass
+  scientific_name: Bromus madritensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brome, Fringed:
+  fuel_id: 87
+  fuel_type: Brome, Fringed
+  category: Grass
+  scientific_name: Bromus ciliatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brome, Mountain:
+  fuel_id: 88
+  fuel_type: Brome, Mountain
+  category: Grass
+  scientific_name: Bromus marginatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brome, Nodding:
+  fuel_id: 89
+  fuel_type: Brome, Nodding
+  category: Grass
+  scientific_name: Bromus anomalus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brome, Rattlesnake:
+  fuel_id: 90
+  fuel_type: Brome, Rattlesnake
+  category: Grass
+  scientific_name: Bromus briziformis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brome, Red:
+  fuel_id: 91
+  fuel_type: Brome, Red
+  category: Grass
+  scientific_name: Bromus rubens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brome, Smooth:
+  fuel_id: 92
+  fuel_type: Brome, Smooth
+  category: Grass
+  scientific_name: Bromus inermis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Brome, Soft:
+  fuel_id: 93
+  fuel_type: Brome, Soft
+  category: Grass
+  scientific_name: Bromus hordeaceus ssp. hordeaceus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Broom, Scotch:
+  fuel_id: 94
+  fuel_type: Broom, Scotch
+  category: Shrub
+  scientific_name: Cytisus scoparius
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Broom, Spanish:
+  fuel_id: 95
+  fuel_type: Broom, Spanish
+  category: Tree
+  scientific_name: Spartium junceum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Broom, Striated:
+  fuel_id: 96
+  fuel_type: Broom, Striated
+  category: Shrub
+  scientific_name: Cytisus striatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Broom, Turnpentine:
+  fuel_id: 97
+  fuel_type: Broom, Turnpentine
+  category: Shrub
+  scientific_name: Thamnosma montana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Buckeye, California:
+  fuel_id: 98
+  fuel_type: Buckeye, California
+  category: Tree
+  scientific_name: Aesculus californica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Buckeye, Mexican:
+  fuel_id: 99
+  fuel_type: Buckeye, Mexican
+  category: Tree
+  scientific_name: Ungnadia speciosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Buckthorn, California:
+  fuel_id: 100
+  fuel_type: Buckthorn, California
+  category: Tree
+  scientific_name: Frangula californica ssp. Californica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Buckwheat, Blue Mountain:
+  fuel_id: 101
+  fuel_type: Buckwheat, Blue Mountain
+  category: Shrub
+  scientific_name: Eriogonum strictum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Buckwheat, Eastern Mojave:
+  fuel_id: 102
+  fuel_type: Buckwheat, Eastern Mojave
+  category: Shrub
+  scientific_name: Eriogonum fasciculatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Buffaloberry, Silver:
+  fuel_id: 103
+  fuel_type: Buffaloberry, Silver
+  category: Tree
+  scientific_name: Shepherdia argentea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Buffelgrass:
+  fuel_id: 104
+  fuel_type: Buffelgrass
+  category: Grass
+  scientific_name: Pennisetum ciliare
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Burrobush:
+  fuel_id: 105
+  fuel_type: Burrobush
+  category: Shrub
+  scientific_name: Ambrosia dumosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Butternut:
+  fuel_id: 106
+  fuel_type: Butternut
+  category: Tree
+  scientific_name: Juglans cinerea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Buttonbrush, Common:
+  fuel_id: 107
+  fuel_type: Buttonbrush, Common
+  category: Tree
+  scientific_name: Cephalanthus occidentalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Camas, Small:
+  fuel_id: 108
+  fuel_type: Camas, Small
+  category: Forb
+  scientific_name: Camassia quamash
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Canadian Horseweed:
+  fuel_id: 109
+  fuel_type: Canadian Horseweed
+  category: Forb
+  scientific_name: Conyza canadensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cane, Giant:
+  fuel_id: 110
+  fuel_type: Cane, Giant
+  category: Shrub
+  scientific_name: Arundinaria gigantea ssp. gigantea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cane, Switch:
+  fuel_id: 111
+  fuel_type: Cane, Switch
+  category: Shrub
+  scientific_name: Arundinaria gigantea ssp. tecta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cattail, Broadleaf:
+  fuel_id: 112
+  fuel_type: Cattail, Broadleaf
+  category: Forb
+  scientific_name: Typha latifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cattail, Narrowleaf:
+  fuel_id: 113
+  fuel_type: Cattail, Narrowleaf
+  category: Forb
+  scientific_name: Typha angustifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ceanothus, Bigpod:
+  fuel_id: 114
+  fuel_type: Ceanothus, Bigpod
+  category: Shrub
+  scientific_name: Ceanothus megacarpus Nutt.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ceanothus, Buckbrush:
+  fuel_id: 115
+  fuel_type: Ceanothus, Buckbrush
+  category: Shrub
+  scientific_name: Ceanothus cuneatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ceanothus, Chapparal Whitethorn:
+  fuel_id: 116
+  fuel_type: Ceanothus, Chapparal Whitethorn
+  category: Shrub
+  scientific_name: Ceanothus leucodermis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ceanothus, Deerbrush:
+  fuel_id: 117
+  fuel_type: Ceanothus, Deerbrush
+  category: Shrub
+  scientific_name: Ceanothus integerrimus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ceanothus, Desert:
+  fuel_id: 118
+  fuel_type: Ceanothus, Desert
+  category: Shrub
+  scientific_name: Ceanothus greggii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ceanothus, Hoaryleaf:
+  fuel_id: 119
+  fuel_type: Ceanothus, Hoaryleaf
+  category: Shrub
+  scientific_name: Ceanothus crassifolius Torr.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ceanothus, Redstem:
+  fuel_id: 120
+  fuel_type: Ceanothus, Redstem
+  category: Shrub
+  scientific_name: Ceanothus sanguineus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ceanothus, Snowbrush:
+  fuel_id: 121
+  fuel_type: Ceanothus, Snowbrush
+  category: Tree
+  scientific_name: Ceanothus velutinus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ceanothus, Waveyleaf:
+  fuel_id: 122
+  fuel_type: Ceanothus, Waveyleaf
+  category: Shrub
+  scientific_name: Ceanothus foliosus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ceanothus, Whitethorn:
+  fuel_id: 123
+  fuel_type: Ceanothus, Whitethorn
+  category: Shrub
+  scientific_name: Ceanothus cordulatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cedar, Alaska:
+  fuel_id: 124
+  fuel_type: Cedar, Alaska
+  category: Tree
+  scientific_name: Cupressus nootkatensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cedar, Atlantic White:
+  fuel_id: 125
+  fuel_type: Cedar, Atlantic White
+  category: Tree
+  scientific_name: Chamaecyparis thyoides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cedar, Deodar:
+  fuel_id: 126
+  fuel_type: Cedar, Deodar
+  category: Tree
+  scientific_name: Cedrus deodara
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cedar, Incense:
+  fuel_id: 127
+  fuel_type: Cedar, Incense
+  category: Tree
+  scientific_name: Calocedrus decurrens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cedar, Port Orford:
+  fuel_id: 128
+  fuel_type: Cedar, Port Orford
+  category: Tree
+  scientific_name: Chamaecyparis lawsoniana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Chamise:
+  fuel_id: 129
+  fuel_type: Chamise
+  category: Shrub
+  scientific_name: Adenostoma fasciculatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Chamise, New Growth:
+  fuel_id: 130
+  fuel_type: Chamise, New Growth
+  category: Shrub
+  scientific_name: Adenostoma fasciculatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Chamise, Old Growth:
+  fuel_id: 131
+  fuel_type: Chamise, Old Growth
+  category: Shrub
+  scientific_name: Adenostoma fasciculatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cheatgrass:
+  fuel_id: 132
+  fuel_type: Cheatgrass
+  category: Grass
+  scientific_name: Bromus tectorum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cherry, Bitter:
+  fuel_id: 133
+  fuel_type: Cherry, Bitter
+  category: Tree
+  scientific_name: Prunus emarginata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cherry, Black:
+  fuel_id: 134
+  fuel_type: Cherry, Black
+  category: Tree
+  scientific_name: Prunus serotina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cherry, Choke:
+  fuel_id: 135
+  fuel_type: Cherry, Choke
+  category: Tree
+  scientific_name: Prunus virginiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Chestnut, American:
+  fuel_id: 136
+  fuel_type: Chestnut, American
+  category: Tree
+  scientific_name: Castanea dentata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Chestnut, Chinese:
+  fuel_id: 137
+  fuel_type: Chestnut, Chinese
+  category: Tree
+  scientific_name: Castanea mollissima
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Chinquapin, Bush:
+  fuel_id: 138
+  fuel_type: Chinquapin, Bush
+  category: Shrub
+  scientific_name: Chrysolepis sempervirens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Chinquapin, Giant:
+  fuel_id: 139
+  fuel_type: Chinquapin, Giant
+  category: Tree
+  scientific_name: Chrysolepis chrysophylla
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Chokeberry, Black:
+  fuel_id: 140
+  fuel_type: Chokeberry, Black
+  category: Shrub
+  scientific_name: Photinia melanocarpa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Chokeberry, Red:
+  fuel_id: 141
+  fuel_type: Chokeberry, Red
+  category: Shrub
+  scientific_name: Photinia pyrifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cloudberry:
+  fuel_id: 142
+  fuel_type: Cloudberry
+  category: Shrub
+  scientific_name: Rubus chamaemorus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cordgrass, Prairie:
+  fuel_id: 143
+  fuel_type: Cordgrass, Prairie
+  category: Grass
+  scientific_name: Spartina pectinata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cordgrass, Saltmeadow:
+  fuel_id: 144
+  fuel_type: Cordgrass, Saltmeadow
+  category: Grass
+  scientific_name: Spartina patens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cordgrass, Smooth:
+  fuel_id: 145
+  fuel_type: Cordgrass, Smooth
+  category: Grass
+  scientific_name: Spartina alterniflora
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cottongrass, Tussock:
+  fuel_id: 146
+  fuel_type: Cottongrass, Tussock
+  category: Grass
+  scientific_name: Eriophorum vaginatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cottontop, Arizona:
+  fuel_id: 147
+  fuel_type: Cottontop, Arizona
+  category: Grass
+  scientific_name: Digitaria californica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cottonwood, Black:
+  fuel_id: 148
+  fuel_type: Cottonwood, Black
+  category: Tree
+  scientific_name: Populus balsamifera ssp. trichocarpa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cottonwood, Eastern:
+  fuel_id: 149
+  fuel_type: Cottonwood, Eastern
+  category: Tree
+  scientific_name: Populus deltoides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cottonwood, Fremont:
+  fuel_id: 150
+  fuel_type: Cottonwood, Fremont
+  category: Tree
+  scientific_name: Populus fremontii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cottonwood, Narrowleaf:
+  fuel_id: 151
+  fuel_type: Cottonwood, Narrowleaf
+  category: Tree
+  scientific_name: Populus angustifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cottonwood, Plains:
+  fuel_id: 152
+  fuel_type: Cottonwood, Plains
+  category: Tree
+  scientific_name: Populus deltoides ssp. monilifera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cottonwood, Swamp:
+  fuel_id: 153
+  fuel_type: Cottonwood, Swamp
+  category: Tree
+  scientific_name: Populus heterophylla
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Coyotebrush:
+  fuel_id: 154
+  fuel_type: Coyotebrush
+  category: Shrub
+  scientific_name: Baccharis pilularis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cranberry, lowbush:
+  fuel_id: 155
+  fuel_type: Cranberry, lowbush
+  category: Shrub
+  scientific_name: Vaccinium vitis-idaea L.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cranberry, mountain:
+  fuel_id: 156
+  fuel_type: Cranberry, mountain
+  category: Shrub
+  scientific_name: Vaccinium vitis-idaea L. ssp. minus (Lodd.) Hulten
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Creosote Bush:
+  fuel_id: 157
+  fuel_type: Creosote Bush
+  category: Shrub
+  scientific_name: Larrea tridentata var. arenaria
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Crowberry, Black:
+  fuel_id: 158
+  fuel_type: Crowberry, Black
+  category: Shrub
+  scientific_name: Empetrum nigrum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Currant, American Black:
+  fuel_id: 159
+  fuel_type: Currant, American Black
+  category: Shrub
+  scientific_name: Ribes americanum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Currant, Prickly:
+  fuel_id: 160
+  fuel_type: Currant, Prickly
+  category: Shrub
+  scientific_name: Ribes lacustre
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Currant, Sierra Gooseberry:
+  fuel_id: 161
+  fuel_type: Currant, Sierra Gooseberry
+  category: Shrub
+  scientific_name: Ribes roezlii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cypress, Arizona:
+  fuel_id: 162
+  fuel_type: Cypress, Arizona
+  category: Tree
+  scientific_name: Cupressus arizonica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cypress, Bald:
+  fuel_id: 163
+  fuel_type: Cypress, Bald
+  category: Tree
+  scientific_name: Taxodium distichum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cypress, Gowen:
+  fuel_id: 164
+  fuel_type: Cypress, Gowen
+  category: Tree
+  scientific_name: Cupressus goveniana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cypress, Macnab:
+  fuel_id: 165
+  fuel_type: Cypress, Macnab
+  category: Tree
+  scientific_name: Cupressus macnabiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cypress, Modoc:
+  fuel_id: 166
+  fuel_type: Cypress, Modoc
+  category: Tree
+  scientific_name: Cupressus bakeri
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cypress, Monterey:
+  fuel_id: 167
+  fuel_type: Cypress, Monterey
+  category: Tree
+  scientific_name: Cupressus macrocarpa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cypress, Montezuma Bald:
+  fuel_id: 168
+  fuel_type: Cypress, Montezuma Bald
+  category: Tree
+  scientific_name: Taxodium mucronatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cypress, Sargent:
+  fuel_id: 169
+  fuel_type: Cypress, Sargent
+  category: Tree
+  scientific_name: Cupressus sargentii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Cypress, Tecate:
+  fuel_id: 170
+  fuel_type: Cypress, Tecate
+  category: Tree
+  scientific_name: Cupressus Forbesii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Deergrass:
+  fuel_id: 171
+  fuel_type: Deergrass
+  category: Grass
+  scientific_name: Muhlenbergia rigens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Dogwood, Alternateleaf:
+  fuel_id: 172
+  fuel_type: Dogwood, Alternateleaf
+  category: Tree
+  scientific_name: Cornus alternifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Dogwood, Gray:
+  fuel_id: 173
+  fuel_type: Dogwood, Gray
+  category: Shrub
+  scientific_name: Cornus racemosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Dogwood, Pacific:
+  fuel_id: 174
+  fuel_type: Dogwood, Pacific
+  category: Tree
+  scientific_name: Cornus nuttallii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Dotted Blazing Star:
+  fuel_id: 175
+  fuel_type: Dotted Blazing Star
+  category: Forb
+  scientific_name: Liatris punctata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Douglas-Fir:
+  fuel_id: 176
+  fuel_type: Douglas-Fir
+  category: Tree
+  scientific_name: Pseudotsuga menziesli
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Douglas-Fir, Bigcone:
+  fuel_id: 177
+  fuel_type: Douglas-Fir, Bigcone
+  category: Tree
+  scientific_name: Pseudotsuga macrocarpa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Douglas-Fir, Coastal:
+  fuel_id: 178
+  fuel_type: Douglas-Fir, Coastal
+  category: Tree
+  scientific_name: Pseudotsuga menziesii var. menziesii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Douglas-Fir, Rocky Mountain:
+  fuel_id: 179
+  fuel_type: Douglas-Fir, Rocky Mountain
+  category: Tree
+  scientific_name: Pseudotsuga menziesii var. glauca
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Dunegrass, American:
+  fuel_id: 181
+  fuel_type: Dunegrass, American
+  category: Grass
+  scientific_name: Leymus mollis ssp. mollis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Eastern Baccharis:
+  fuel_id: 182
+  fuel_type: Eastern Baccharis
+  category: Tree
+  scientific_name: Baccharis halimifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elderberry, American Black:
+  fuel_id: 183
+  fuel_type: Elderberry, American Black
+  category: Tree
+  scientific_name: Sambucus nigra ssp. canadensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elderberry, Blue:
+  fuel_id: 184
+  fuel_type: Elderberry, Blue
+  category: Shrub
+  scientific_name: Sambucus nigra ssp. cerulea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elderberry, Red:
+  fuel_id: 185
+  fuel_type: Elderberry, Red
+  category: Shrub
+  scientific_name: Sambucus racemosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elm, American:
+  fuel_id: 186
+  fuel_type: Elm, American
+  category: Tree
+  scientific_name: Ulmus americana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elm, Cedar:
+  fuel_id: 187
+  fuel_type: Elm, Cedar
+  category: Tree
+  scientific_name: Ulmus crassifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elm, Chinese:
+  fuel_id: 188
+  fuel_type: Elm, Chinese
+  category: Tree
+  scientific_name: Ulmus parvifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elm, Rock:
+  fuel_id: 189
+  fuel_type: Elm, Rock
+  category: Tree
+  scientific_name: Ulmus thomasii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elm, September:
+  fuel_id: 190
+  fuel_type: Elm, September
+  category: Tree
+  scientific_name: Ulmus serotina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elm, Siberian:
+  fuel_id: 191
+  fuel_type: Elm, Siberian
+  category: Tree
+  scientific_name: Ulmus pumila
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yaupon:
+  fuel_id: 770
+  fuel_type: Yaupon
+  category: Tree
+  scientific_name: Ilex vomitoria
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elm, Slippery:
+  fuel_id: 192
+  fuel_type: Elm, Slippery
+  category: Tree
+  scientific_name: Ulmus rubra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Elm, Winged:
+  fuel_id: 193
+  fuel_type: Elm, Winged
+  category: Tree
+  scientific_name: Ulmus alata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Eucalyptus, Grand:
+  fuel_id: 194
+  fuel_type: Eucalyptus, Grand
+  category: Tree
+  scientific_name: Eucalyptus grandis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Euonymus, Winterberry:
+  fuel_id: 195
+  fuel_type: Euonymus, Winterberry
+  category: Shrub
+  scientific_name: Euonymus bungeanus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fendlerbush, Cliff:
+  fuel_id: 196
+  fuel_type: Fendlerbush, Cliff
+  category: Shrub
+  scientific_name: Fendlera rupicola
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Arizona:
+  fuel_id: 197
+  fuel_type: Fescue, Arizona
+  category: Grass
+  scientific_name: Festuca arizonica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Bearded:
+  fuel_id: 198
+  fuel_type: Fescue, Bearded
+  category: Grass
+  scientific_name: Festuca subulata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, California:
+  fuel_id: 199
+  fuel_type: Fescue, California
+  category: Grass
+  scientific_name: Festuca californica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Greenleaf:
+  fuel_id: 200
+  fuel_type: Fescue, Greenleaf
+  category: Grass
+  scientific_name: Festuca viridula
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Hard:
+  fuel_id: 201
+  fuel_type: Fescue, Hard
+  category: Grass
+  scientific_name: Festuca brevipila
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Idaho:
+  fuel_id: 202
+  fuel_type: Fescue, Idaho
+  category: Grass
+  scientific_name: Festuca idahoensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Nodding:
+  fuel_id: 203
+  fuel_type: Fescue, Nodding
+  category: Grass
+  scientific_name: Festuca subverticillata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Northern Rough:
+  fuel_id: 204
+  fuel_type: Fescue, Northern Rough
+  category: Grass
+  scientific_name: Festuca altaica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Plains, Rough:
+  fuel_id: 205
+  fuel_type: Fescue, Plains, Rough
+  category: Grass
+  scientific_name: Festuca hallii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Red:
+  fuel_id: 206
+  fuel_type: Fescue, Red
+  category: Grass
+  scientific_name: Festuca rubra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Sheep:
+  fuel_id: 207
+  fuel_type: Fescue, Sheep
+  category: Grass
+  scientific_name: Festuca ovina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Spike:
+  fuel_id: 208
+  fuel_type: Fescue, Spike
+  category: Grass
+  scientific_name: Leucopoa kingii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Tall:
+  fuel_id: 209
+  fuel_type: Fescue, Tall
+  category: Grass
+  scientific_name: Schedonorus phoenix
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Varioushair:
+  fuel_id: 210
+  fuel_type: Fescue, Varioushair
+  category: Grass
+  scientific_name: Festuca heteromalla
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fescue, Western:
+  fuel_id: 211
+  fuel_type: Fescue, Western
+  category: Grass
+  scientific_name: Festuca occidentalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fetterbush, Mountain:
+  fuel_id: 212
+  fuel_type: Fetterbush, Mountain
+  category: Shrub
+  scientific_name: Pieris floribundia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fir, Balsam:
+  fuel_id: 213
+  fuel_type: Fir, Balsam
+  category: Tree
+  scientific_name: Abies balsamea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fir, Bristlecone:
+  fuel_id: 214
+  fuel_type: Fir, Bristlecone
+  category: Tree
+  scientific_name: Abies bracteata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fir, California Red:
+  fuel_id: 215
+  fuel_type: Fir, California Red
+  category: Tree
+  scientific_name: Abies magnifica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fir, Fraser:
+  fuel_id: 216
+  fuel_type: Fir, Fraser
+  category: Tree
+  scientific_name: Abies fraseri
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fir, Grand:
+  fuel_id: 217
+  fuel_type: Fir, Grand
+  category: Tree
+  scientific_name: Abies grandis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fir, Noble:
+  fuel_id: 218
+  fuel_type: Fir, Noble
+  category: Tree
+  scientific_name: Abies procera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fir, Pacific Silver:
+  fuel_id: 219
+  fuel_type: Fir, Pacific Silver
+  category: Tree
+  scientific_name: Abies amabilis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fir, Subalpine:
+  fuel_id: 220
+  fuel_type: Fir, Subalpine
+  category: Tree
+  scientific_name: Abies lasiocarpa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fir, White:
+  fuel_id: 221
+  fuel_type: Fir, White
+  category: Tree
+  scientific_name: Abies concolor
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Fireweed:
+  fuel_id: 222
+  fuel_type: Fireweed
+  category: Forb
+  scientific_name: Chamerion angustifolium
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Flannelbush, California:
+  fuel_id: 223
+  fuel_type: Flannelbush, California
+  category: Tree
+  scientific_name: Fremontodendron californicum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Foothill Deathcamas:
+  fuel_id: 224
+  fuel_type: Foothill Deathcamas
+  category: Forb
+  scientific_name: Zigadenus paniculatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Forage kochia:
+  fuel_id: 225
+  fuel_type: Forage kochia
+  category: Shrub
+  scientific_name: Kochia prostrata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Foxtail, Shortawn:
+  fuel_id: 226
+  fuel_type: Foxtail, Shortawn
+  category: Grass
+  scientific_name: Alopecurus aequalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Foxtail, Yellow:
+  fuel_id: 227
+  fuel_type: Foxtail, Yellow
+  category: Grass
+  scientific_name: Setaria pumila
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Gallberry, Large:
+  fuel_id: 228
+  fuel_type: Gallberry, Large
+  category: Tree
+  scientific_name: Ilex coriacea (Pursh) Chapm.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Giant Reed:
+  fuel_id: 229
+  fuel_type: Giant Reed
+  category: Shrub
+  scientific_name: Arundo donax
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Grama, Black:
+  fuel_id: 230
+  fuel_type: Grama, Black
+  category: Grass
+  scientific_name: Bouteloua eriopoda
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Grama, Blue:
+  fuel_id: 231
+  fuel_type: Grama, Blue
+  category: Grass
+  scientific_name: Bouteloua gracilis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Grama, False:
+  fuel_id: 232
+  fuel_type: Grama, False
+  category: Grass
+  scientific_name: Cathestecum erectum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Grama, Gypsum:
+  fuel_id: 233
+  fuel_type: Grama, Gypsum
+  category: Grass
+  scientific_name: Bouteloua breviseta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Grama, Hairy:
+  fuel_id: 234
+  fuel_type: Grama, Hairy
+  category: Grass
+  scientific_name: Bouteloua hirsuta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Grama, Sideoats:
+  fuel_id: 235
+  fuel_type: Grama, Sideoats
+  category: Grass
+  scientific_name: Bouteloua curtipendula
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Grama, Sixweeks:
+  fuel_id: 236
+  fuel_type: Grama, Sixweeks
+  category: Grass
+  scientific_name: Bouteloua barbata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Greasewood:
+  fuel_id: 237
+  fuel_type: Greasewood
+  category: Shrub
+  scientific_name: Sarcobatus vermiculatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Greenbrier, Lanceleaf:
+  fuel_id: 238
+  fuel_type: Greenbrier, Lanceleaf
+  category: Shrub
+  scientific_name: Smilax smallii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Greenbrier, Saw:
+  fuel_id: 239
+  fuel_type: Greenbrier, Saw
+  category: Shrub
+  scientific_name: Smilax bona-nox
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hackberry, Netleaf:
+  fuel_id: 241
+  fuel_type: Hackberry, Netleaf
+  category: Tree
+  scientific_name: Celtis laevigata var. reticulata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hairgrass, Slender:
+  fuel_id: 242
+  fuel_type: Hairgrass, Slender
+  category: Grass
+  scientific_name: Deschampsia elongata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hairgrass, Tufted:
+  fuel_id: 243
+  fuel_type: Hairgrass, Tufted
+  category: Grass
+  scientific_name: Deschampsia cespitosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hazlenut, American:
+  fuel_id: 244
+  fuel_type: Hazlenut, American
+  category: Shrub
+  scientific_name: Corylus americana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hazlenut, California:
+  fuel_id: 245
+  fuel_type: Hazlenut, California
+  category: Tree
+  scientific_name: Corylus cornuta var. Californica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hemlock, Carolina:
+  fuel_id: 246
+  fuel_type: Hemlock, Carolina
+  category: Tree
+  scientific_name: Tsuga caroliniana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hemlock, Eastern:
+  fuel_id: 247
+  fuel_type: Hemlock, Eastern
+  category: Tree
+  scientific_name: Tsuga canadensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hemlock, Mountain:
+  fuel_id: 248
+  fuel_type: Hemlock, Mountain
+  category: Tree
+  scientific_name: Tsuga mertensiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hemlock, Western:
+  fuel_id: 249
+  fuel_type: Hemlock, Western
+  category: Tree
+  scientific_name: Tsuga heterophylla
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hemlock, Western Water:
+  fuel_id: 250
+  fuel_type: Hemlock, Western Water
+  category: Forb
+  scientific_name: Cicuta douglasii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hickory, Bitternut:
+  fuel_id: 251
+  fuel_type: Hickory, Bitternut
+  category: Tree
+  scientific_name: Carya cordiformis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hickory, Nugmeg:
+  fuel_id: 252
+  fuel_type: Hickory, Nugmeg
+  category: Tree
+  scientific_name: Carya myristiciformis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hickory, Shagbark:
+  fuel_id: 253
+  fuel_type: Hickory, Shagbark
+  category: Tree
+  scientific_name: Carya ovata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hickory, Shellbark:
+  fuel_id: 254
+  fuel_type: Hickory, Shellbark
+  category: Tree
+  scientific_name: Carya laciniosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Holly, American:
+  fuel_id: 255
+  fuel_type: Holly, American
+  category: Tree
+  scientific_name: Ilex opaca
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Holly, Carolina:
+  fuel_id: 256
+  fuel_type: Holly, Carolina
+  category: Tree
+  scientific_name: Ilex ambigua
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Holly, Chinese:
+  fuel_id: 257
+  fuel_type: Holly, Chinese
+  category: Tree
+  scientific_name: Ilex cornuta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hollyhock, Streambank Wild:
+  fuel_id: 258
+  fuel_type: Hollyhock, Streambank Wild
+  category: Shrub
+  scientific_name: Iliamna rivularis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Honeysuckle, Amur:
+  fuel_id: 259
+  fuel_type: Honeysuckle, Amur
+  category: Shrub
+  scientific_name: Lonicera maackii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Honeysuckle, Northern Bush:
+  fuel_id: 260
+  fuel_type: Honeysuckle, Northern Bush
+  category: Shrub
+  scientific_name: Diervilla lonicera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Honeysuckle, Utah:
+  fuel_id: 261
+  fuel_type: Honeysuckle, Utah
+  category: Shrub
+  scientific_name: Lonicera utahensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Huckleberry, Bear:
+  fuel_id: 262
+  fuel_type: Huckleberry, Bear
+  category: Shrub
+  scientific_name: Gaylussacia ursina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Huckleberry, Black:
+  fuel_id: 263
+  fuel_type: Huckleberry, Black
+  category: Shrub
+  scientific_name: Gaylussacia baccata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Huckleberry, Blue:
+  fuel_id: 264
+  fuel_type: Huckleberry, Blue
+  category: Shrub
+  scientific_name: Gaylussacia frondosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Huckleberry, California:
+  fuel_id: 265
+  fuel_type: Huckleberry, California
+  category: Shrub
+  scientific_name: Vaccinium ovatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Huckleberry, Red:
+  fuel_id: 266
+  fuel_type: Huckleberry, Red
+  category: Shrub
+  scientific_name: Vaccinium parvifolium
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Huckleberry, Thinleaf:
+  fuel_id: 267
+  fuel_type: Huckleberry, Thinleaf
+  category: Shrub
+  scientific_name: Vaccinium membranaceum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hyssop, Cusicks:
+  fuel_id: 268
+  fuel_type: Hyssop, Cusicks
+  category: Forb
+  scientific_name: Agastache cusickii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Hyssop, Smallleaf Giant:
+  fuel_id: 269
+  fuel_type: Hyssop, Smallleaf Giant
+  category: Shrub
+  scientific_name: Agastache parvifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Indian Ricegrass:
+  fuel_id: 270
+  fuel_type: Indian Ricegrass
+  category: Grass
+  scientific_name: Achnatherum hymenoides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Indiangrass:
+  fuel_id: 271
+  fuel_type: Indiangrass
+  category: Grass
+  scientific_name: Sorghastrum nutans
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Indianhemp:
+  fuel_id: 272
+  fuel_type: Indianhemp
+  category: Forb
+  scientific_name: Apocynum cannabinum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Johnson Grass:
+  fuel_id: 273
+  fuel_type: Johnson Grass
+  category: Grass
+  scientific_name: Sorghum halepense
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Jojoba:
+  fuel_id: 274
+  fuel_type: Jojoba
+  category: Shrub
+  scientific_name: Simmondsia chinensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Joshua Tree:
+  fuel_id: 275
+  fuel_type: Joshua Tree
+  category: Tree
+  scientific_name: Yucca brevifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Junegrass, Prairie:
+  fuel_id: 276
+  fuel_type: Junegrass, Prairie
+  category: Grass
+  scientific_name: Koeleria macrantha
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Alligator:
+  fuel_id: 277
+  fuel_type: Juniper, Alligator
+  category: Tree
+  scientific_name: Juniperus deppeana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Ashe:
+  fuel_id: 278
+  fuel_type: Juniper, Ashe
+  category: Tree
+  scientific_name: Juniperus ashei
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, California:
+  fuel_id: 279
+  fuel_type: Juniper, California
+  category: Tree
+  scientific_name: Juniperus californica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Common:
+  fuel_id: 280
+  fuel_type: Juniper, Common
+  category: Tree
+  scientific_name: Juniperus communis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Creeping:
+  fuel_id: 281
+  fuel_type: Juniper, Creeping
+  category: Shrub
+  scientific_name: Juniperus horizontalis Moench
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Drooping:
+  fuel_id: 282
+  fuel_type: Juniper, Drooping
+  category: Tree
+  scientific_name: Juniperus flaccida
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Oneseed:
+  fuel_id: 283
+  fuel_type: Juniper, Oneseed
+  category: Tree
+  scientific_name: Juniperus monosperma
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Pinchot:
+  fuel_id: 284
+  fuel_type: Juniper, Pinchot
+  category: Tree
+  scientific_name: Juniperus pinchotii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Redberry:
+  fuel_id: 285
+  fuel_type: Juniper, Redberry
+  category: Tree
+  scientific_name: Juniperus coahuilensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Rocky Mountain:
+  fuel_id: 286
+  fuel_type: Juniper, Rocky Mountain
+  category: Tree
+  scientific_name: Juniperus scopulorum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Utah:
+  fuel_id: 287
+  fuel_type: Juniper, Utah
+  category: Tree
+  scientific_name: Juniperus osteosperma
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Juniper, Western:
+  fuel_id: 288
+  fuel_type: Juniper, Western
+  category: Tree
+  scientific_name: Juniperus occidentalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Kinnikinnick:
+  fuel_id: 289
+  fuel_type: Kinnikinnick
+  category: Shrub
+  scientific_name: Arctostaphylos uva-ursi
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Knapweed, Diffuse:
+  fuel_id: 290
+  fuel_type: Knapweed, Diffuse
+  category: Forb
+  scientific_name: Centaurea diffusa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Knapweed, Russian:
+  fuel_id: 291
+  fuel_type: Knapweed, Russian
+  category: Forb
+  scientific_name: Centaurea repens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Knapweed, Spotted:
+  fuel_id: 292
+  fuel_type: Knapweed, Spotted
+  category: Forb
+  scientific_name: Centaurea stoebe
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Knotgrass:
+  fuel_id: 293
+  fuel_type: Knotgrass
+  category: Grass
+  scientific_name: Paspalum distichum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Larch, European:
+  fuel_id: 294
+  fuel_type: Larch, European
+  category: Tree
+  scientific_name: Larix decidua
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Larch, Subalpine:
+  fuel_id: 295
+  fuel_type: Larch, Subalpine
+  category: Tree
+  scientific_name: Larix lyallii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Larch, Western:
+  fuel_id: 296
+  fuel_type: Larch, Western
+  category: Tree
+  scientific_name: Larix occidentalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Laurel, California:
+  fuel_id: 297
+  fuel_type: Laurel, California
+  category: Tree
+  scientific_name: Umbellularia californica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Laurel, Mountain:
+  fuel_id: 298
+  fuel_type: Laurel, Mountain
+  category: Tree
+  scientific_name: Kalmia latifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Lewis Mock Orange:
+  fuel_id: 299
+  fuel_type: Lewis Mock Orange
+  category: Shrub
+  scientific_name: Philadelphus lewisii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Locust, Black:
+  fuel_id: 300
+  fuel_type: Locust, Black
+  category: Tree
+  scientific_name: Robinia pseudoacacia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Locust, Honey:
+  fuel_id: 301
+  fuel_type: Locust, Honey
+  category: Tree
+  scientific_name: Gleditsia triacanthos
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Lovegrass, Plains:
+  fuel_id: 302
+  fuel_type: Lovegrass, Plains
+  category: Grass
+  scientific_name: Eragrostis intermedia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Lovegrass, Purple:
+  fuel_id: 303
+  fuel_type: Lovegrass, Purple
+  category: Grass
+  scientific_name: Eragrostis spectabilis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Lovegrass, Weeping:
+  fuel_id: 304
+  fuel_type: Lovegrass, Weeping
+  category: Grass
+  scientific_name: Eragrostis curvula
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Lupine, Broadleaf:
+  fuel_id: 305
+  fuel_type: Lupine, Broadleaf
+  category: Forb
+  scientific_name: Lupinus latifolius
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Madrone, Arizona:
+  fuel_id: 306
+  fuel_type: Madrone, Arizona
+  category: Tree
+  scientific_name: Arbutus arizonica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Madrone, Pacific:
+  fuel_id: 307
+  fuel_type: Madrone, Pacific
+  category: Tree
+  scientific_name: Arbutus menziesii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Madrone, Texas:
+  fuel_id: 308
+  fuel_type: Madrone, Texas
+  category: Tree
+  scientific_name: Arbutus xalapensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Magnolia, Southern:
+  fuel_id: 309
+  fuel_type: Magnolia, Southern
+  category: Tree
+  scientific_name: Magnolia grandiflora
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mahogany, Alderleaf Mountain:
+  fuel_id: 310
+  fuel_type: Mahogany, Alderleaf Mountain
+  category: Tree
+  scientific_name: Cercocarpus montanus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mahogany, Birchleaf Mountain:
+  fuel_id: 311
+  fuel_type: Mahogany, Birchleaf Mountain
+  category: Tree
+  scientific_name: Cercocarpus montanus var. glaber
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mahogany, Curl-Leaf Mountain:
+  fuel_id: 312
+  fuel_type: Mahogany, Curl-Leaf Mountain
+  category: Tree
+  scientific_name: Cercocarpus ledifolius
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mahogany, Honduras:
+  fuel_id: 313
+  fuel_type: Mahogany, Honduras
+  category: Tree
+  scientific_name: Swietenia macrophylla
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mahogany, West Indian:
+  fuel_id: 314
+  fuel_type: Mahogany, West Indian
+  category: Tree
+  scientific_name: Swietenia mahagoni
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maidencane:
+  fuel_id: 315
+  fuel_type: Maidencane
+  category: Grass
+  scientific_name: Panicum hemitomon Shult.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maidenhair, Northern:
+  fuel_id: 316
+  fuel_type: Maidenhair, Northern
+  category: Forb
+  scientific_name: Adiantum pedatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mangrove, White:
+  fuel_id: 317
+  fuel_type: Mangrove, White
+  category: Tree
+  scientific_name: Laguncularia racemosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mannagrass, Atlantic:
+  fuel_id: 318
+  fuel_type: Mannagrass, Atlantic
+  category: Grass
+  scientific_name: Glyceria obtusa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mannagrass, Fowl:
+  fuel_id: 319
+  fuel_type: Mannagrass, Fowl
+  category: Grass
+  scientific_name: Glyceria striata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mannagrass, Melic:
+  fuel_id: 320
+  fuel_type: Mannagrass, Melic
+  category: Grass
+  scientific_name: Glyceria melicaria
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mannagrass, Rattlesnake:
+  fuel_id: 321
+  fuel_type: Mannagrass, Rattlesnake
+  category: Grass
+  scientific_name: Glyceria canadensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mannagrass, Small Floating:
+  fuel_id: 322
+  fuel_type: Mannagrass, Small Floating
+  category: Grass
+  scientific_name: Glyceria borealis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Manzanita, Bigberry:
+  fuel_id: 323
+  fuel_type: Manzanita, Bigberry
+  category: Tree
+  scientific_name: Arctostaphylos glauca
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Manzanita, Eastwoods:
+  fuel_id: 324
+  fuel_type: Manzanita, Eastwoods
+  category: Shrub
+  scientific_name: Arctostaphylos glandulosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Manzanita, Greenleaf:
+  fuel_id: 325
+  fuel_type: Manzanita, Greenleaf
+  category: Shrub
+  scientific_name: Arctostaphylos patula
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Manzanita, Hairy:
+  fuel_id: 326
+  fuel_type: Manzanita, Hairy
+  category: Tree
+  scientific_name: Arctostaphylos columbiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Manzanita, Pinemat:
+  fuel_id: 327
+  fuel_type: Manzanita, Pinemat
+  category: Shrub
+  scientific_name: Arctostaphylos nevadensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Manzanita, Pointleaf:
+  fuel_id: 328
+  fuel_type: Manzanita, Pointleaf
+  category: Shrub
+  scientific_name: Arctostaphylos pungens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Manzanita, Whiteleaf:
+  fuel_id: 329
+  fuel_type: Manzanita, Whiteleaf
+  category: Shrub
+  scientific_name: Arctostaphylos manzanita
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Amur:
+  fuel_id: 330
+  fuel_type: Maple, Amur
+  category: Tree
+  scientific_name: Acer ginnala
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Bigleaf:
+  fuel_id: 331
+  fuel_type: Maple, Bigleaf
+  category: Tree
+  scientific_name: Acer macrophyllum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Bigtooth:
+  fuel_id: 332
+  fuel_type: Maple, Bigtooth
+  category: Tree
+  scientific_name: Acer grandidentatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Black:
+  fuel_id: 333
+  fuel_type: Maple, Black
+  category: Tree
+  scientific_name: Acer nigrum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Douglas:
+  fuel_id: 334
+  fuel_type: Maple, Douglas
+  category: Tree
+  scientific_name: Acer glabrum var. douglasii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Mountain:
+  fuel_id: 335
+  fuel_type: Maple, Mountain
+  category: Tree
+  scientific_name: Acer spicatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Norway:
+  fuel_id: 336
+  fuel_type: Maple, Norway
+  category: Tree
+  scientific_name: Acer platanoides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Red:
+  fuel_id: 337
+  fuel_type: Maple, Red
+  category: Tree
+  scientific_name: Acer rubrum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Rocky Mountain:
+  fuel_id: 338
+  fuel_type: Maple, Rocky Mountain
+  category: Tree
+  scientific_name: Acer glabrum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Southern Sugar:
+  fuel_id: 339
+  fuel_type: Maple, Southern Sugar
+  category: Tree
+  scientific_name: Acer barbatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Striped:
+  fuel_id: 340
+  fuel_type: Maple, Striped
+  category: Tree
+  scientific_name: Acer pensylvanicum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Sugar:
+  fuel_id: 341
+  fuel_type: Maple, Sugar
+  category: Tree
+  scientific_name: Acer saccharum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Sycamore:
+  fuel_id: 342
+  fuel_type: Maple, Sycamore
+  category: Tree
+  scientific_name: Acer pseudoplatanus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Maple, Vine:
+  fuel_id: 343
+  fuel_type: Maple, Vine
+  category: Tree
+  scientific_name: Acer circinatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mescal Bean:
+  fuel_id: 344
+  fuel_type: Mescal Bean
+  category: Tree
+  scientific_name: Sophora secundiflora
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mesquite, Curly:
+  fuel_id: 345
+  fuel_type: Mesquite, Curly
+  category: Grass
+  scientific_name: Hilaria belangeri
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mesquite, Honey:
+  fuel_id: 346
+  fuel_type: Mesquite, Honey
+  category: Tree
+  scientific_name: Prosopis glandulosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mesquite, Screwbean:
+  fuel_id: 347
+  fuel_type: Mesquite, Screwbean
+  category: Tree
+  scientific_name: Prosopis pubescens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mesquite, Velvet:
+  fuel_id: 348
+  fuel_type: Mesquite, Velvet
+  category: Tree
+  scientific_name: Prosopis velutina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mesquite, Vine:
+  fuel_id: 349
+  fuel_type: Mesquite, Vine
+  category: Grass
+  scientific_name: Panicum obtusum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mountain Ash, American:
+  fuel_id: 352
+  fuel_type: Mountain Ash, American
+  category: Tree
+  scientific_name: Sorbus americana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mountain Ash, European:
+  fuel_id: 353
+  fuel_type: Mountain Ash, European
+  category: Tree
+  scientific_name: Sorbus aucuparia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mountain Ash, Greenes:
+  fuel_id: 354
+  fuel_type: Mountain Ash, Greenes
+  category: Tree
+  scientific_name: Sorbus scopulina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mountain Ash, Northern:
+  fuel_id: 355
+  fuel_type: Mountain Ash, Northern
+  category: Tree
+  scientific_name: Sorbus decora
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mountain Ash, Sitka:
+  fuel_id: 356
+  fuel_type: Mountain Ash, Sitka
+  category: Tree
+  scientific_name: Sorbus sitchensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mountain Ash, Western:
+  fuel_id: 357
+  fuel_type: Mountain Ash, Western
+  category: Tree
+  scientific_name: Sorbus sitchensis var. grayi
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Bog:
+  fuel_id: 358
+  fuel_type: Muhly, Bog
+  category: Grass
+  scientific_name: Muhlenbergia uniflora
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Bush:
+  fuel_id: 359
+  fuel_type: Muhly, Bush
+  category: Grass
+  scientific_name: Muhlenbergia porteri
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Creeping:
+  fuel_id: 360
+  fuel_type: Muhly, Creeping
+  category: Grass
+  scientific_name: Muhlenbergia repens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Hairawn:
+  fuel_id: 361
+  fuel_type: Muhly, Hairawn
+  category: Grass
+  scientific_name: Muhlenbergia capillaris
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Marsh:
+  fuel_id: 362
+  fuel_type: Muhly, Marsh
+  category: Grass
+  scientific_name: Muhlenbergia racemosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Mat:
+  fuel_id: 363
+  fuel_type: Muhly, Mat
+  category: Grass
+  scientific_name: Muhlenbergia richardsonis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Mexican:
+  fuel_id: 364
+  fuel_type: Muhly, Mexican
+  category: Grass
+  scientific_name: Muhlenbergia mexicana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Mountain:
+  fuel_id: 365
+  fuel_type: Muhly, Mountain
+  category: Grass
+  scientific_name: Muhlenbergia montana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Plains:
+  fuel_id: 366
+  fuel_type: Muhly, Plains
+  category: Grass
+  scientific_name: Muhlenbergia cuspidata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Sandhill:
+  fuel_id: 367
+  fuel_type: Muhly, Sandhill
+  category: Grass
+  scientific_name: Muhlenbergia pungens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Spike:
+  fuel_id: 368
+  fuel_type: Muhly, Spike
+  category: Grass
+  scientific_name: Muhlenbergia wrightii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Spiked:
+  fuel_id: 369
+  fuel_type: Muhly, Spiked
+  category: Grass
+  scientific_name: Muhlenbergia glomerata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Wirestem:
+  fuel_id: 370
+  fuel_type: Muhly, Wirestem
+  category: Grass
+  scientific_name: Muhlenbergia frondosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Muhly, Woodland:
+  fuel_id: 371
+  fuel_type: Muhly, Woodland
+  category: Grass
+  scientific_name: Muhlenbergia sylvatica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mulberry, Indian:
+  fuel_id: 372
+  fuel_type: Mulberry, Indian
+  category: Tree
+  scientific_name: Morinda citrifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mulberry, Red:
+  fuel_id: 373
+  fuel_type: Mulberry, Red
+  category: Tree
+  scientific_name: Morus rubra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mulberry, White:
+  fuel_id: 374
+  fuel_type: Mulberry, White
+  category: Tree
+  scientific_name: Morus alba
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Mule Ears:
+  fuel_id: 375
+  fuel_type: Mule Ears
+  category: Forb
+  scientific_name: Wyethia amplexicaulis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Myrtle, Wax:
+  fuel_id: 376
+  fuel_type: Myrtle, Wax
+  category: Tree
+  scientific_name: Morella cerifera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needle and Thread:
+  fuel_id: 377
+  fuel_type: Needle and Thread
+  category: Grass
+  scientific_name: Hesperostipa comata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needlegrass, Columbia:
+  fuel_id: 378
+  fuel_type: Needlegrass, Columbia
+  category: Grass
+  scientific_name: Achnatherum nelsonii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needlegrass, Desert:
+  fuel_id: 379
+  fuel_type: Needlegrass, Desert
+  category: Grass
+  scientific_name: Achnatherum speciosum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needlegrass, Dore:
+  fuel_id: 380
+  fuel_type: Needlegrass, Dore
+  category: Grass
+  scientific_name: Achnatherum nelsonii ssp. dorei
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needlegrass, Foothill:
+  fuel_id: 381
+  fuel_type: Needlegrass, Foothill
+  category: Grass
+  scientific_name: Nassella lepida
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needlegrass, Green:
+  fuel_id: 382
+  fuel_type: Needlegrass, Green
+  category: Grass
+  scientific_name: Nassella viridula
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needlegrass, Nodding:
+  fuel_id: 383
+  fuel_type: Needlegrass, Nodding
+  category: Grass
+  scientific_name: Nassella cernua
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needlegrass, Purple:
+  fuel_id: 384
+  fuel_type: Needlegrass, Purple
+  category: Grass
+  scientific_name: Nassella pulchra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needlegrass, Richardson:
+  fuel_id: 385
+  fuel_type: Needlegrass, Richardson
+  category: Grass
+  scientific_name: Achnatherum richardsonii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needlegrass, Sierra False:
+  fuel_id: 386
+  fuel_type: Needlegrass, Sierra False
+  category: Grass
+  scientific_name: Ptilagrostis kingii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Needlegrass, Western:
+  fuel_id: 387
+  fuel_type: Needlegrass, Western
+  category: Grass
+  scientific_name: Achnatherum occidentale ssp. occidentale
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Nettletree, Jamaican:
+  fuel_id: 388
+  fuel_type: Nettletree, Jamaican
+  category: Tree
+  scientific_name: Trema micrantha
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ninebark, Pacific:
+  fuel_id: 389
+  fuel_type: Ninebark, Pacific
+  category: Shrub
+  scientific_name: Physocarpus capitatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Nutmeg, Florida:
+  fuel_id: 390
+  fuel_type: Nutmeg, Florida
+  category: Tree
+  scientific_name: Torreya taxifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Arizona White:
+  fuel_id: 391
+  fuel_type: Oak, Arizona White
+  category: Tree
+  scientific_name: Quercus arizonica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Bear:
+  fuel_id: 392
+  fuel_type: Oak, Bear
+  category: Tree
+  scientific_name: Quercus ilicifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Black:
+  fuel_id: 393
+  fuel_type: Oak, Black
+  category: Tree
+  scientific_name: Quercus velutina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Blackjack:
+  fuel_id: 394
+  fuel_type: Oak, Blackjack
+  category: Tree
+  scientific_name: Quercus marilandica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Blue:
+  fuel_id: 395
+  fuel_type: Oak, Blue
+  category: Tree
+  scientific_name: Quercus douglasii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Bluejack:
+  fuel_id: 396
+  fuel_type: Oak, Bluejack
+  category: Tree
+  scientific_name: Quercus incana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Bur:
+  fuel_id: 397
+  fuel_type: Oak, Bur
+  category: Tree
+  scientific_name: Quercus macrocarpa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, California Black:
+  fuel_id: 398
+  fuel_type: Oak, California Black
+  category: Tree
+  scientific_name: Quercus kelloggii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, California Live:
+  fuel_id: 399
+  fuel_type: Oak, California Live
+  category: Tree
+  scientific_name: Quercus agrifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Canyon Live:
+  fuel_id: 400
+  fuel_type: Oak, Canyon Live
+  category: Tree
+  scientific_name: Quercus chrysolepis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Cherrybark:
+  fuel_id: 401
+  fuel_type: Oak, Cherrybark
+  category: Tree
+  scientific_name: Quercus pagoda
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Chestnut:
+  fuel_id: 402
+  fuel_type: Oak, Chestnut
+  category: Tree
+  scientific_name: Quercus prinus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Chinkapin:
+  fuel_id: 403
+  fuel_type: Oak, Chinkapin
+  category: Tree
+  scientific_name: Quercus muehlenbergii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Coastal Sage Scrub:
+  fuel_id: 404
+  fuel_type: Oak, Coastal Sage Scrub
+  category: Tree
+  scientific_name: Quercus dumosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Emory:
+  fuel_id: 405
+  fuel_type: Oak, Emory
+  category: Tree
+  scientific_name: Quercus emoryi
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Gambel:
+  fuel_id: 406
+  fuel_type: Oak, Gambel
+  category: Tree
+  scientific_name: Quercus gambelii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Gray:
+  fuel_id: 407
+  fuel_type: Oak, Gray
+  category: Tree
+  scientific_name: Quercus grisea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Harvard:
+  fuel_id: 408
+  fuel_type: Oak, Harvard
+  category: Tree
+  scientific_name: Quercus havardii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Huckleberry:
+  fuel_id: 409
+  fuel_type: Oak, Huckleberry
+  category: Shrub
+  scientific_name: Quercus vacciniifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Interior Live:
+  fuel_id: 410
+  fuel_type: Oak, Interior Live
+  category: Tree
+  scientific_name: Quercus wislizeni
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Laurel:
+  fuel_id: 411
+  fuel_type: Oak, Laurel
+  category: Tree
+  scientific_name: Quercus laurifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Live:
+  fuel_id: 412
+  fuel_type: Oak, Live
+  category: Tree
+  scientific_name: Quercus virginiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Mexican Blue:
+  fuel_id: 413
+  fuel_type: Oak, Mexican Blue
+  category: Tree
+  scientific_name: Quercus oblongifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Northern Pin:
+  fuel_id: 414
+  fuel_type: Oak, Northern Pin
+  category: Tree
+  scientific_name: Quercus ellipsoidalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Northern Red:
+  fuel_id: 415
+  fuel_type: Oak, Northern Red
+  category: Tree
+  scientific_name: Quercus rubra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Oregon White:
+  fuel_id: 416
+  fuel_type: Oak, Oregon White
+  category: Tree
+  scientific_name: Quercus garryana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Overcup:
+  fuel_id: 417
+  fuel_type: Oak, Overcup
+  category: Tree
+  scientific_name: Quercus lyrata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Pin:
+  fuel_id: 418
+  fuel_type: Oak, Pin
+  category: Tree
+  scientific_name: Quercus palustris
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Post:
+  fuel_id: 419
+  fuel_type: Oak, Post
+  category: Tree
+  scientific_name: Quercus stellata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Pungent:
+  fuel_id: 420
+  fuel_type: Oak, Pungent
+  category: Tree
+  scientific_name: Quercus pungens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Running:
+  fuel_id: 421
+  fuel_type: Oak, Running
+  category: Shrub
+  scientific_name: Quercus pumila
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Scarlet:
+  fuel_id: 422
+  fuel_type: Oak, Scarlet
+  category: Tree
+  scientific_name: Quercus coccinea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Shingle:
+  fuel_id: 423
+  fuel_type: Oak, Shingle
+  category: Tree
+  scientific_name: Quercus imbricaria
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Shumards:
+  fuel_id: 424
+  fuel_type: Oak, Shumards
+  category: Tree
+  scientific_name: Quercus shumardii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Silverleaf:
+  fuel_id: 425
+  fuel_type: Oak, Silverleaf
+  category: Tree
+  scientific_name: Quercus hipoleucoides A. Camus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Sonoran Scrub:
+  fuel_id: 426
+  fuel_type: Oak, Sonoran Scrub
+  category: Tree
+  scientific_name: Quercus turbinella
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Southern Red:
+  fuel_id: 427
+  fuel_type: Oak, Southern Red
+  category: Tree
+  scientific_name: Quercus falcata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Swamp Chestnut:
+  fuel_id: 428
+  fuel_type: Oak, Swamp Chestnut
+  category: Tree
+  scientific_name: Quercus michauxii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Swamp White:
+  fuel_id: 429
+  fuel_type: Oak, Swamp White
+  category: Tree
+  scientific_name: Quercus bicolor
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Texas Red:
+  fuel_id: 430
+  fuel_type: Oak, Texas Red
+  category: Tree
+  scientific_name: Quercus texana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Turkey:
+  fuel_id: 431
+  fuel_type: Oak, Turkey
+  category: Tree
+  scientific_name: Quercus laevis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Valley:
+  fuel_id: 432
+  fuel_type: Oak, Valley
+  category: Tree
+  scientific_name: Quercus lobata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Water:
+  fuel_id: 433
+  fuel_type: Oak, Water
+  category: Tree
+  scientific_name: Quercus nigra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, White:
+  fuel_id: 434
+  fuel_type: Oak, White
+  category: Tree
+  scientific_name: Quercus alba
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oak, Willow:
+  fuel_id: 435
+  fuel_type: Oak, Willow
+  category: Tree
+  scientific_name: Quercus phellos
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oatgrass, Flattened:
+  fuel_id: 436
+  fuel_type: Oatgrass, Flattened
+  category: Grass
+  scientific_name: Danthonia compressa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Oatgrass, Timber:
+  fuel_id: 437
+  fuel_type: Oatgrass, Timber
+  category: Grass
+  scientific_name: Danthonia intermedia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Olive, Autumn:
+  fuel_id: 438
+  fuel_type: Olive, Autumn
+  category: Shrub
+  scientific_name: Elaeagnus umbellata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Olive, Russian:
+  fuel_id: 439
+  fuel_type: Olive, Russian
+  category: Tree
+  scientific_name: Elaeagnus angustifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Osage Orange:
+  fuel_id: 440
+  fuel_type: Osage Orange
+  category: Tree
+  scientific_name: Maclura pomifera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Palm, California Fan:
+  fuel_id: 441
+  fuel_type: Palm, California Fan
+  category: Tree
+  scientific_name: Washingtonia filifera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Palmetto, Cabbage:
+  fuel_id: 442
+  fuel_type: Palmetto, Cabbage
+  category: Tree
+  scientific_name: Sabal palmetto
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Palmetto, Saw:
+  fuel_id: 443
+  fuel_type: Palmetto, Saw
+  category: Tree
+  scientific_name: Serenoa repens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pecan:
+  fuel_id: 444
+  fuel_type: Pecan
+  category: Tree
+  scientific_name: Carya illinoiensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Apache:
+  fuel_id: 445
+  fuel_type: Pine, Apache
+  category: Tree
+  scientific_name: Pinus engelmannii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Arizona:
+  fuel_id: 446
+  fuel_type: Pine, Arizona
+  category: Tree
+  scientific_name: Pinus ponderosa var. arizonica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Austrian:
+  fuel_id: 447
+  fuel_type: Pine, Austrian
+  category: Tree
+  scientific_name: Pinus nigra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Beach:
+  fuel_id: 448
+  fuel_type: Pine, Beach
+  category: Tree
+  scientific_name: Pinus contorta var. contorta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Bishop:
+  fuel_id: 449
+  fuel_type: Pine, Bishop
+  category: Tree
+  scientific_name: Pinus muricata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Bristlecone:
+  fuel_id: 450
+  fuel_type: Pine, Bristlecone
+  category: Tree
+  scientific_name: Pinus aristata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, California Foothill:
+  fuel_id: 451
+  fuel_type: Pine, California Foothill
+  category: Tree
+  scientific_name: Pinus sabiniana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Chihuahuan:
+  fuel_id: 452
+  fuel_type: Pine, Chihuahuan
+  category: Tree
+  scientific_name: Pinus leiophylla var. chihuahuana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Coulter:
+  fuel_id: 453
+  fuel_type: Pine, Coulter
+  category: Tree
+  scientific_name: Pinus coulteri
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Eastern White:
+  fuel_id: 454
+  fuel_type: Pine, Eastern White
+  category: Tree
+  scientific_name: Pinus strobus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Foxtail:
+  fuel_id: 455
+  fuel_type: Pine, Foxtail
+  category: Tree
+  scientific_name: Pinus balfouriana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Great Basin Bristlecone:
+  fuel_id: 456
+  fuel_type: Pine, Great Basin Bristlecone
+  category: Tree
+  scientific_name: Pinus longaeva
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Interior Ponderosa:
+  fuel_id: 457
+  fuel_type: Pine, Interior Ponderosa
+  category: Tree
+  scientific_name: Pinus ponderosa var. scopulorum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Jack:
+  fuel_id: 458
+  fuel_type: Pine, Jack
+  category: Tree
+  scientific_name: Pinus banksiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Japanese Black:
+  fuel_id: 459
+  fuel_type: Pine, Japanese Black
+  category: Tree
+  scientific_name: Pinus thunbergii Parl.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Knobcone:
+  fuel_id: 460
+  fuel_type: Pine, Knobcone
+  category: Tree
+  scientific_name: Pinus attenuata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Limber:
+  fuel_id: 461
+  fuel_type: Pine, Limber
+  category: Tree
+  scientific_name: Pinus flexilis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Loblolly:
+  fuel_id: 462
+  fuel_type: Pine, Loblolly
+  category: Tree
+  scientific_name: Pinus taeda
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Lodgepole:
+  fuel_id: 463
+  fuel_type: Pine, Lodgepole
+  category: Tree
+  scientific_name: Pinus contorta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Longleaf:
+  fuel_id: 464
+  fuel_type: Pine, Longleaf
+  category: Tree
+  scientific_name: Pinus palustris
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Monterey:
+  fuel_id: 465
+  fuel_type: Pine, Monterey
+  category: Tree
+  scientific_name: Pinus radiata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Pacific Ponderosa:
+  fuel_id: 466
+  fuel_type: Pine, Pacific Ponderosa
+  category: Tree
+  scientific_name: Pinus ponderosa var. ponderosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Pitch:
+  fuel_id: 467
+  fuel_type: Pine, Pitch
+  category: Tree
+  scientific_name: Pinus rigida
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Pond:
+  fuel_id: 468
+  fuel_type: Pine, Pond
+  category: Tree
+  scientific_name: Pinus serotina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Ponderosa:
+  fuel_id: 469
+  fuel_type: Pine, Ponderosa
+  category: Tree
+  scientific_name: Pinus ponderosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Red:
+  fuel_id: 470
+  fuel_type: Pine, Red
+  category: Tree
+  scientific_name: Pinus resinosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Rocky Mountain Lodgepole:
+  fuel_id: 471
+  fuel_type: Pine, Rocky Mountain Lodgepole
+  category: Tree
+  scientific_name: Pinus contorta var. latifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Sand:
+  fuel_id: 472
+  fuel_type: Pine, Sand
+  category: Tree
+  scientific_name: Pinus clausa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Scots:
+  fuel_id: 473
+  fuel_type: Pine, Scots
+  category: Tree
+  scientific_name: Pinus sylvestris
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Shortleaf:
+  fuel_id: 474
+  fuel_type: Pine, Shortleaf
+  category: Tree
+  scientific_name: Pinus echinata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Sierra Lodgepole:
+  fuel_id: 475
+  fuel_type: Pine, Sierra Lodgepole
+  category: Tree
+  scientific_name: Pinus contorta var. murrayana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Slash:
+  fuel_id: 476
+  fuel_type: Pine, Slash
+  category: Tree
+  scientific_name: Pinus elliotti
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Southwestern White:
+  fuel_id: 477
+  fuel_type: Pine, Southwestern White
+  category: Tree
+  scientific_name: Pinus strobiformis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Spruce:
+  fuel_id: 478
+  fuel_type: Pine, Spruce
+  category: Tree
+  scientific_name: Pinus glabra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Sugar:
+  fuel_id: 479
+  fuel_type: Pine, Sugar
+  category: Tree
+  scientific_name: Pinus lambertiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Table Mountain:
+  fuel_id: 480
+  fuel_type: Pine, Table Mountain
+  category: Tree
+  scientific_name: Pinus pungens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Torrey:
+  fuel_id: 481
+  fuel_type: Pine, Torrey
+  category: Tree
+  scientific_name: Pinus torreyana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Virginia:
+  fuel_id: 482
+  fuel_type: Pine, Virginia
+  category: Tree
+  scientific_name: Pinus virginiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Washoe:
+  fuel_id: 483
+  fuel_type: Pine, Washoe
+  category: Tree
+  scientific_name: Pinus washoensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Western White:
+  fuel_id: 484
+  fuel_type: Pine, Western White
+  category: Tree
+  scientific_name: Pinus monticola
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Whitebark:
+  fuel_id: 485
+  fuel_type: Pine, Whitebark
+  category: Tree
+  scientific_name: Pinus albicaulis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Yew Plum:
+  fuel_id: 486
+  fuel_type: Pine, Yew Plum
+  category: Tree
+  scientific_name: Podocarpus macrophyllus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pinegrass:
+  fuel_id: 487
+  fuel_type: Pinegrass
+  category: Grass
+  scientific_name: Calamagrostic rubescens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pinegrass, Purple:
+  fuel_id: 488
+  fuel_type: Pinegrass, Purple
+  category: Grass
+  scientific_name: Calamagrostis purpurascens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pinyon, Mexican:
+  fuel_id: 489
+  fuel_type: Pinyon, Mexican
+  category: Tree
+  scientific_name: Pinus cembroides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pinyon, Parry:
+  fuel_id: 490
+  fuel_type: Pinyon, Parry
+  category: Tree
+  scientific_name: Pinus quadrifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pinyon, Singleleaf:
+  fuel_id: 491
+  fuel_type: Pinyon, Singleleaf
+  category: Tree
+  scientific_name: Pinus monophylla
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pinyon, Twoneedle:
+  fuel_id: 492
+  fuel_type: Pinyon, Twoneedle
+  category: Tree
+  scientific_name: Pinus edulis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Plum, American:
+  fuel_id: 493
+  fuel_type: Plum, American
+  category: Tree
+  scientific_name: Prunus americana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Plumegrass, Sugarcane:
+  fuel_id: 494
+  fuel_type: Plumegrass, Sugarcane
+  category: Grass
+  scientific_name: Saccharum giganteum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pokeweed, American:
+  fuel_id: 495
+  fuel_type: Pokeweed, American
+  category: Forb
+  scientific_name: Phytolacca americana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Poplar, Balsam:
+  fuel_id: 496
+  fuel_type: Poplar, Balsam
+  category: Tree
+  scientific_name: Populus balsamifera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Poplar, Lombardy:
+  fuel_id: 497
+  fuel_type: Poplar, Lombardy
+  category: Tree
+  scientific_name: Populus nigra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Poplar, White:
+  fuel_id: 498
+  fuel_type: Poplar, White
+  category: Tree
+  scientific_name: Populus alba
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Porcupinegrass:
+  fuel_id: 499
+  fuel_type: Porcupinegrass
+  category: Grass
+  scientific_name: Hesperostipa spartea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Prairie Dropseed:
+  fuel_id: 500
+  fuel_type: Prairie Dropseed
+  category: Grass
+  scientific_name: Sporobolus heterolepis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Prairie Sandreed:
+  fuel_id: 501
+  fuel_type: Prairie Sandreed
+  category: Grass
+  scientific_name: Calamovilfa longifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pricklyash, Lime:
+  fuel_id: 502
+  fuel_type: Pricklyash, Lime
+  category: Tree
+  scientific_name: Zanthoxylum fagara (L.) Sarg.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Privet, European:
+  fuel_id: 503
+  fuel_type: Privet, European
+  category: Shrub
+  scientific_name: Ligustrum vulgare
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Quackgrass:
+  fuel_id: 504
+  fuel_type: Quackgrass
+  category: Grass
+  scientific_name: Elymus repens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Rabbitbrush, Rubber:
+  fuel_id: 505
+  fuel_type: Rabbitbrush, Rubber
+  category: Shrub
+  scientific_name: Ericameria nauseosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ragweed, Western:
+  fuel_id: 506
+  fuel_type: Ragweed, Western
+  category: Forb
+  scientific_name: Ambrosia psilostachya
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Red Shank:
+  fuel_id: 507
+  fuel_type: Red Shank
+  category: Tree
+  scientific_name: Adenostoma sparsifolium
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Redbay:
+  fuel_id: 508
+  fuel_type: Redbay
+  category: Tree
+  scientific_name: Persea borbonia (L.) Spreng.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Redbud, California:
+  fuel_id: 509
+  fuel_type: Redbud, California
+  category: Tree
+  scientific_name: Cercis orbiculata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Redbud, Texas:
+  fuel_id: 510
+  fuel_type: Redbud, Texas
+  category: Tree
+  scientific_name: Cercis canadensis var. texensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Redcedar, Eastern:
+  fuel_id: 511
+  fuel_type: Redcedar, Eastern
+  category: Tree
+  scientific_name: Juniperus virginiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Redcedar, Southern:
+  fuel_id: 512
+  fuel_type: Redcedar, Southern
+  category: Tree
+  scientific_name: Juniperus virginiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Redcedar, Western:
+  fuel_id: 513
+  fuel_type: Redcedar, Western
+  category: Tree
+  scientific_name: Thuja plicata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Redwood:
+  fuel_id: 514
+  fuel_type: Redwood
+  category: Tree
+  scientific_name: Sequoia sempervirens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Reed, Common:
+  fuel_id: 515
+  fuel_type: Reed, Common
+  category: Shrub
+  scientific_name: Phragmites australis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Reedgrass, Arctic:
+  fuel_id: 516
+  fuel_type: Reedgrass, Arctic
+  category: Grass
+  scientific_name: Calamagrostis coarctata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Reedgrass, Bluejoint:
+  fuel_id: 517
+  fuel_type: Reedgrass, Bluejoint
+  category: Grass
+  scientific_name: Calamagrostis canadensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Reedgrass, Northern:
+  fuel_id: 518
+  fuel_type: Reedgrass, Northern
+  category: Grass
+  scientific_name: Calamagrostis stricta ssp. inexpansa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Reedgrass, Plains:
+  fuel_id: 519
+  fuel_type: Reedgrass, Plains
+  category: Grass
+  scientific_name: Calamagrostis montanensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Reedgrass, Shorthair:
+  fuel_id: 520
+  fuel_type: Reedgrass, Shorthair
+  category: Grass
+  scientific_name: Calamagrostis breweri
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Reedgrass, Slimstem:
+  fuel_id: 521
+  fuel_type: Reedgrass, Slimstem
+  category: Grass
+  scientific_name: Calamagrostis stricta ssp. stricta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Rescuegrass:
+  fuel_id: 522
+  fuel_type: Rescuegrass
+  category: Grass
+  scientific_name: Bromus catharticus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Rhododendron, Pacific:
+  fuel_id: 523
+  fuel_type: Rhododendron, Pacific
+  category: Tree
+  scientific_name: Rhododendron macrophyllum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Rush, Chestnut:
+  fuel_id: 524
+  fuel_type: Rush, Chestnut
+  category: Grass
+  scientific_name: Juncus castaneus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Rush, Needlegrass:
+  fuel_id: 525
+  fuel_type: Rush, Needlegrass
+  category: Grass
+  scientific_name: Juncus roemerianus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Ryegrass, Italian:
+  fuel_id: 526
+  fuel_type: Ryegrass, Italian
+  category: Grass
+  scientific_name: Lolium perenne ssp. multiflorum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sage, Black:
+  fuel_id: 527
+  fuel_type: Sage, Black
+  category: Shrub
+  scientific_name: Salvia mellifera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sage, Purple:
+  fuel_id: 528
+  fuel_type: Sage, Purple
+  category: Shrub
+  scientific_name: Salvia dorrii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Bigelows:
+  fuel_id: 530
+  fuel_type: Sagebrush, Bigelows
+  category: Shrub
+  scientific_name: Artemisia bigelovii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Birdfoot:
+  fuel_id: 531
+  fuel_type: Sagebrush, Birdfoot
+  category: Shrub
+  scientific_name: Artemisia pedatifida
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Black:
+  fuel_id: 532
+  fuel_type: Sagebrush, Black
+  category: Shrub
+  scientific_name: Artemisia nova
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Boreal:
+  fuel_id: 533
+  fuel_type: Sagebrush, Boreal
+  category: Shrub
+  scientific_name: Artemisia norvegica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Bud:
+  fuel_id: 534
+  fuel_type: Sagebrush, Bud
+  category: Shrub
+  scientific_name: Picrothamnus desertorum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, California:
+  fuel_id: 535
+  fuel_type: Sagebrush, California
+  category: Shrub
+  scientific_name: Artemisia californica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Fuzzy:
+  fuel_id: 536
+  fuel_type: Sagebrush, Fuzzy
+  category: Shrub
+  scientific_name: Artemisia papposa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Little:
+  fuel_id: 537
+  fuel_type: Sagebrush, Little
+  category: Shrub
+  scientific_name: Artemisia arbuscula
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Pygmy:
+  fuel_id: 539
+  fuel_type: Sagebrush, Pygmy
+  category: Shrub
+  scientific_name: Artemisia pygmaea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Sand:
+  fuel_id: 540
+  fuel_type: Sagebrush, Sand
+  category: Shrub
+  scientific_name: Artemisia filifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Scabland:
+  fuel_id: 541
+  fuel_type: Sagebrush, Scabland
+  category: Shrub
+  scientific_name: Artemisia rigida
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Silver:
+  fuel_id: 542
+  fuel_type: Sagebrush, Silver
+  category: Shrub
+  scientific_name: Artemisia cana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Threetip:
+  fuel_id: 543
+  fuel_type: Sagebrush, Threetip
+  category: Shrub
+  scientific_name: Artemisia tripartita
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, White:
+  fuel_id: 544
+  fuel_type: Sagebrush, White
+  category: Shrub
+  scientific_name: Artemisia ludoviciana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagewort, Field:
+  fuel_id: 546
+  fuel_type: Sagewort, Field
+  category: Forb
+  scientific_name: Artemisia campestris
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagewort, Prairie:
+  fuel_id: 547
+  fuel_type: Sagewort, Prairie
+  category: Shrub
+  scientific_name: Artemisia frigida
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Saguaro:
+  fuel_id: 548
+  fuel_type: Saguaro
+  category: Tree
+  scientific_name: Carnegiea gigantea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Saltbush, Fourwing:
+  fuel_id: 549
+  fuel_type: Saltbush, Fourwing
+  category: Shrub
+  scientific_name: Atriplex canescens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sawgrass, Jamaica Swamp:
+  fuel_id: 550
+  fuel_type: Sawgrass, Jamaica Swamp
+  category: Grass
+  scientific_name: Cladium mariscus ssp. jamaicense
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge Woodrush:
+  fuel_id: 551
+  fuel_type: Sedge Woodrush
+  category: Grass
+  scientific_name: Carex luzulina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Analogue:
+  fuel_id: 552
+  fuel_type: Sedge, Analogue
+  category: Grass
+  scientific_name: Carex simulata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Awlfruit:
+  fuel_id: 553
+  fuel_type: Sedge, Awlfruit
+  category: Grass
+  scientific_name: Carex stipata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Baileys:
+  fuel_id: 554
+  fuel_type: Sedge, Baileys
+  category: Grass
+  scientific_name: Carex baileyi
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Beaked:
+  fuel_id: 555
+  fuel_type: Sedge, Beaked
+  category: Grass
+  scientific_name: Carex rostrata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Bebb:
+  fuel_id: 556
+  fuel_type: Sedge, Bebb
+  category: Grass
+  scientific_name: Carex bebbii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Bicknell:
+  fuel_id: 557
+  fuel_type: Sedge, Bicknell
+  category: Grass
+  scientific_name: Carex bicknellii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Bigelows:
+  fuel_id: 558
+  fuel_type: Sedge, Bigelows
+  category: Grass
+  scientific_name: Carex bigelowii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Blister:
+  fuel_id: 559
+  fuel_type: Sedge, Blister
+  category: Grass
+  scientific_name: Carex vesicaria
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Blunt Broom:
+  fuel_id: 560
+  fuel_type: Sedge, Blunt Broom
+  category: Grass
+  scientific_name: Carex tribuloides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Bristlystalked:
+  fuel_id: 561
+  fuel_type: Sedge, Bristlystalked
+  category: Grass
+  scientific_name: Carex leptalea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Broom:
+  fuel_id: 562
+  fuel_type: Sedge, Broom
+  category: Grass
+  scientific_name: Carex scoparia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Bur-Reed:
+  fuel_id: 563
+  fuel_type: Sedge, Bur-Reed
+  category: Grass
+  scientific_name: Carex sparganioides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Bushs:
+  fuel_id: 564
+  fuel_type: Sedge, Bushs
+  category: Grass
+  scientific_name: Carex bushii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Capitate:
+  fuel_id: 565
+  fuel_type: Sedge, Capitate
+  category: Grass
+  scientific_name: Carex capitata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Cattail:
+  fuel_id: 566
+  fuel_type: Sedge, Cattail
+  category: Grass
+  scientific_name: Carex typhina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Chamisso:
+  fuel_id: 567
+  fuel_type: Sedge, Chamisso
+  category: Grass
+  scientific_name: Carex pachystachya
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Clustered Field:
+  fuel_id: 568
+  fuel_type: Sedge, Clustered Field
+  category: Grass
+  scientific_name: Carex praegracilis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Columbian:
+  fuel_id: 569
+  fuel_type: Sedge, Columbian
+  category: Grass
+  scientific_name: Carex aperta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Creeping:
+  fuel_id: 570
+  fuel_type: Sedge, Creeping
+  category: Grass
+  scientific_name: Carex chordorrhiza
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Crested:
+  fuel_id: 571
+  fuel_type: Sedge, Crested
+  category: Grass
+  scientific_name: Carex cristatella
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Cypressknee:
+  fuel_id: 572
+  fuel_type: Sedge, Cypressknee
+  category: Grass
+  scientific_name: Carex decomposita
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Deweys:
+  fuel_id: 573
+  fuel_type: Sedge, Deweys
+  category: Grass
+  scientific_name: Carex deweyana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Douglass:
+  fuel_id: 574
+  fuel_type: Sedge, Douglass
+  category: Grass
+  scientific_name: Carex douglasii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Eastern Straw:
+  fuel_id: 575
+  fuel_type: Sedge, Eastern Straw
+  category: Grass
+  scientific_name: Carex straminea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Eastern Woodland:
+  fuel_id: 576
+  fuel_type: Sedge, Eastern Woodland
+  category: Grass
+  scientific_name: Carex blanda
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Elk:
+  fuel_id: 577
+  fuel_type: Sedge, Elk
+  category: Grass
+  scientific_name: Carex garberi
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Enander:
+  fuel_id: 578
+  fuel_type: Sedge, Enander
+  category: Grass
+  scientific_name: Carex lenticularis var. dolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Franks:
+  fuel_id: 579
+  fuel_type: Sedge, Franks
+  category: Grass
+  scientific_name: Carex frankii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Geyers:
+  fuel_id: 580
+  fuel_type: Sedge, Geyers
+  category: Grass
+  scientific_name: Carex geyeri
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Graceful:
+  fuel_id: 581
+  fuel_type: Sedge, Graceful
+  category: Grass
+  scientific_name: Carex gracillima
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Grays:
+  fuel_id: 582
+  fuel_type: Sedge, Grays
+  category: Grass
+  scientific_name: Carex grayi
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Greater Bladder:
+  fuel_id: 583
+  fuel_type: Sedge, Greater Bladder
+  category: Grass
+  scientific_name: Carex intumescens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Greater Straw:
+  fuel_id: 584
+  fuel_type: Sedge, Greater Straw
+  category: Grass
+  scientific_name: Carex normalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Hair-Like:
+  fuel_id: 585
+  fuel_type: Sedge, Hair-Like
+  category: Grass
+  scientific_name: Carex capillaris
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Hairy:
+  fuel_id: 586
+  fuel_type: Sedge, Hairy
+  category: Grass
+  scientific_name: Carex lacustris
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Hairyfruit:
+  fuel_id: 587
+  fuel_type: Sedge, Hairyfruit
+  category: Grass
+  scientific_name: Carex trichocarpa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Halls:
+  fuel_id: 588
+  fuel_type: Sedge, Halls
+  category: Grass
+  scientific_name: Carex halliana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Hendersons:
+  fuel_id: 589
+  fuel_type: Sedge, Hendersons
+  category: Grass
+  scientific_name: Carex hendersonii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Inland:
+  fuel_id: 590
+  fuel_type: Sedge, Inland
+  category: Grass
+  scientific_name: Carex interior
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Kelloggs:
+  fuel_id: 591
+  fuel_type: Sedge, Kelloggs
+  category: Grass
+  scientific_name: Carex lenticularis var. lipocarpa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Limestone Meadow:
+  fuel_id: 592
+  fuel_type: Sedge, Limestone Meadow
+  category: Grass
+  scientific_name: Carex granularis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Longhair:
+  fuel_id: 593
+  fuel_type: Sedge, Longhair
+  category: Grass
+  scientific_name: Carex comosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Mountain:
+  fuel_id: 594
+  fuel_type: Sedge, Mountain
+  category: Grass
+  scientific_name: Carex scopulorum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Mud:
+  fuel_id: 595
+  fuel_type: Sedge, Mud
+  category: Grass
+  scientific_name: Carex limosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Muskingum:
+  fuel_id: 596
+  fuel_type: Sedge, Muskingum
+  category: Grass
+  scientific_name: Carex muskingumensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Nebraska:
+  fuel_id: 597
+  fuel_type: Sedge, Nebraska
+  category: Grass
+  scientific_name: Carex nebrascensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Necklace:
+  fuel_id: 598
+  fuel_type: Sedge, Necklace
+  category: Grass
+  scientific_name: Carex projecta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Nerveless Woodland:
+  fuel_id: 599
+  fuel_type: Sedge, Nerveless Woodland
+  category: Grass
+  scientific_name: Carex leptonervia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Northern Singlespike:
+  fuel_id: 600
+  fuel_type: Sedge, Northern Singlespike
+  category: Grass
+  scientific_name: Carex scirpoidea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Northwest Territory:
+  fuel_id: 601
+  fuel_type: Sedge, Northwest Territory
+  category: Grass
+  scientific_name: Carex utriculata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Oval-Leaf:
+  fuel_id: 602
+  fuel_type: Sedge, Oval-Leaf
+  category: Grass
+  scientific_name: Carex cephalophora
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Pennsylvania:
+  fuel_id: 603
+  fuel_type: Sedge, Pennsylvania
+  category: Grass
+  scientific_name: Carex pensylvanica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Prickly Bog:
+  fuel_id: 604
+  fuel_type: Sedge, Prickly Bog
+  category: Grass
+  scientific_name: Carex atlantica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Ramensks:
+  fuel_id: 605
+  fuel_type: Sedge, Ramensks
+  category: Grass
+  scientific_name: Carex ramenskii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Ravenfoot:
+  fuel_id: 606
+  fuel_type: Sedge, Ravenfoot
+  category: Grass
+  scientific_name: Carex crus-corvi
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Raynolds:
+  fuel_id: 607
+  fuel_type: Sedge, Raynolds
+  category: Grass
+  scientific_name: Carex raynoldsii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Rock:
+  fuel_id: 608
+  fuel_type: Sedge, Rock
+  category: Grass
+  scientific_name: Carex saxatilis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Rockdwelling:
+  fuel_id: 609
+  fuel_type: Sedge, Rockdwelling
+  category: Grass
+  scientific_name: Carex petricosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Rough Eastern:
+  fuel_id: 610
+  fuel_type: Sedge, Rough Eastern
+  category: Grass
+  scientific_name: Carex scabrata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Sheathed:
+  fuel_id: 611
+  fuel_type: Sedge, Sheathed
+  category: Grass
+  scientific_name: Carex vaginata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Shoreline:
+  fuel_id: 612
+  fuel_type: Sedge, Shoreline
+  category: Grass
+  scientific_name: Carex hyalinolepis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Shorthair:
+  fuel_id: 613
+  fuel_type: Sedge, Shorthair
+  category: Grass
+  scientific_name: Carex exserta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Shorts:
+  fuel_id: 614
+  fuel_type: Sedge, Shorts
+  category: Grass
+  scientific_name: Carex shortiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Silvery:
+  fuel_id: 615
+  fuel_type: Sedge, Silvery
+  category: Grass
+  scientific_name: Carex canescens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Slenderbeak:
+  fuel_id: 616
+  fuel_type: Sedge, Slenderbeak
+  category: Grass
+  scientific_name: Carex athrostachya
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Slough:
+  fuel_id: 617
+  fuel_type: Sedge, Slough
+  category: Grass
+  scientific_name: Carex obnupta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Smallwing:
+  fuel_id: 618
+  fuel_type: Sedge, Smallwing
+  category: Grass
+  scientific_name: Carex microptera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Softleaf:
+  fuel_id: 619
+  fuel_type: Sedge, Softleaf
+  category: Grass
+  scientific_name: Carex disperma
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Southwestern Showy:
+  fuel_id: 620
+  fuel_type: Sedge, Southwestern Showy
+  category: Grass
+  scientific_name: Carex bella
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Squarrose:
+  fuel_id: 621
+  fuel_type: Sedge, Squarrose
+  category: Grass
+  scientific_name: Carex squarrosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Star:
+  fuel_id: 622
+  fuel_type: Sedge, Star
+  category: Grass
+  scientific_name: Carex echinata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Sun:
+  fuel_id: 623
+  fuel_type: Sedge, Sun
+  category: Grass
+  scientific_name: Carex inops ssp. heliophila
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Thicket:
+  fuel_id: 624
+  fuel_type: Sedge, Thicket
+  category: Grass
+  scientific_name: Carex abscondita
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Thinfruit:
+  fuel_id: 625
+  fuel_type: Sedge, Thinfruit
+  category: Grass
+  scientific_name: Carex flaccosperma
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Threadleaf:
+  fuel_id: 626
+  fuel_type: Sedge, Threadleaf
+  category: Grass
+  scientific_name: Carex filifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Threeseeded:
+  fuel_id: 627
+  fuel_type: Sedge, Threeseeded
+  category: Grass
+  scientific_name: Carex trisperma
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Twisted:
+  fuel_id: 628
+  fuel_type: Sedge, Twisted
+  category: Grass
+  scientific_name: Carex torta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Upright:
+  fuel_id: 629
+  fuel_type: Sedge, Upright
+  category: Grass
+  scientific_name: Carex stricta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Variable:
+  fuel_id: 630
+  fuel_type: Sedge, Variable
+  category: Grass
+  scientific_name: Carex polymorpha
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, Wheat:
+  fuel_id: 631
+  fuel_type: Sedge, Wheat
+  category: Grass
+  scientific_name: Carex atherodes
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sedge, White Edge:
+  fuel_id: 632
+  fuel_type: Sedge, White Edge
+  category: Grass
+  scientific_name: Carex debilis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sequoia, Giant:
+  fuel_id: 633
+  fuel_type: Sequoia, Giant
+  category: Tree
+  scientific_name: Sequoiadendron giganteum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Serviceberry, Allegheny:
+  fuel_id: 634
+  fuel_type: Serviceberry, Allegheny
+  category: Tree
+  scientific_name: Amelanchier laevis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Serviceberry, Coastal:
+  fuel_id: 635
+  fuel_type: Serviceberry, Coastal
+  category: Shrub
+  scientific_name: Amelanchier obovalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Serviceberry, Saskatoon:
+  fuel_id: 636
+  fuel_type: Serviceberry, Saskatoon
+  category: Tree
+  scientific_name: Amelanchier alnifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Serviceberry, Utah:
+  fuel_id: 637
+  fuel_type: Serviceberry, Utah
+  category: Tree
+  scientific_name: Amelanchier utahensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sheoak, Beach:
+  fuel_id: 638
+  fuel_type: Sheoak, Beach
+  category: Tree
+  scientific_name: Casuarina equisetifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sheoak, Gray:
+  fuel_id: 639
+  fuel_type: Sheoak, Gray
+  category: Tree
+  scientific_name: Casuarina glauca
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Shortspine Horsebrush:
+  fuel_id: 640
+  fuel_type: Shortspine Horsebrush
+  category: Shrub
+  scientific_name: Tetradymia spinosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Showy Milkweed:
+  fuel_id: 641
+  fuel_type: Showy Milkweed
+  category: Forb
+  scientific_name: Asclepias speciosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Silktassel, Wrights:
+  fuel_id: 642
+  fuel_type: Silktassel, Wrights
+  category: Shrub
+  scientific_name: Garrya wrightii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Silverberry:
+  fuel_id: 643
+  fuel_type: Silverberry
+  category: Shrub
+  scientific_name: Elaeagnus commutata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Snakeweed Broom:
+  fuel_id: 644
+  fuel_type: Snakeweed Broom
+  category: Shrub
+  scientific_name: Gutierrezia sarothrae
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sneezeweed, Purplehead:
+  fuel_id: 645
+  fuel_type: Sneezeweed, Purplehead
+  category: Forb
+  scientific_name: Helenium flexuosum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Snowberry, Mountain:
+  fuel_id: 646
+  fuel_type: Snowberry, Mountain
+  category: Shrub
+  scientific_name: Symphoricarpos oreophilus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Snowberry, Western:
+  fuel_id: 647
+  fuel_type: Snowberry, Western
+  category: Shrub
+  scientific_name: Symphoricarpos occidentalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Soapberry, Western:
+  fuel_id: 648
+  fuel_type: Soapberry, Western
+  category: Tree
+  scientific_name: Sapindus saponaria var. drummondii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sourwood:
+  fuel_id: 649
+  fuel_type: Sourwood
+  category: Tree
+  scientific_name: Oxydendrum arboreum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Spruce, Black:
+  fuel_id: 650
+  fuel_type: Spruce, Black
+  category: Tree
+  scientific_name: Picea mariana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Spruce, Blue:
+  fuel_id: 651
+  fuel_type: Spruce, Blue
+  category: Tree
+  scientific_name: Picea pungens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Spruce, Brewer:
+  fuel_id: 652
+  fuel_type: Spruce, Brewer
+  category: Tree
+  scientific_name: Picea breweriana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Spruce, Engelmann:
+  fuel_id: 653
+  fuel_type: Spruce, Engelmann
+  category: Tree
+  scientific_name: Picea engelmannii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Spruce, Norway:
+  fuel_id: 654
+  fuel_type: Spruce, Norway
+  category: Tree
+  scientific_name: Picea abies
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Spruce, Red:
+  fuel_id: 655
+  fuel_type: Spruce, Red
+  category: Tree
+  scientific_name: Picea rubens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Spruce, Sitka:
+  fuel_id: 656
+  fuel_type: Spruce, Sitka
+  category: Tree
+  scientific_name: Picea sitchensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Spruce, White:
+  fuel_id: 657
+  fuel_type: Spruce, White
+  category: Tree
+  scientific_name: Picea glauca
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Squashberry:
+  fuel_id: 658
+  fuel_type: Squashberry
+  category: Shrub
+  scientific_name: Viburnum edule
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Squirreltail:
+  fuel_id: 659
+  fuel_type: Squirreltail
+  category: Grass
+  scientific_name: Elymus elymoides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sugarberry:
+  fuel_id: 660
+  fuel_type: Sugarberry
+  category: Tree
+  scientific_name: Celtis laevigata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sumac, Evergreen:
+  fuel_id: 661
+  fuel_type: Sumac, Evergreen
+  category: Tree
+  scientific_name: Rhus virens Lindh. ex A. Gray var. virens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sumac, Fragrant:
+  fuel_id: 662
+  fuel_type: Sumac, Fragrant
+  category: Shrub
+  scientific_name: Rhus aromatica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sumac, Laurel:
+  fuel_id: 663
+  fuel_type: Sumac, Laurel
+  category: Shrub
+  scientific_name: Malosma laurina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sumac, Littleleaf:
+  fuel_id: 664
+  fuel_type: Sumac, Littleleaf
+  category: Tree
+  scientific_name: Rhus microphylla
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sumac, Skunkbush:
+  fuel_id: 665
+  fuel_type: Sumac, Skunkbush
+  category: Shrub
+  scientific_name: Rhus trilobata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sumac, Smooth:
+  fuel_id: 666
+  fuel_type: Sumac, Smooth
+  category: Tree
+  scientific_name: Rhus glabra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sumac, Staghorn:
+  fuel_id: 667
+  fuel_type: Sumac, Staghorn
+  category: Shrub
+  scientific_name: Rhus typhina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sumac, Sugar:
+  fuel_id: 668
+  fuel_type: Sumac, Sugar
+  category: Tree
+  scientific_name: Rhus ovata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sumac, Winged:
+  fuel_id: 669
+  fuel_type: Sumac, Winged
+  category: Tree
+  scientific_name: Rhus copallinum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sweetgum:
+  fuel_id: 670
+  fuel_type: Sweetgum
+  category: Tree
+  scientific_name: Liquidambar styraciflua
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sweetpepperbush, Coastal:
+  fuel_id: 671
+  fuel_type: Sweetpepperbush, Coastal
+  category: Shrub
+  scientific_name: Clethra alnifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sweetvetch, Alpine:
+  fuel_id: 672
+  fuel_type: Sweetvetch, Alpine
+  category: Forb
+  scientific_name: Hedysarum alpinum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sweetvetch, Utah:
+  fuel_id: 673
+  fuel_type: Sweetvetch, Utah
+  category: Forb
+  scientific_name: Hedysarum boreale
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sweetvetch, White:
+  fuel_id: 674
+  fuel_type: Sweetvetch, White
+  category: Forb
+  scientific_name: Hedysarum sulphurescens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Switchgrass:
+  fuel_id: 675
+  fuel_type: Switchgrass
+  category: Grass
+  scientific_name: Panicum virgatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sycamore, American:
+  fuel_id: 676
+  fuel_type: Sycamore, American
+  category: Tree
+  scientific_name: Platanus occidentalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sycamore, Arizona:
+  fuel_id: 677
+  fuel_type: Sycamore, Arizona
+  category: Tree
+  scientific_name: Platanus wrightii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sycamore, California:
+  fuel_id: 678
+  fuel_type: Sycamore, California
+  category: Tree
+  scientific_name: Platanus racemosa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Tallow, Chinese:
+  fuel_id: 679
+  fuel_type: Tallow, Chinese
+  category: Tree
+  scientific_name: Triadica sebifera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Tamarack:
+  fuel_id: 680
+  fuel_type: Tamarack
+  category: Tree
+  scientific_name: Larix laricina
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Tamarisk:
+  fuel_id: 681
+  fuel_type: Tamarisk
+  category: Tree
+  scientific_name: Tamarix L.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Tanoak:
+  fuel_id: 682
+  fuel_type: Tanoak
+  category: Tree
+  scientific_name: Lithocarpus densiflorus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Tarragon:
+  fuel_id: 683
+  fuel_type: Tarragon
+  category: Shrub
+  scientific_name: Artemisia dracunculus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Tarwort, American:
+  fuel_id: 684
+  fuel_type: Tarwort, American
+  category: Shrub
+  scientific_name: Flourensia cernua
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Tea, Labrador:
+  fuel_id: 685
+  fuel_type: Tea, Labrador
+  category: Shrub
+  scientific_name: Ledum palustre L.
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Thistle, Bull:
+  fuel_id: 686
+  fuel_type: Thistle, Bull
+  category: Forb
+  scientific_name: Cirsium vulgare
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Thistle, Canada:
+  fuel_id: 687
+  fuel_type: Thistle, Canada
+  category: Forb
+  scientific_name: Cirsium arvense
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Thistle, Elk:
+  fuel_id: 688
+  fuel_type: Thistle, Elk
+  category: Forb
+  scientific_name: Cirsium foliosum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Thistle, New Mexico:
+  fuel_id: 689
+  fuel_type: Thistle, New Mexico
+  category: Forb
+  scientific_name: Cirsium neomexicanum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Thistle, Russian:
+  fuel_id: 690
+  fuel_type: Thistle, Russian
+  category: Forb
+  scientific_name: Salsola kali
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Thistle, Yellow Star:
+  fuel_id: 691
+  fuel_type: Thistle, Yellow Star
+  category: Forb
+  scientific_name: Centaurea solstitialis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Threeawn, Arizona:
+  fuel_id: 692
+  fuel_type: Threeawn, Arizona
+  category: Grass
+  scientific_name: Aristida arizonica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Threeawn, Fender:
+  fuel_id: 693
+  fuel_type: Threeawn, Fender
+  category: Grass
+  scientific_name: Aristida purpurea var. longiseta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Threeawn, Pineland:
+  fuel_id: 694
+  fuel_type: Threeawn, Pineland
+  category: Grass
+  scientific_name: Aristida stricta
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Threeawn, Poverty:
+  fuel_id: 695
+  fuel_type: Threeawn, Poverty
+  category: Grass
+  scientific_name: Aristida divaricata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Threeawn, Purple:
+  fuel_id: 696
+  fuel_type: Threeawn, Purple
+  category: Grass
+  scientific_name: Aristida purpurea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Titi, Swamp:
+  fuel_id: 697
+  fuel_type: Titi, Swamp
+  category: Tree
+  scientific_name: Cyrilla racemiflora
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Tuliptree:
+  fuel_id: 698
+  fuel_type: Tuliptree
+  category: Tree
+  scientific_name: Liriodendron tulipifera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Walnut, Arizona:
+  fuel_id: 699
+  fuel_type: Walnut, Arizona
+  category: Tree
+  scientific_name: Juglans major
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Walnut, Black:
+  fuel_id: 700
+  fuel_type: Walnut, Black
+  category: Tree
+  scientific_name: Juglans nigra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Walnut, English:
+  fuel_id: 701
+  fuel_type: Walnut, English
+  category: Tree
+  scientific_name: Juglans regia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Walnut, Little:
+  fuel_id: 702
+  fuel_type: Walnut, Little
+  category: Tree
+  scientific_name: Juglans microcarpa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Walnut, Southern California:
+  fuel_id: 703
+  fuel_type: Walnut, Southern California
+  category: Tree
+  scientific_name: Juglans californica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wavyleaf Soap Plant:
+  fuel_id: 704
+  fuel_type: Wavyleaf Soap Plant
+  category: Forb
+  scientific_name: Chlorogalum pomeridianum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Western Sword Fern:
+  fuel_id: 705
+  fuel_type: Western Sword Fern
+  category: Forb
+  scientific_name: Polystichum munitum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wheatgrass, Bluebunch:
+  fuel_id: 706
+  fuel_type: Wheatgrass, Bluebunch
+  category: Grass
+  scientific_name: Pseudoroegneria spicata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wheatgrass, Crested:
+  fuel_id: 707
+  fuel_type: Wheatgrass, Crested
+  category: Grass
+  scientific_name: Agropyron cristatum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wheatgrass, Desert:
+  fuel_id: 708
+  fuel_type: Wheatgrass, Desert
+  category: Grass
+  scientific_name: Agropyron desertorum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wheatgrass, Intermediate:
+  fuel_id: 709
+  fuel_type: Wheatgrass, Intermediate
+  category: Grass
+  scientific_name: Thinopyrum intermedium
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wheatgrass, Siberian:
+  fuel_id: 710
+  fuel_type: Wheatgrass, Siberian
+  category: Grass
+  scientific_name: Agropyron fragile
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wheatgrass, Slender:
+  fuel_id: 711
+  fuel_type: Wheatgrass, Slender
+  category: Grass
+  scientific_name: Elymus trachycaulus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wheatgrass, Tall:
+  fuel_id: 712
+  fuel_type: Wheatgrass, Tall
+  category: Grass
+  scientific_name: Thinopyrum ponticum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wheatgrass, Thickspike:
+  fuel_id: 713
+  fuel_type: Wheatgrass, Thickspike
+  category: Grass
+  scientific_name: Elymus lanceolatus ssp. lanceolatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wheatgrass, Tufted:
+  fuel_id: 714
+  fuel_type: Wheatgrass, Tufted
+  category: Grass
+  scientific_name: Elymus macrourus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wheatgrass, Western:
+  fuel_id: 715
+  fuel_type: Wheatgrass, Western
+  category: Grass
+  scientific_name: Pascopyrum smithii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+White Lead Tree:
+  fuel_id: 716
+  fuel_type: White Lead Tree
+  category: Tree
+  scientific_name: Leucaena leucocephala
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Whitebrush:
+  fuel_id: 717
+  fuel_type: Whitebrush
+  category: Shrub
+  scientific_name: Aloysia gratissima
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Whortleberry, Grouse:
+  fuel_id: 718
+  fuel_type: Whortleberry, Grouse
+  category: Shrub
+  scientific_name: Vaccinium scoparium
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wideleaf Polargrass:
+  fuel_id: 719
+  fuel_type: Wideleaf Polargrass
+  category: Grass
+  scientific_name: Arctagrostis latifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrice, Annual:
+  fuel_id: 720
+  fuel_type: Wildrice, Annual
+  category: Grass
+  scientific_name: Zizania aquatica
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Basin:
+  fuel_id: 721
+  fuel_type: Wildrye, Basin
+  category: Grass
+  scientific_name: Leymus cinereus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Beardless:
+  fuel_id: 722
+  fuel_type: Wildrye, Beardless
+  category: Grass
+  scientific_name: Leymus triticoides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Blue:
+  fuel_id: 723
+  fuel_type: Wildrye, Blue
+  category: Grass
+  scientific_name: Elymus glaucus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Boreal:
+  fuel_id: 724
+  fuel_type: Wildrye, Boreal
+  category: Grass
+  scientific_name: Leymus innovatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Canada:
+  fuel_id: 725
+  fuel_type: Wildrye, Canada
+  category: Grass
+  scientific_name: Elymus canadensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Colorado:
+  fuel_id: 726
+  fuel_type: Wildrye, Colorado
+  category: Grass
+  scientific_name: Leymus ambiguus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Giant:
+  fuel_id: 727
+  fuel_type: Wildrye, Giant
+  category: Grass
+  scientific_name: Leymus condensatus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Russion:
+  fuel_id: 728
+  fuel_type: Wildrye, Russion
+  category: Grass
+  scientific_name: Psathyrostachys juncea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Saline:
+  fuel_id: 729
+  fuel_type: Wildrye, Saline
+  category: Grass
+  scientific_name: Leymus salinus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Siberian:
+  fuel_id: 730
+  fuel_type: Wildrye, Siberian
+  category: Grass
+  scientific_name: Elymus sibiricus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wildrye, Yellow:
+  fuel_id: 731
+  fuel_type: Wildrye, Yellow
+  category: Grass
+  scientific_name: Leymus flavescens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Alaska:
+  fuel_id: 732
+  fuel_type: Willow, Alaska
+  category: Tree
+  scientific_name: Salix alaxensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Alaska Bog:
+  fuel_id: 733
+  fuel_type: Willow, Alaska Bog
+  category: Shrub
+  scientific_name: Salix fuscescens
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Autumn:
+  fuel_id: 734
+  fuel_type: Willow, Autumn
+  category: Shrub
+  scientific_name: Salix serissima
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Barclays:
+  fuel_id: 735
+  fuel_type: Willow, Barclays
+  category: Tree
+  scientific_name: Salix barclayi
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Barratts:
+  fuel_id: 736
+  fuel_type: Willow, Barratts
+  category: Shrub
+  scientific_name: Salix barrattiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Bebb:
+  fuel_id: 737
+  fuel_type: Willow, Bebb
+  category: Tree
+  scientific_name: Salix bebbiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Black:
+  fuel_id: 738
+  fuel_type: Willow, Black
+  category: Tree
+  scientific_name: Salix nigra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Blueberry:
+  fuel_id: 739
+  fuel_type: Willow, Blueberry
+  category: Tree
+  scientific_name: Salix myrtillifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Bonpland:
+  fuel_id: 740
+  fuel_type: Willow, Bonpland
+  category: Tree
+  scientific_name: Salix bonplandiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Booths:
+  fuel_id: 741
+  fuel_type: Willow, Booths
+  category: Shrub
+  scientific_name: Salix boothii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Coatal Plain:
+  fuel_id: 742
+  fuel_type: Willow, Coatal Plain
+  category: Tree
+  scientific_name: Salix caroliniana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Desert:
+  fuel_id: 743
+  fuel_type: Willow, Desert
+  category: Tree
+  scientific_name: Chilopsis linearis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Diamondleaf:
+  fuel_id: 744
+  fuel_type: Willow, Diamondleaf
+  category: Tree
+  scientific_name: Salix planifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Geyer:
+  fuel_id: 745
+  fuel_type: Willow, Geyer
+  category: Tree
+  scientific_name: Salix geyeriana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Gooddings:
+  fuel_id: 746
+  fuel_type: Willow, Gooddings
+  category: Tree
+  scientific_name: Salix gooddingii
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Grayleff:
+  fuel_id: 747
+  fuel_type: Willow, Grayleff
+  category: Tree
+  scientific_name: Salix glauca
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Least:
+  fuel_id: 748
+  fuel_type: Willow, Least
+  category: Shrub
+  scientific_name: Salix rotundifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Littletree:
+  fuel_id: 749
+  fuel_type: Willow, Littletree
+  category: Tree
+  scientific_name: Salix arbusculoides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Narrowleaf:
+  fuel_id: 750
+  fuel_type: Willow, Narrowleaf
+  category: Tree
+  scientific_name: Salix exigua
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Netleaf:
+  fuel_id: 751
+  fuel_type: Willow, Netleaf
+  category: Shrub
+  scientific_name: Salix reticulata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Northwest Sandbar:
+  fuel_id: 752
+  fuel_type: Willow, Northwest Sandbar
+  category: Tree
+  scientific_name: Salix sessilifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Pacific:
+  fuel_id: 753
+  fuel_type: Willow, Pacific
+  category: Tree
+  scientific_name: Salix lucida ssp. lasiandra
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Peachleaf:
+  fuel_id: 754
+  fuel_type: Willow, Peachleaf
+  category: Tree
+  scientific_name: Salix amygdaloides
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Polar:
+  fuel_id: 755
+  fuel_type: Willow, Polar
+  category: Shrub
+  scientific_name: Salix polaris
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Prairie:
+  fuel_id: 756
+  fuel_type: Willow, Prairie
+  category: Shrub
+  scientific_name: Salix humilis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Scoulers:
+  fuel_id: 757
+  fuel_type: Willow, Scoulers
+  category: Tree
+  scientific_name: Salix scouleriana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Shining:
+  fuel_id: 758
+  fuel_type: Willow, Shining
+  category: Tree
+  scientific_name: Salix lucida
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Shortfruit:
+  fuel_id: 759
+  fuel_type: Willow, Shortfruit
+  category: Shrub
+  scientific_name: Salix brachycarpa
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Sierra:
+  fuel_id: 760
+  fuel_type: Willow, Sierra
+  category: Shrub
+  scientific_name: Salix orestera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Sitka:
+  fuel_id: 761
+  fuel_type: Willow, Sitka
+  category: Tree
+  scientific_name: Salix sitchensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Undergreen:
+  fuel_id: 762
+  fuel_type: Willow, Undergreen
+  category: Shrub
+  scientific_name: Salix commutata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, White:
+  fuel_id: 763
+  fuel_type: Willow, White
+  category: Tree
+  scientific_name: Salix alba
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Yellow:
+  fuel_id: 764
+  fuel_type: Willow, Yellow
+  category: Tree
+  scientific_name: Salix lutea
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Willow, Yewleaf:
+  fuel_id: 765
+  fuel_type: Willow, Yewleaf
+  category: Tree
+  scientific_name: Salix taxifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wiregrass (Threeawn):
+  fuel_id: 766
+  fuel_type: Wiregrass (Threeawn)
+  category: Grass
+  scientific_name: Aristida beyrichiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Witchhazel, American:
+  fuel_id: 767
+  fuel_type: Witchhazel, American
+  category: Tree
+  scientific_name: Hamamelis virginiana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Wormwood, Forked:
+  fuel_id: 768
+  fuel_type: Wormwood, Forked
+  category: Forb
+  scientific_name: Artemisia furcata var. heterophylla
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yarrow, Western:
+  fuel_id: 769
+  fuel_type: Yarrow, Western
+  category: Forb
+  scientific_name: Achillea millefolium var. occidentalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yellow Rabbitbrush:
+  fuel_id: 771
+  fuel_type: Yellow Rabbitbrush
+  category: Shrub
+  scientific_name: Chrysothamnus viscidiflorus
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yellow Sweetclover:
+  fuel_id: 772
+  fuel_type: Yellow Sweetclover
+  category: Forb
+  scientific_name: Melilotus officinalis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yerba Santa, California:
+  fuel_id: 773
+  fuel_type: Yerba Santa, California
+  category: Shrub
+  scientific_name: Eriodictyon californicum
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yew, Canada:
+  fuel_id: 774
+  fuel_type: Yew, Canada
+  category: Shrub
+  scientific_name: Taxus canadensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yew, English:
+  fuel_id: 775
+  fuel_type: Yew, English
+  category: Tree
+  scientific_name: Taxus baccata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yew, Florida:
+  fuel_id: 776
+  fuel_type: Yew, Florida
+  category: Tree
+  scientific_name: Taxus floridana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yew, Pacific:
+  fuel_id: 777
+  fuel_type: Yew, Pacific
+  category: Tree
+  scientific_name: Taxus brevifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yucca, Aloe:
+  fuel_id: 778
+  fuel_type: Yucca, Aloe
+  category: Tree
+  scientific_name: Yucca aloifolia
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yucca, Banana:
+  fuel_id: 779
+  fuel_type: Yucca, Banana
+  category: Shrub
+  scientific_name: Yucca baccata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yucca, Chaparral:
+  fuel_id: 780
+  fuel_type: Yucca, Chaparral
+  category: Forb
+  scientific_name: Hesperoyucca whipplei
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yucca, Mojave:
+  fuel_id: 781
+  fuel_type: Yucca, Mojave
+  category: Tree
+  scientific_name: Yucca schidigera
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yucca, Soaptree:
+  fuel_id: 782
+  fuel_type: Yucca, Soaptree
+  category: Tree
+  scientific_name: Yucca elata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Yucca, Soapweed:
+  fuel_id: 783
+  fuel_type: Yucca, Soapweed
+  category: Shrub
+  scientific_name: Yucca glauca
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Guinea Grass:
+  fuel_id: 240
+  fuel_type: Guinea Grass
+  category: Grass
+  scientific_name: Urochloa maxima
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Duff:
+  fuel_id: 180
+  fuel_type: Duff
+  category: Dead
+  scientific_name: null
+  modified_time: '2024-03-21T18:06:41.254098Z'
+  modified_by: EA
+  created_time: null
+  created_by: null
+Moss, Dead:
+  fuel_id: 350
+  fuel_type: Moss, Dead
+  category: Dead
+  scientific_name: null
+  modified_time: '2024-03-21T18:06:41.261168Z'
+  modified_by: EA
+  created_time: null
+  created_by: null
+Moss, Live:
+  fuel_id: 351
+  fuel_type: Moss, Live
+  category: Forb
+  scientific_name: null
+  modified_time: '2024-03-21T18:06:42.355176Z'
+  modified_by: EA
+  created_time: null
+  created_by: null
+Toyon:
+  fuel_id: 793
+  fuel_type: Toyon
+  category: Shrub
+  scientific_name: Heteromeles arbutifolia
+  modified_time: null
+  modified_by: null
+  created_time: '2024-05-17T16:07:18.092253Z'
+  created_by: Eric Anderson
+Bear Clover:
+  fuel_id: 826
+  fuel_type: Bear Clover
+  category: Shrub
+  scientific_name: Chamaebatia foliolosa
+  modified_time: null
+  modified_by: null
+  created_time: '2024-08-08T16:23:53.073827Z'
+  created_by: Eric Anderson
+Oceanspray:
+  fuel_id: 827
+  fuel_type: Oceanspray
+  category: Shrub
+  scientific_name: Holodiscus discolor
+  modified_time: null
+  modified_by: null
+  created_time: '2024-08-08T16:23:53.214264Z'
+  created_by: Eric Anderson
+Menziesia:
+  fuel_id: 828
+  fuel_type: Menziesia
+  category: Shrub
+  scientific_name: Menziesia ferruginea
+  modified_time: null
+  modified_by: null
+  created_time: '2024-08-08T16:23:53.369142Z'
+  created_by: Eric Anderson
+Sagebrush, Basin Big:
+  fuel_id: 529
+  fuel_type: Sagebrush, Basin Big
+  category: Shrub
+  scientific_name: Artemisia tridentata
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Mountain Big:
+  fuel_id: 538
+  fuel_type: Sagebrush, Mountain Big
+  category: Shrub
+  scientific_name: Artemisia tridentata ssp. vaseyana
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Sagebrush, Wyoming Big:
+  fuel_id: 545
+  fuel_type: Sagebrush, Wyoming Big
+  category: Shrub
+  scientific_name: Artemisia tridentata ssp. wyomingensis
+  modified_time: 2023-12-20T20:00Z
+  modified_by: null
+  created_time: null
+  created_by: null
+Pine, Jeffrey:
+  fuel_id: 859
+  fuel_type: Pine, Jeffrey
+  category: Tree
+  scientific_name: Pinus Jeffreyi
+  modified_time: null
+  modified_by: null
+  created_time: '2025-06-24T13:45:58.503826Z'
+  created_by: EA
+Salal:
+  fuel_id: 892
+  fuel_type: Salal
+  category: Shrub
+  scientific_name: Gaultheria Shallon
+  modified_time: null
+  modified_by: null
+  created_time: '2025-07-31T12:59:28.824374Z'
+  created_by: EA
