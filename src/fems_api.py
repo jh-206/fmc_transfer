@@ -232,6 +232,7 @@ def get_all_sites(fields = None, access_token=None, verbose=False, stash_path = 
     ----------
     Array of sites from FEMS API
     """
+    print(f"Retrieving all FEMS sampling sites.")
     request_headers = api_request_headers(access_token)
     if fields is None:
         fields = get_site_fields(verbose=verbose)
@@ -312,6 +313,7 @@ def get_sites_in_bbox(bbox, source="api", stash_path = None, access_token = None
 
     if source == "stash":
         if stash_path is None: stash_path = "data/fems_sts.xlsx"; print(f"Searching for stash path at: {stash_path}")
+        print(f"Reading Local station data stash: {stash_path}")
         df = pd.read_excel(stash_path)
     elif source == "api":
         sts = get_all_sites(access_token = access_token, verbose=True, stash_path = stash_path)
@@ -372,6 +374,8 @@ def get_fuel_types(stash_path=None):
     return fuels_by_type
 
 def get_fuel_request_page_count(fuel_params, access_token=None):
+    """
+    """
     request_headers = api_request_headers(access_token)
     request_json = {
         "query": FUELS_PAGES_QUERY,
@@ -387,7 +391,8 @@ def get_fuel_request_page_count(fuel_params, access_token=None):
     ]
     return pages
 
-def get_fuel_data(fuel_params, access_token=None):
+def get_fuel_data(fuel_params, access_token=None, verbose=True,
+            base_delay=0.2, max_delay=30, max_retries=5):
     """
     Request fuel sample data from the FEMS API.
 
@@ -402,6 +407,12 @@ def get_fuel_data(fuel_params, access_token=None):
         }
     access_token : str, optional
         Access token for the FEMS API.
+    base_delay : float
+        seconds to sleep between queries before any issues encountered
+    max_delay : float
+        max seconds to wait between blocked or failed queries
+    max_retries : int
+        max number of times to fail query before exiting
 
     Returns
     -------
@@ -420,6 +431,10 @@ def get_fuel_data(fuel_params, access_token=None):
         fuel_types = [fuel_types]
 
     results = []
+    delay = base_delay
+    if verbose:
+        print(f"Querying FEMS from {fuel_params["startDate"]}")
+        print(f"Number of stations to query: {len(site_ids)}")
     for siteId in site_ids:
         print("~"*50)
         print(f"Collecting Data for {siteId}=")
@@ -437,9 +452,41 @@ def get_fuel_data(fuel_params, access_token=None):
                     "query": FUELS_QUERY,
                     "variables": fuelQueryVars(page, single_params),
                 }
-                response = requests.post(API_URL, json=request_json, headers=request_headers)
-                results += response.json()["data"]["getFuelSamples"]["fuelSamples"]
-                time.sleep(0.2)  # sleep after each request
+
+                for attempt in range(1, max_retries + 1):
+                    t0 = time.time()
+                    response = requests.post(API_URL, json=request_json, headers=request_headers)
+                    elapsed = time.time() - t0
+                    if response.status_code == 200:
+                        data = response.json()
+                        results += data["data"]["getFuelSamples"]["fuelSamples"]
+
+                        # Reduce sleep time back if working
+                        delay = max(base_delay, delay * 0.8)
+                        if verbose:
+                            print(f"  page {page}: success ({elapsed:.2f}s) sleeping {delay:.2f}")
+                        time.sleep(delay)
+                        break                        
+                        
+                    elif response.status_code in (429, 503):
+                        # check for Retry-After header
+                        retry_after = response.headers.get("Retry-After")
+                        if retry_after:
+                            delay = float(retry_after)
+                        else:
+                            delay = min(max_delay, delay * 2 * random.uniform(0.5, 1.5))
+        
+                        print(f"  page {page}: throttled ({response.status_code}), retry in {delay:.2f}s")
+                        time.sleep(delay)
+        
+                    else:
+                        print(f"  page {page}: error {response.status_code}, attempt {attempt}/{max_retries}")
+                        delay = min(max_delay, delay * 2)
+                        time.sleep(delay)
+                else:
+                    print(f"  page {page}: failed after {max_retries} retries")
+
+    
 
     return pd.DataFrame(results)
 
