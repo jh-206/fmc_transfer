@@ -73,7 +73,6 @@ if __name__ == '__main__':
     else:
         stids = fems.get_all_sites(source="stash", stash_path = "data/fems_sts.xlsx")
     
-    
     # Query over all sites
     conf["siteIds"] = stids.siteId.to_list()
     df = fems.get_fuel_data(
@@ -82,10 +81,13 @@ if __name__ == '__main__':
 
     # Format output and save
     # Subsetting station data columns to join
+    breakpoint()
     df = df.join(pd.json_normalize(df['fuel'])).drop(columns="fuel")
     stids = stids[['longitude', 'latitude', 'elevation', 'timeZone', "siteId", "siteName", "stateId", "slope", "aspect", "rawsId", "raws"]]
     df = df.merge(stids, left_on="site_id", right_on="siteId", how="left")
     print(f"Writing Data to {outpath}")
     os.makedirs(osp.dirname(outpath), exists_ok = True)
-    df.to_csv(outpath)
-
+    if df.shape[0] > 0:
+        df.to_csv(outpath)
+    else:
+        print(f"No Data retrieved for given input")
