@@ -81,7 +81,6 @@ if __name__ == '__main__':
 
     # Format output and save
     # Subsetting station data columns to join
-    breakpoint()
     df = df.join(pd.json_normalize(df['fuel'])).drop(columns="fuel")
     stids = stids[['longitude', 'latitude', 'elevation', 'timeZone', "siteId", "siteName", "stateId", "slope", "aspect", "rawsId", "raws"]]
     df = df.merge(stids, left_on="site_id", right_on="siteId", how="left")
