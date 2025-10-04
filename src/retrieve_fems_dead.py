@@ -57,7 +57,7 @@ if __name__ == '__main__':
     if len(sys.argv) != 3:
         print(f"Invalid arguments. {len(sys.argv)} was given but 2 expected")
         print(f"Usage: {sys.argv[0]} <config_path> <output_path>")
-        print("Example: python retrieve_fems_dead.py etc/test_dead.yaml data/test")
+        print("Example: python retrieve_fems_dead.py etc/test_dead.yaml data/test.csv")
         sys.exit(-1)  
 
     confpath = sys.argv[1]
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         stids = fems.get_sites_in_bbox(source="stash", bbox = conf.bbox, stash_path = "data/fems_sts.xlsx")
     else:
         stids = fems.get_all_sites(source="stash", stash_path = "data/fems_sts.xlsx")
-    
+
     # Query over all sites
     conf["siteIds"] = stids.siteId.to_list()
     df = fems.get_fuel_data(
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     stids = stids[['longitude', 'latitude', 'elevation', 'timeZone', "siteId", "siteName", "stateId", "slope", "aspect", "rawsId", "raws"]]
     df = df.merge(stids, left_on="site_id", right_on="siteId", how="left")
     print(f"Writing Data to {outpath}")
-    os.makedirs(osp.dirname(outpath), exists_ok = True)
+    os.makedirs(osp.dirname(outpath), exist_ok = True)
     if df.shape[0] > 0:
         df.to_csv(outpath)
     else:
