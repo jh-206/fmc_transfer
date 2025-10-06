@@ -1,0 +1,4 @@
+conda create -n fems python=3.12 numpy matplotlib pandas pyyaml -y
+conda activate fems
+conda install requests -y
+conda install openpyxl -y
