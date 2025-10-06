@@ -88,6 +88,6 @@ if __name__ == '__main__':
     print(f"Writing Data to {outpath}")
     os.makedirs(osp.dirname(outpath), exist_ok = True)
     if df.shape[0] > 0:
-        df.to_csv(outpath)
+        df.to_csv(outpath, index=False)
     else:
         print(f"No Data retrieved for given input")
