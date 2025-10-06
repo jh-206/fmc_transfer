@@ -73,10 +73,11 @@ if __name__ == '__main__':
     else:
         stids = fems.get_all_sites(source="stash", stash_path = "data/fems_sts.xlsx")
 
+    
     # Query over all sites
     conf["siteIds"] = stids.siteId.to_list()
     df = fems.get_fuel_data(
-        conf, verbose=True
+        conf, verbose=True, save_path = outpath
     )
 
     # Format output and save

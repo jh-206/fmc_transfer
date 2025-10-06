@@ -5,7 +5,7 @@ import requests as requests
 import pandas as pd
 import yaml
 import time
-
+import os.path as osp
 
 # General API 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -392,7 +392,7 @@ def get_fuel_request_page_count(fuel_params, access_token=None):
     return pages
 
 def get_fuel_data(fuel_params, access_token=None, verbose=True,
-            base_delay=0.2, max_delay=30, max_retries=5):
+            base_delay=0.2, max_delay=30, max_retries=5, save_path=None):
     """
     Request fuel sample data from the FEMS API.
 
@@ -413,6 +413,8 @@ def get_fuel_data(fuel_params, access_token=None, verbose=True,
         max seconds to wait between blocked or failed queries
     max_retries : int
         max number of times to fail query before exiting
+    save_path : 
+        file path to location to save data. If provided, the code will incrementally save data as it goes. Assumes csv file format with a dataframe 
 
     Returns
     -------
@@ -459,13 +461,19 @@ def get_fuel_data(fuel_params, access_token=None, verbose=True,
                     elapsed = time.time() - t0
                     if response.status_code == 200:
                         data = response.json()
-                        results += data["data"]["getFuelSamples"]["fuelSamples"]
-
+                        new_rows = data["data"]["getFuelSamples"]["fuelSamples"]
+                        results += new_rows
+                        # Write output to target file, append rows and turn off header if file already exists
+                        if save_path and len(new_rows) > 0:
+                            exists = osp.exists(save_path)
+                            pd.DataFrame(new_rows).to_csv(save_path, mode="a", header=not exists, index=False)
+                        
                         # Reduce sleep time back if working
                         delay = max(base_delay, delay * 0.8)
                         if verbose:
                             print(f"  page {page}: success ({elapsed:.2f}s) sleeping {delay:.2f}")
                         time.sleep(delay)
+                        
                         break                        
                         
                     elif response.status_code in (429, 503):
