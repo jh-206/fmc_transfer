@@ -14,7 +14,7 @@ fuel.mois_100h: fm100
 fuel.mois_1000h: fm1000
 k.down: solar
 wind.speed: wind
-precip: wind
+precip: rain
 
 
 
