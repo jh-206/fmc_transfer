@@ -1,10 +1,9 @@
 # Sample config file to use to retrieve FEMS data
 # 
 
-
 startDate: "2022-01-01T00:00:00+00"
 endDate: "2022-12-31T23:00:00+00"
-bbox: "[37, -111, 46, -95]"
+bbox: "[35, -120, 46, -111]"
 fuelTypes:
   - "1-Hour"
   - "10-Hour"
@@ -13,5 +12,6 @@ fuelTypes:
   - "Duff"
   - "Moss, Dead"
 outdir: "/storage/math/NSF1/hirschij/FEMS_Fuels/"
-name: "rocky"
+name: "gb"
 
+  

@@ -3,30 +3,39 @@
 
 CONUS:
     code: "CONUS"
+    name: "conus"
     bbox: [24.94, -125, 49.6, -66.93]
 California GACC:
     code: "CALI"
+    name: "cali"
     bbox: [32, -123, 42.5, -112]
 Northwest GACC:
     code: "NWCC"
+    name: "nw"
     bbox: [42, -124.6, 49, -116.4]
 Northern Rockies GACC:
     code: "NRCC"
+    name: "nr"
     bbox: [44.2, -117, 49, -96.5]
 Rocky Mountain GACC:
     code: "RMCC"
+    name: "rocky"
     bbox: [37, -111, 46, -95]
 Great Basin GACC:
     code: "GBCC"
+    name: "gb"
     bbox: [35, -120, 46, -111]
 Southwest GACC:
     code: "SWCC"
+    name: "sw"
     bbox: [27, -114.5, 37, -100]
 Southern CA GACC:
     code: "OSCC"
+    name: "socal"
     bbox: [32, -123, 39, -114]
 Northern CA GACC:
     code: "ONCC"
+    name: "norcal"
     bbox: [37, -124, 42, -119.5]
 
 

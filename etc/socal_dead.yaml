@@ -2,9 +2,9 @@
 # 
 
 
-startDate: "2022-01-01T00:00:00+00"
-endDate: "2022-12-31T23:00:00+00"
-bbox: "[37, -111, 46, -95]"
+startDate: "2023-01-01T00:00:00+00"
+endDate: "2023-12-31T23:00:00+00"
+bbox: "[32, -123, 39, -114]"
 fuelTypes:
   - "1-Hour"
   - "10-Hour"
@@ -13,5 +13,5 @@ fuelTypes:
   - "Duff"
   - "Moss, Dead"
 outdir: "/storage/math/NSF1/hirschij/FEMS_Fuels/"
-name: "rocky"
-
+name: "socal"
+  
