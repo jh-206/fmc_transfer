@@ -9,10 +9,10 @@
 
 # Control script to query FEMS api for fuels samples and save
 
-if [ "$#" -ne 2 ]; then
-    echo "Error: Expected exactly 2 arguments, but got $#."
-    echo "Usage: $0 <config_file> <output_path>"
-    echo "Example: $0 'etc/test_dead.yaml' 'data/test.csv'"
+if [ "$#" -ne 1 ]; then
+    echo "Error: Expected exactly 1 arguments, but got $#."
+    echo "Usage: $0 <config_file>"
+    echo "Example: $0 'etc/test_dead.yaml'"
     exit 1
 fi
 
@@ -24,4 +24,4 @@ source ~/.bashrc
 conda activate fems
 
 export PYTHONUNBUFFERED=1
-python src/retrieve_fems_dead.py $CONF_PATH $OUT_PATH
+python src/retrieve_fems_dead.py $CONF_PATH

@@ -2,7 +2,6 @@
 # 
 # Main tools fems_api.py modified from fems_wirc.py provided by Angel and Chase
 
-
 import requests as requests
 import pandas as pd
 import yaml
@@ -22,7 +21,7 @@ CONFIG_DIR = osp.join(PROJECT_ROOT, "etc")
 # Local Modules
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import fems_api as fems
-from utils import read_yml, Dict
+from utils import read_yml, Dict, time_range, str2time
 
 # Metadata files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,15 +53,25 @@ def parse_bbox(box_str):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print(f"Invalid arguments. {len(sys.argv)} was given but 2 expected")
-        print(f"Usage: {sys.argv[0]} <config_path> <output_path>")
-        print("Example: python retrieve_fems_dead.py etc/test_dead.yaml data/test.csv")
+    if len(sys.argv) != 2:
+        print(f"Invalid arguments. {len(sys.argv)} was given but 1 expected")
+        print(f"Usage: {sys.argv[0]} <config_path>")
+        print("Example: python retrieve_fems_dead.py etc/test_dead.yaml")
         sys.exit(-1)  
 
     confpath = sys.argv[1]
-    outpath = sys.argv[2]
     conf = Dict(read_yml(confpath))
+    outdir = conf.outdir
+    # Handle outpath
+    os.makedirs(osp.join(outdir, conf.name), exist_ok=True)
+    t0 = pd.to_datetime(conf.startDate)
+    t1 = pd.to_datetime(conf.endDate)
+    outpath = osp.join(outdir, conf.name, f"{conf.name}_{t0.strftime('%Y%m%d')}-{t1.strftime('%Y%m%d')}.csv")
+    if osp.exists(outpath):
+        print(f"Output already exists at {outfile}, exiting")
+        sys.exit(0)
+
+
     if not conf.fuelTypes == deads:
         print(f"Warning: fuelTypes in configuration ({conf.fuelTypes}) do not match expected values {deads}. Check for missing or extra fuel categories.")
 
@@ -73,7 +82,6 @@ if __name__ == '__main__':
     else:
         stids = fems.get_all_sites(source="stash", stash_path = "data/fems_sts.xlsx")
 
-    
     # Query over all sites
     print(f"Retrieving FEMS samples with config: {confpath}")
     print(f"Writing Data to {outpath}")
@@ -87,6 +95,8 @@ if __name__ == '__main__':
     df = df.join(pd.json_normalize(df['fuel'])).drop(columns="fuel")
     stids = stids[['longitude', 'latitude', 'elevation', 'timeZone', "siteId", "siteName", "stateId", "slope", "aspect", "rawsId", "raws"]]
     df = df.merge(stids, left_on="site_id", right_on="siteId", how="left")
+    
+    
     print(f"Writing Data to {outpath}")
     os.makedirs(osp.dirname(outpath), exist_ok = True)
     if df.shape[0] > 0:
