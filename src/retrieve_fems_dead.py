@@ -75,6 +75,8 @@ if __name__ == '__main__':
 
     
     # Query over all sites
+    print(f"Retrieving FEMS samples with config: {confpath}")
+    print(f"Writing Data to {outpath}")
     conf["siteIds"] = stids.siteId.to_list()
     df = fems.get_fuel_data(
         conf, verbose=True, save_path = outpath
