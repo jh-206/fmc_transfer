@@ -1,0 +1,20 @@
+# Namelist for data from Carlson fuel moisture field data
+# Data received formatted from Derek van der Kamp,
+# Using his conventions as delivered, saving backup of his original
+
+
+## Convention, names in orig data are top level keys (this matches pandas)
+##       old_name: new_name
+
+yday: doy
+hour: hod
+fuel.mois_1h: fm1
+fuel.mois: fm10
+fuel.mois_100h: fm100
+fuel.mois_1000h: fm1000
+k.down: solar
+wind.speed: wind
+precip: rain
+
+
+

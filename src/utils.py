@@ -1,6 +1,6 @@
 import numpy as np
 import yaml
-from datetime import datetime
+from datetime import datetime, timezone
 import pandas as pd
 
 plot_styles = {
@@ -80,31 +80,39 @@ def str2time(input):
     else:
         raise ValueError("Input must be a string or a list of strings")
 
+def filter_nan_values(t1, v1):
+    # Filter out NaN values from v1 and corresponding times in t1
+    valid_indices = ~np.isnan(v1)  # Indices where v1 is not NaN
+    t1_filtered = np.array(t1)[valid_indices]
+    v1_filtered = np.array(v1)[valid_indices]
+    return t1_filtered, v1_filtered
+
 
 def time_intp(t1, v1, t2):
-    # Check if t1 v1 t2 are 1D arrays
-    if t1.ndim != 1:
-        # logging.error("Error: t1 is not a 1D array. Dimension: %s", t1.ndim)
-        # return None
-        raise ValueError("")
-    if v1.ndim != 1:
-        # logging.error("Error: v1 is not a 1D array. Dimension %s:", v1.ndim)
-        # return None
-        raise ValueError("")
-    if t2.ndim != 1:
-        # logging.errorr("Error: t2 is not a 1D array. Dimension: %s", t2.ndim)
-        # return None
-        raise ValueError("")
-    # Check if t1 and v1 have the same length
+    """
+    Interpolates 1D time series values v1 from times t1 onto new times t2.
+    Ensures valid 1D inputs, removes NaNs, converts datetimes to timestamps,
+    and performs linear interpolation using np.interp.
+
+    Args:
+        t1 (np.ndarray): 1D array of datetime objects representing known time points.
+        v1 (np.ndarray): 1D array of values corresponding to t1.
+        t2 (np.ndarray): 1D array of datetime objects representing target time points.
+    """
+    if t1.ndim != 1 or v1.ndim != 1 or t2.ndim != 1:
+        raise ValueError("Inputs must be 1D arrays")
     if len(t1) != len(v1):
-        # logging.error("Error: t1 and v1 have different lengths: %s %s",len(t1),len(v1))
-        # return None
-        raise ValueError("")
+        raise ValueError("t1 and v1 must have the same length")
     t1_no_nan, v1_no_nan = filter_nan_values(t1, v1)
-    # print('t1_no_nan.dtype=',t1_no_nan.dtype)
-    # Convert datetime objects to timestamps
-    t1_stamps = np.array([t.timestamp() for t in t1_no_nan])
-    t2_stamps = np.array([t.timestamp() for t in t2])
+    # Convert datetime64 arrays to POSIX seconds
+    def to_seconds(arr):
+        if np.issubdtype(arr.dtype, np.datetime64):
+            return arr.astype("datetime64[s]").astype(float)
+        # If pandas or datetime objects, convert with timestamp()
+        return np.array([t.timestamp() for t in arr], dtype=float)
+
+    t1_stamps = to_seconds(t1_no_nan)
+    t2_stamps = to_seconds(t2)
     
     # Interpolate using the filtered data
     v2_interpolated = np.interp(t2_stamps, t1_stamps, v1_no_nan)
@@ -115,6 +123,13 @@ def time_intp(t1, v1, t2):
     return v2_interpolated
 
 
+def is_consecutive_hours(times):
+    """
+    Check whether input array are consecutive 1 hour increments
+    """
+    # Convert to numpy timedelta64[h] for hour differences
+    time_diffs = np.diff(times).astype('timedelta64[h]')
+    return np.all(time_diffs == np.timedelta64(1, 'h'))
 
 def time_range(start, end, freq="1h"):
     """
