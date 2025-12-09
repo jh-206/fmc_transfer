@@ -1,7 +1,7 @@
 # Namelist for data from Carlson fuel moisture field data
 # Data received formatted from Derek van der Kamp,
 # Using his conventions as delivered, saving backup of his original
-
+# Other variables not listed here will flow through
 
 ## Convention, names in orig data are top level keys (this matches pandas)
 ##       old_name: new_name
