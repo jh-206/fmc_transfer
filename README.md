@@ -17,7 +17,8 @@ The 1996-1997 field study by Carlson et al is a foundational dataset in FMC mode
 
 The code expects the following datasets to exist. Please reach out to corresponding author for access:
 
-* `data/oklahoma_Carlson_data.xlsx`
+* `data/oklahoma_Carlson_data.xlsx` : formatted data delivered by Derek van der Kamp, original FMC measurements from Carlson and hourly data from portable weather station
+* `data/Slapout_96-97_weather.csv`, `data/Slapout_96-97_rain.csv` : formatted half-hourly weather from nearby Mesonet weather station
 
 The datasets for analysis are created in interactive jupyter notebooks. The notebooks can be opened and run with all cells. They also contain informative print statements and explain the logic used for processing the data. To recreate the datasets used in analysis, open and run:
 
