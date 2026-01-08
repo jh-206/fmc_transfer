@@ -1,0 +1,8 @@
+# recipe for creating conda env
+
+conda create -y -n fmc python=3.11
+conda activate fmc
+conda install -y pandas numpy matplotlib jupyter pyyaml
+conda install -y tensorflow -c conda-forge
+conda install -y openpyxl
+
