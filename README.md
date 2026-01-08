@@ -8,10 +8,23 @@ Advisor: Jan Mandel, CU Denver
 
 ## Datasets
 
+The 1996-1997 field study by Carlson et al is a foundational dataset in FMC modeling. It was used to calibrate the Nelson model for operational use. As far as we can tell, this is the only controlled study of 100h fuels in CONUS. This will be used as the main dataset to adapt a model pre-trained on 10h sensors to other fuels.
+
 - Larger Fuels: 100h and 1000h datasets are built using the FEMS API with code originally developed by Angel Farguell and collaborators at WIRC.
 - Fine fuels datasets: these data come from small-scale academic studies. Please email the listed correspondance in this document for access to these datasets
 	- Oklahoma field study 1996-1997 (Carlson 2007): study used to calibrate Nelson model
 	- Hawaii field study 2000-2001 (Weise 2004): study used to compare 1h models, including Nelson
+
+The code expects the following datasets to exist. Please reach out to corresponding author for access:
+
+* `data/oklahoma_Carlson_data.xlsx`
+
+The datasets for analysis are created in interactive jupyter notebooks. The notebooks can be opened and run with all cells. They also contain informative print statements and explain the logic used for processing the data. To recreate the datasets used in analysis, open and run:
+
+1. `process_carlson_data.ipynb`
+2. `process_ok_mesonet.ipynb`
+3. ...weise data notebook coming soon...
+
 
 ## Methods
 
