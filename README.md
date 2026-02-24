@@ -36,4 +36,14 @@ To recreate the accuracy metrics and visualizations associated with the FM10 zer
 - `outputs/ts_BAWC2.png`
 
 
+### FMC Transfer - No Fine Tune
+
+To recreate the accuracy metrics and visualizations associated with transfer learning, no fine-tune, run python module with config:
+
+`python src/transfer_twarp_analysis.py etc/thesis_config.yaml`
+
+To create the files `fm1_results.pkl`, `f100 this _results.pkl`, `fm1000_results.pkl`
+
+
+
 
