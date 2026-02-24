@@ -1,14 +1,40 @@
 # Config file to control analysis params for PhD thesis.
 
+output_dir: "outputs/transfer0"
+rnn_dir: "models/" # model directory
 
 ## Train period set to be 1 full year, so at least a possibility of learning seasonal patterns
-train_start: "1996-03-26T23:00:00+00" # Rounded UTC time of earliest FM field observation
-train_end: "1997-03-26T23:00:00+00" # One year from train start
+train_start: "1996-03-26T23:00:00" # Rounded UTC time of earliest FM field observation
+train_end: "1997-03-26T23:00:00" # One year from train start
 ## Val and Test/Forecast periods split remaining times
-val_start: "1997-03-27T00:00:00+00"
-val_end: "1997-08-13T11:00:00+00"
-f_start: "1997-08-13T12:00:00+00"
-f_end: "1997-12-30T22:00:00+00"
+val_start: "1997-03-27T00:00:00"
+val_end: "1997-08-13T11:00:00"
+f_start: "1997-08-13T12:00:00"
+f_end: "1997-12-30T22:00:00"
+
+## Static Geographic Featurees from Slapout OK Station
+ok_elev: 774
+ok_lon: -100.261920
+ok_lat: 36.597490
+
+
+## Param Grids
+ngrid: 3 # number of params in grid to search
+## 1h, speed up dynamics. Forget DOWN, Input UP
+fm1_bf_low:  -0.5    # Lower bound forget gate bias time-warp 
+fm1_bf_high: -1.5    # Upper bound forget gate bias time-warp 
+fm1_bi_low:  0.5    # Lower bound input gate bias time-warp 
+fm1_bi_high: 1.5    # Upper bound input gate bias time-warp 
+## 100h, slow down dynamics. Forget UP, Input DOWN
+fm100_bf_low:  0.5    # Lower bound forget gate bias time-warp 
+fm100_bf_high: 1.5    # Upper bound forget gate bias time-warp 
+fm100_bi_low:  -0.5    # Lower bound input gate bias time-warp 
+fm100_bi_high: -1.5    # Upper bound input gate bias time-warp 
+## 1000h, slow down dynamics. Forget UP, Input DOWN
+fm1000_bf_low:  0.5    # Lower bound forget gate bias time-warp 
+fm1000_bf_high: 2.5    # Upper bound forget gate bias time-warp 
+fm1000_bi_low:  -0.5    # Lower bound input gate bias time-warp 
+fm1000_bi_high: -2.5    # Upper bound input gate bias time-warp 
 
 
 
