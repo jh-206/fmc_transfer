@@ -7,7 +7,6 @@
 # Fine-tuning requires the validation set split
 
 import numpy as np
-import requests as requests
 import pandas as pd
 import yaml
 import time
@@ -31,6 +30,7 @@ DATA_DIR = osp.join(PROJECT_ROOT, "data")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 from utils import read_yml, Dict, time_range, time_intp
 from models import moisture_rnn as mrnn
+import reproducibility
 
 # Metadata files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,6 +91,7 @@ if __name__ == '__main__':
     print(f"~"*50)
     print(f"Running Transfer-Learning, No-Fine-Tune with config file: {confpath}")
     print(f"~"*50)
+    reproducibility.set_seed(11001000) # arbitrary, made it by combining 1-100-1000
     
     # Time params
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,8 +181,8 @@ if __name__ == '__main__':
     print(f"    {fm1_train.shape=}")
     print(f"    {fm1_test.shape=}")
     
-    bf_grid = np.linspace(conf.fm1_bf_low, conf.fm1_bf_high, num=conf.ngrid)
-    bi_grid = np.linspace(conf.fm1_bi_low, conf.fm1_bi_high, num=conf.ngrid)
+    bf_grid = np.linspace(conf.fm1_bf_low, conf.fm1_bf_high, num=conf.ngrid).round(4)
+    bi_grid = np.linspace(conf.fm1_bi_low, conf.fm1_bi_high, num=conf.ngrid).round(4)
     fm1_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
     print()
     print(f"N time-warp Param Combos: {len(fm1_grid)}")
@@ -262,8 +263,8 @@ if __name__ == '__main__':
     print(f"    {fm100_train.shape=}")
     print(f"    {fm100_test.shape=}")
     
-    bf_grid = np.linspace(conf.fm100_bf_low, conf.fm100_bf_high, num=conf.ngrid)
-    bi_grid = np.linspace(conf.fm100_bi_low, conf.fm100_bi_high, num=conf.ngrid)
+    bf_grid = np.linspace(conf.fm100_bf_low, conf.fm100_bf_high, num=conf.ngrid).round(4)
+    bi_grid = np.linspace(conf.fm100_bi_low, conf.fm100_bi_high, num=conf.ngrid).round(4)
     fm100_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
     print()
     print(f"N time-warp Param Combos: {len(fm100_grid)}")
@@ -332,9 +333,9 @@ if __name__ == '__main__':
     fm1000_test  = fm1000[(fm1000.utc_rounded >= conf.f_start) & (fm1000.utc_rounded <= conf.f_end)]
     print(f"    {fm1000_train.shape=}")
     print(f"    {fm1000_test.shape=}")
-    
-    bf_grid = np.linspace(conf.fm1000_bf_low, conf.fm1000_bf_high, num=conf.ngrid)
-    bi_grid = np.linspace(conf.fm1000_bi_low, conf.fm1000_bi_high, num=conf.ngrid)
+
+    bf_grid = np.linspace(conf.fm1000_bf_low, conf.fm1000_bf_high, num=conf.ngrid).round(4)
+    bi_grid = np.linspace(conf.fm1000_bi_low, conf.fm1000_bi_high, num=conf.ngrid).round(4)
     fm1000_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
     print()
     print(f"N time-warp Param Combos: {len(fm1000_grid)}")
@@ -409,9 +410,15 @@ if __name__ == '__main__':
     weights1 = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
     rnn.get_layer("lstm").set_weights(weights1)
     preds1 = rnn.predict(XX_test).flatten()
+    
     # Accuracy
-    df = fm1_test.copy()
-    df["preds"] = preds1
+    df = fm1_test.copy()        
+    preds1_intp = time_intp( # Interp to exact time of observed data
+        t1 = wtest.utc.to_numpy(),
+        v1 = preds1,
+        t2 = fm1_test.utc_prov.to_numpy()
+    )
+    df["preds"] = preds1_intp
     rmse = np.sqrt(mean_squared_error(df.fm1, df.preds))
     bias = np.mean(df.fm1 - df.preds)
     r2   = r2_score(df.fm1, df.preds)  
@@ -421,6 +428,10 @@ if __name__ == '__main__':
     bias_30 = np.mean(df.fm1.iloc[inds] - df.preds.iloc[inds])
     r2_30   = r2_score(df.fm1.iloc[inds], df.preds.iloc[inds])
     results_test["FM1"] = {
+        'params': fm1_best['params'],
+        'preds': preds1,
+        'preds_intp': preds1_intp,
+        'fm1_obs': df.fm1.to_numpy(),
         'rmse': rmse,
         'bias': bias,
         'r2': r2,
@@ -428,7 +439,6 @@ if __name__ == '__main__':
         'bias_30': bias_30,
         'r2_30': r2_30        
     }
-
     
     
     # 100hr
@@ -438,12 +448,21 @@ if __name__ == '__main__':
     preds100 = rnn.predict(XX_test).flatten()
 
     # Accuracy
-    df = fm100_test.copy()
-    df["preds"] = preds100
+    df = fm100_test.copy()        
+    preds100_intp = time_intp( # Interp to exact time of observed data
+        t1 = wtest.utc.to_numpy(),
+        v1 = preds100,
+        t2 = fm100_test.utc_prov.to_numpy()
+    )
+    df["preds"] = preds100_intp
     rmse = np.sqrt(mean_squared_error(df.fm100, df.preds))
     bias = np.mean(df.fm100 - df.preds)
     r2   = r2_score(df.fm100, df.preds)  
     results_test["FM100"] = {
+        'params': fm100_best['params'],
+        'preds': preds100,
+        'preds_intp': preds100_intp,
+        'fm100_obs': df.fm100.to_numpy(),
         'rmse': rmse,
         'bias': bias,
         'r2': r2    
@@ -457,23 +476,38 @@ if __name__ == '__main__':
     preds1000 = rnn.predict(XX_test).flatten()
 
     # Accuracy
-    df = fm1000_test.copy()
-    df["preds"] = preds1000
+    df = fm1000_test.copy()        
+    preds1000_intp = time_intp( # Interp to exact time of observed data
+        t1 = wtest.utc.to_numpy(),
+        v1 = preds1000,
+        t2 = fm1000_test.utc_prov.to_numpy()
+    )
+    df["preds"] = preds1000_intp
     rmse = np.sqrt(mean_squared_error(df.fm1000, df.preds))
     bias = np.mean(df.fm1000 - df.preds)
     r2   = r2_score(df.fm1000, df.preds)  
     results_test["FM1000"] = {
+        'params': fm1000_best['params'],
+        'preds': preds1000,
+        'preds_intp': preds1000_intp,
+        'fm1000_obs': df.fm1000.to_numpy(),        
         'rmse': rmse,
         'bias': bias,
         'r2': r2    
     }
 
+    print()
+    print("Accuracy Metrics:")
+    print(f"    FM1 RMSE (<30): {results_test['FM1']['rmse_30']}")
+    print(f"    FM100 RMSE: {results_test['FM100']['rmse']}")
+    print(f"    FM1000 RMSE: {results_test['FM1000']['rmse']}")
+    
     # Output
     out_file = osp.join(output_dir, "results_test_set.pkl")
     print(f"Writing Output to: {out_file}")
     with open(out_file, "wb") as f:
         pickle.dump(results_test, f, protocol=pickle.HIGHEST_PROTOCOL)
 
-        
+
 
 
