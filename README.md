@@ -6,7 +6,7 @@ Corresponding email: jonathon.hirschi@ucdenver.edu
 
 Advisor: Jan Mandel, CU Denver
 
-## Datasets
+## Data
 
 The 1996-1997 field study by Carlson et al is a foundational dataset in FMC modeling. It was used to calibrate the Nelson model for operational use. As far as we can tell, this is the only controlled study of 100h fuels in CONUS. This will be used as the main dataset to adapt a model pre-trained on 10h sensors to other fuels.
 
@@ -27,11 +27,13 @@ The datasets for analysis are created in interactive jupyter notebooks. The note
 3. ...weise data notebook coming soon...
 
 
-## Methods
+## Recreating Outputs
 
-Coming soon...
+### FM10 Zeroshot
 
-## Environment
+To recreate the accuracy metrics and visualizations associated with the FM10 zeroshot analysis, run all cells in `rnn_10h_zeroshot.ipynb`. The accuracy metrics are printed in-line and two figures are saved:
+- `outputs/ts_rnn_zeroshot.png`
+- `outputs/ts_BAWC2.png`
 
-Coming soon...
+
 
