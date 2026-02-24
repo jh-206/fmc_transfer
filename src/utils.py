@@ -4,11 +4,19 @@ from datetime import datetime, timezone
 import pandas as pd
 
 plot_styles = {
-    'fm': {'color': '#468a29', 'linestyle': '-', 'label': 'Observed FMC'},
-    'Ed': {'color': '#EF847C', 'linestyle': '--', 'alpha':.8, 'label': 'drying EQ'},
-    'Ew': {'color': '#7CCCEF', 'linestyle': '--', 'alpha':.8, 'label': 'wetting EQ'},
-    'rain': {'color': 'b', 'linestyle': '-', 'alpha':.9, 'label': 'Rain'},
-    'model': {'color': 'k', 'linestyle': '-', 'label': 'Predicted FMC'}
+    'fm': {'color': '#468a29', 'linestyle': '-', 'label': 'Observed FM10'},
+    'model': {'color': '#468a29', 'linestyle': '-', 'label': 'Predicted FM10'},
+    
+    'fm1': {'color': '#a8d98a', 'linestyle': '--', 'label': 'Observed FM1'},
+    'model1': {'color': '#a8d98a', 'linestyle': '--', 'label': 'Predicted FM1'},
+    'fm100': {'color': '#1f5e17', 'linestyle': ':', 'label': 'Observed FM100'},
+    'model100': {'color': '#1f5e17', 'linestyle': ':', 'label': 'Predicted FM100'},
+    'fm1000': {'color': '#0b2f0a', 'linestyle': '-.', 'label': 'Observed FM100'},
+    'model1000': {'color': '#0b2f0a', 'linestyle': '-.', 'label': 'Predicted FM1000'},
+            
+    'Ed': {'color': '#EF847C', 'linestyle': '--', 'alpha':.8, 'label': 'Drying EQ'},
+    'Ew': {'color': '#7CCCEF', 'linestyle': '--', 'alpha':.8, 'label': 'Wetting EQ'},
+    'rain': {'color': 'b', 'linestyle': '-', 'alpha':.9, 'label': 'Rain'},    
 }
 
 
@@ -171,4 +179,32 @@ def read_yml(yaml_path, subkey=None):
         if subkey is not None:
             d = d[subkey]
     return d
+
+
+def print_dict_summary(d,indent=0,first=[],first_num=3):
+    """
+    Prints a summary for each array in a dictionary, showing the key and the size of the array.
+
+    Arguments:
+     d (dict): The dictionary to summarize.
+     first_items (list): Print the first items for any arrays with these names
     
+    """
+    indent_str = ' ' * indent
+    for key, value in d.items():
+        # Check if the value is list-like using a simple method check
+        if isinstance(value, dict):
+            print(f"{indent_str}{key}")
+            print_dict_summary(value,first=first,indent=indent+5,first_num=first_num)
+        elif isinstance(value,np.ndarray):
+            if np.issubdtype(value.dtype, np.number):
+                print(f"{indent_str}{key}: NumPy array of shape {value.shape}, min: {value.min()}, max: {value.max()}")
+            else:
+                # Handle non-numeric arrays differently 
+                print(f"{indent_str}{key}: NumPy array of shape {value.shape}, type {value.dtype}")
+        elif hasattr(value, "__iter__") and not isinstance(value, str):  # Check for iterable that is not a string
+            print(f"{indent_str}{key}: Array of {len(value)} items")
+        else:
+            print(indent_str,key,":",value)
+        if key in first:
+            print_first(value,num=first_num,indent=indent+5)
