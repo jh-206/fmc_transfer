@@ -130,6 +130,8 @@ if __name__ == '__main__':
     # NOTE: combining train and val periods, this method doesn't need train/val split
     wtrain = weather[(weather.utc >= conf.train_start) & (weather.utc <= conf.val_end)]
     wtest  = weather[(weather.utc >= conf.f_start) & (weather.utc <= conf.f_end)]
+    wtrain.to_csv(osp.join(output_dir, "weather_train.csv"), index=False)
+    wtest.to_csv(osp.join(output_dir, "weather_test.csv"), index=False)
     
     X_train = pd.DataFrame({
         "Ed": wtrain.Ed,
@@ -429,8 +431,10 @@ if __name__ == '__main__':
     r2_30   = r2_score(df.fm1.iloc[inds], df.preds.iloc[inds])
     results_test["FM1"] = {
         'params': fm1_best['params'],
-        'preds': preds1,
-        'preds_intp': preds1_intp,
+        'preds1': preds1,
+        'preds1_intp': preds1_intp,
+        'times': wtest.utc,
+        'times_fm1': df.utc_prov,
         'fm1_obs': df.fm1.to_numpy(),
         'rmse': rmse,
         'bias': bias,
@@ -460,8 +464,10 @@ if __name__ == '__main__':
     r2   = r2_score(df.fm100, df.preds)  
     results_test["FM100"] = {
         'params': fm100_best['params'],
-        'preds': preds100,
-        'preds_intp': preds100_intp,
+        'preds100': preds100,
+        'preds100_intp': preds100_intp,
+        'times': wtest.utc,
+        'times_fm100': df.utc_prov,
         'fm100_obs': df.fm100.to_numpy(),
         'rmse': rmse,
         'bias': bias,
@@ -488,8 +494,10 @@ if __name__ == '__main__':
     r2   = r2_score(df.fm1000, df.preds)  
     results_test["FM1000"] = {
         'params': fm1000_best['params'],
-        'preds': preds1000,
-        'preds_intp': preds1000_intp,
+        'preds1000': preds1000,
+        'preds1000_intp': preds1000_intp,
+        'times': wtest.utc,
+        'times_fm1000': df.utc_prov,
         'fm1000_obs': df.fm1000.to_numpy(),        
         'rmse': rmse,
         'bias': bias,
@@ -507,7 +515,6 @@ if __name__ == '__main__':
     print(f"Writing Output to: {out_file}")
     with open(out_file, "wb") as f:
         pickle.dump(results_test, f, protocol=pickle.HIGHEST_PROTOCOL)
-
 
 
 
