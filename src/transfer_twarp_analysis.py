@@ -234,8 +234,8 @@ if __name__ == '__main__':
         results_1[i]["r2_30"] = r2_30
 
         print(f"Accuracy Metrics:")
-        print(f"RMSE: {rmse},   R2: {r2}")
-        print(f"RMSE (FM1<30): {rmse_30},   R2 (FM1<30): {r2_30}")
+        print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
+        print(f"RMSE (FM1<30): {rmse_30.round(4)},   R2 (FM1<30): {np.round(r2_30, 4)}")
 
         
     # Output
@@ -244,7 +244,14 @@ if __name__ == '__main__':
     with open(out_file, "wb") as f:
         pickle.dump(results_1, f, protocol=pickle.HIGHEST_PROTOCOL)
 
-
+    # Find min RMSE config, basing on RMSE less than 30 for 1h alone
+    fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["rmse_30"])
+    fm1_best = results_1[fm1_best_key]
+    print()
+    print("Best Config from Training Error:")
+    print(f"Min Training RMSE (FM1<30): {np.round(fm1_best['rmse_30'], 4)}")
+    print(f"Time-Warp Params: {fm1_best['params']}")
+    
     # FM100
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print(f"~"*50)
@@ -299,14 +306,22 @@ if __name__ == '__main__':
         results_100[i]["r2"] = r2
 
         print(f"Accuracy Metrics:")
-        print(f"RMSE: {rmse},   R2: {r2}")
+        print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
         
     # Output
     out_file = osp.join(output_dir, "fm100_results.pkl")
     print(f"Writing Output to: {out_file}")
     with open(out_file, "wb") as f:
         pickle.dump(results_100, f, protocol=pickle.HIGHEST_PROTOCOL)
-
+        
+    # Find min RMSE config
+    fm100_best_key = min(results_100, key=lambda ci: results_100[ci]["rmse"])
+    fm100_best = results_100[fm100_best_key]
+    print()
+    print("Best Config from Training Error:")
+    print(f"Min Training RMSE: {np.round(fm100_best['rmse'], 4)}")
+    print(f"Time-Warp Params: {fm100_best['params']}")
+    
 
     # FM1000
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -362,7 +377,7 @@ if __name__ == '__main__':
         results_1000[i]["r2"] = r2
 
         print(f"Accuracy Metrics:")
-        print(f"RMSE: {rmse},   R2: {r2}")
+        print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
         
     # Output
     out_file = osp.join(output_dir, "fm1000_results.pkl")
@@ -370,8 +385,95 @@ if __name__ == '__main__':
     with open(out_file, "wb") as f:
         pickle.dump(results_1000, f, protocol=pickle.HIGHEST_PROTOCOL)
 
+    # Find min RMSE config
+    fm1000_best_key = min(results_1000, key=lambda ci: results_1000[ci]["rmse"])
+    fm1000_best = results_1000[fm1000_best_key]
+    print()
+    print("Best Config from Training Error:")
+    print(f"Min Training RMSE: {np.round(fm1000_best['rmse'], 4)}")
+    print(f"Time-Warp Params: {fm1000_best['params']}")
 
 
+    # Run Test Set
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    print()
+    print("~"*50)
+    print("Running Test Set with Best Config")
+
+    # Output object
+    results_test = {}
+
+    # 1hr
+    bs = fm1_best['params']
+    weights1 = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
+    rnn.get_layer("lstm").set_weights(weights1)
+    preds1 = rnn.predict(XX_test).flatten()
+    # Accuracy
+    df = fm1_test.copy()
+    df["preds"] = preds1
+    rmse = np.sqrt(mean_squared_error(df.fm1, df.preds))
+    bias = np.mean(df.fm1 - df.preds)
+    r2   = r2_score(df.fm1, df.preds)  
+    # Accuracy <30
+    inds = np.where(df.fm1<30)[0]
+    rmse_30 = np.sqrt(mean_squared_error(df.fm1.iloc[inds], df.preds.iloc[inds]))
+    bias_30 = np.mean(df.fm1.iloc[inds] - df.preds.iloc[inds])
+    r2_30   = r2_score(df.fm1.iloc[inds], df.preds.iloc[inds])
+    results_test["FM1"] = {
+        'rmse': rmse,
+        'bias': bias,
+        'r2': r2,
+        'rmse_30': rmse_30,
+        'bias_30': bias_30,
+        'r2_30': r2_30        
+    }
+
+    
+    
+    # 100hr
+    bs = fm100_best['params']
+    weights100 = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
+    rnn.get_layer("lstm").set_weights(weights100)
+    preds100 = rnn.predict(XX_test).flatten()
+
+    # Accuracy
+    df = fm100_test.copy()
+    df["preds"] = preds100
+    rmse = np.sqrt(mean_squared_error(df.fm100, df.preds))
+    bias = np.mean(df.fm100 - df.preds)
+    r2   = r2_score(df.fm100, df.preds)  
+    results_test["FM100"] = {
+        'rmse': rmse,
+        'bias': bias,
+        'r2': r2    
+    }
+
+    
+    # 1000hr
+    bs = fm1000_best['params']
+    weights1000 = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
+    rnn.get_layer("lstm").set_weights(weights1000)
+    preds1000 = rnn.predict(XX_test).flatten()
+
+    # Accuracy
+    df = fm1000_test.copy()
+    df["preds"] = preds1000
+    rmse = np.sqrt(mean_squared_error(df.fm1000, df.preds))
+    bias = np.mean(df.fm1000 - df.preds)
+    r2   = r2_score(df.fm1000, df.preds)  
+    results_test["FM1000"] = {
+        'rmse': rmse,
+        'bias': bias,
+        'r2': r2    
+    }
+
+    # Output
+    out_file = osp.join(output_dir, "results_test_set.pkl")
+    print(f"Writing Output to: {out_file}")
+    with open(out_file, "wb") as f:
+        pickle.dump(results_test, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+        
 
 
