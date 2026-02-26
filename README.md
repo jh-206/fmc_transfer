@@ -35,6 +35,9 @@ To recreate the accuracy metrics and visualizations associated with the FM10 zer
 - `outputs/ts_rnn_zeroshot.png`
 - `outputs/ts_BAWC2.png`
 
+### Stability of the Learned Gate Bias Structure
+
+Run `rnn_timewarp_reps.ipynb`
 
 ### FMC Transfer - No Fine Tune
 
@@ -42,7 +45,7 @@ To recreate the accuracy metrics and visualizations associated with transfer lea
 
 `python src/transfer_twarp_analysis.py etc/thesis_config.yaml`
 
-To create the files `fm1_results.pkl`, `f100 this _results.pkl`, `fm1000_results.pkl`
+To create the files `fm1_results.pkl`, `f100 this _results.pkl`, `fm1000_results.pkl`, `results_test_set.pkl`
 
 
 
