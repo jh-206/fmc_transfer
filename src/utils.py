@@ -7,8 +7,8 @@ plot_styles = {
     'fm': {'color': '#468a29', 'linestyle': '-', 'label': 'Observed FM10'},
     'model': {'color': '#468a29', 'linestyle': '-', 'label': 'Predicted FM10'},
     
-    'fm1': {'color': '#a8d98a', 'linestyle': '--', 'label': 'Observed FM1'},
-    'model1': {'color': '#a8d98a', 'linestyle': '--', 'label': 'Predicted FM1'},
+    'fm1': {'color': '#94c576', 'linestyle': '--', 'label': 'Observed FM1'},
+    'model1': {'color': '#94c576', 'linestyle': '--', 'label': 'Predicted FM1'},
     'fm100': {'color': '#1f5e17', 'linestyle': ':', 'label': 'Observed FM100'},
     'model100': {'color': '#1f5e17', 'linestyle': ':', 'label': 'Predicted FM100'},
     'fm1000': {'color': '#0b2f0a', 'linestyle': '-.', 'label': 'Observed FM100'},
