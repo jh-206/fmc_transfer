@@ -1,10 +1,8 @@
 # Executable module to run transfer analysis 
-# All weights frozen - only time-warp param fit
-# Methodology: for each fuel class construct grid of time warp params, modify LSTM and generate predictions
-### for training+validation period. Pick best fitting accuracy. Generate predictions for test set and compute as final accuracy
-# No fine-tuning, only the time-warp param is fit
-# This method doesn't utilize a train/validation set split, so combining them together
-# Fine-tuning requires the validation set split
+# Fine tuning on observed FM data
+# Methodology: for each fuel class construct grid of time warp params, modify LSTM weights. Then, fine tune with training samples. Allowing all weights to update
+# Compare accuracy in validation set, pick best model.
+# Final accuracy estimate on test set.
 
 import numpy as np
 import pandas as pd
@@ -86,7 +84,7 @@ if __name__ == '__main__':
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     confpath = sys.argv[1]
     conf = Dict(read_yml(confpath))
-    output_dir = conf.output_dir
+    output_dir = osp.join(conf.output_dir, "transfer0")
     os.makedirs(output_dir, exist_ok=True)
     print(f"~"*50)
     print(f"Running Transfer-Learning, No-Fine-Tune with config file: {confpath}")
@@ -105,7 +103,7 @@ if __name__ == '__main__':
     print(f"Test Period:  {conf.f_start} to {conf.f_end}")
     print(f"    N. Hours: {test_times.shape[0]}")
 
-    # RNN
+    # Baseline RNN
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     params = read_yml(osp.join(conf.rnn_dir, "params.yaml"))
     rnn = mrnn.RNN_Flexible(params=params)
