@@ -35,6 +35,31 @@ params_xgb = Dict(read_yml(osp.join(CONFIG_DIR, "params_static.yaml"), subkey="x
 params_lm = Dict(read_yml(osp.join(CONFIG_DIR, "params_static.yaml"), subkey="lm"))
 
 
+# Module Code
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def calc_metrics(y_true: np.ndarray, y_pred: np.ndarray, mask: np.ndarray | None = None) -> dict:
+    """
+    Helper func =eturns rmse, r2, bias using NaN-safe means.
+    - NaNs are excluded based on y_true.
+    - Optional `mask` further subsets the valid points.
+    """
+    valid = ~np.isnan(y_true)
+    if mask is not None:
+        valid = valid & mask
+
+    # If no valid points, return NaNs (keeps downstream code from crashing unexpectedly)
+    if not np.any(valid):
+        return {"rmse": np.nan, "r2": np.nan, "bias": np.nan, "n": 0}
+
+    err = y_pred[valid] - y_true[valid]
+    mse = np.mean(err**2)              # safe: err has no NaN
+    bias = np.mean(y_true[valid] - y_pred[valid])
+    r2 = r2_score(y_true[valid], y_pred[valid])
+
+    return {"rmse": np.sqrt(mse), "r2": r2, "bias": bias, "n": int(np.sum(valid))}
+
+
 # Executed Code
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -96,10 +121,10 @@ if __name__ == '__main__':
     df1["lon"] = conf.ok_lon
     df1["lat"] = conf.ok_lat
 
-    breakpoint()
-    ## TODO: generate full predictions in test set for each hour to observe timeseries
-    
+    # For training set, static models can only use the particular hours that the FMC exist, very sparse
+    # For test set, we can still generate predictions for each hour and examine resulting time series
     df1_train = df1[(df1.utc >= conf.train_start) & (df1.utc <= conf.val_end)]
+    df1_train = df1_train[df1_train.fm1.notna()]
     df1_test  = df1[(df1.utc >= conf.f_start) & (df1.utc <= conf.f_end)]
     print(f"    {df1_train.shape=}")
     print(f"    {df1_test.shape=}")
@@ -111,36 +136,81 @@ if __name__ == '__main__':
     # Fit XGB
     xgb_fm1 = XGB(params=params_xgb)
     xgb_fm1.fit(X_train, y_train)
-
-    # Predict test and save for XGB
     preds1 = xgb_fm1.predict(X_test)
-    inds = np.where(y_test < 30)[0]
+    base_metrics = calc_metrics(y_test, preds1)
+    lt30_metrics = calc_metrics(y_test, preds1, mask=(y_test <= 30))
     xgb_results["FM1"] = {
-        'preds1': preds1,
-        'rmse': np.sqrt(mean_squared_error(y_test, preds1)),
-        'bias': np.mean(y_test - preds1),
-        'r2': r2_score(y_test, preds1),
-        'rmse_30': np.sqrt(mean_squared_error(y_test[inds], preds1[inds])),
-        'bias_30': np.mean(y_test[inds] - preds1[inds]),
-        'r2_30': r2_score(y_test[inds], preds1[inds])        
+        "preds1": preds1,
+        "base": base_metrics,
+        "lt30": lt30_metrics,
     }
+    
 
     # Fit LM
     lm_fm1 = LM(params=params_lm)
     lm_fm1.fit(X_train, y_train)    
-
-    # Predict test and save for LM
     preds1 = lm_fm1.predict(X_test)
-    inds = np.where(y_test < 30)[0]
+    base_metrics = calc_metrics(y_test, preds1)
+    lt30_metrics = calc_metrics(y_test, preds1, mask=(y_test <= 30))
     lm_results["FM1"] = {
-        'preds1': preds1,
-        'rmse': np.sqrt(mean_squared_error(y_test, preds1)),
-        'bias': np.mean(y_test - preds1),
-        'r2': r2_score(y_test, preds1),
-        'rmse_30': np.sqrt(mean_squared_error(y_test[inds], preds1[inds])),
-        'bias_30': np.mean(y_test[inds] - preds1[inds]),
-        'r2_30': r2_score(y_test[inds], preds1[inds])        
-    }    
+        "preds1": preds1,
+        "base": base_metrics,
+        "lt30": lt30_metrics,
+    }
+
+    # FM10
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    print(f"~"*50)
+    print(f"FM10 Train")
+
+    # Combine weather and fm, fill na, add geographic features
+    df10 = weather.merge(
+        fm10[["utc_rounded", "utc_prov", "fm10"]],
+        left_on="utc",
+        right_on="utc_rounded",
+        how="left"
+    ).drop(columns="utc_rounded")
+    df10["elev"] = conf.ok_elev
+    df10["lon"] = conf.ok_lon
+    df10["lat"] = conf.ok_lat
+
+    # For training set, static models can only use the particular hours that the FMC exist, very sparse
+    # For test set, we can still generate predictions for each hour and examine resulting time series
+    df10_train = df10[(df10.utc >= conf.train_start) & (df10.utc <= conf.val_end)]
+    df10_train = df10_train[df10_train.fm10.notna()]
+    df10_test  = df10[(df1.utc >= conf.f_start) & (df10.utc <= conf.f_end)]
+    print(f"    {df10_train.shape=}")
+    print(f"    {df10_test.shape=}")
+    X_train = df10_train[params_xgb.features_list]
+    y_train = df10_train["fm10"].to_numpy()
+    X_test = df10_test[params_xgb.features_list]
+    y_test = df10_test["fm10"].to_numpy()
+    
+    # Fit XGB
+    xgb_fm10 = XGB(params=params_xgb)
+    xgb_fm10.fit(X_train, y_train)
+    preds10 = xgb_fm10.predict(X_test)
+    base_metrics = calc_metrics(y_test, preds10)
+    lt30_metrics = calc_metrics(y_test, preds10, mask=(y_test <= 30))
+    xgb_results["FM10"] = {
+        "preds10": preds10,
+        "base": base_metrics,
+        "lt30": lt30_metrics,
+    }
+    
+
+    # Fit LM
+    lm_fm10 = LM(params=params_lm)
+    lm_fm10.fit(X_train, y_train)    
+    preds10 = lm_fm10.predict(X_test)
+    base_metrics = calc_metrics(y_test, preds10)
+    lt30_metrics = calc_metrics(y_test, preds10, mask=(y_test <= 30))
+    lm_results["FM10"] = {
+        "preds10": preds10,
+        "base": base_metrics,
+        "lt30": lt30_metrics,
+    }
+    
     
     # FM100
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -158,7 +228,10 @@ if __name__ == '__main__':
     df100["lon"] = conf.ok_lon
     df100["lat"] = conf.ok_lat
     
+    # For training set, static models can only use the particular hours that the FMC exist, very sparse
+    # For test set, we can still generate predictions for each hour and examine resulting time series
     df100_train = df100[(df100.utc >= conf.train_start) & (df100.utc <= conf.val_end)]
+    df100_train = df100_train[df100_train.fm100.notna()]
     df100_test  = df100[(df100.utc >= conf.f_start) & (df100.utc <= conf.f_end)]
     print(f"    {df100_train.shape=}")
     print(f"    {df100_test.shape=}")
@@ -170,28 +243,23 @@ if __name__ == '__main__':
     # Fit XGB
     xgb_fm100 = XGB(params=params_xgb)
     xgb_fm100.fit(X_train, y_train)
-
-    # Predict test
     preds100 = xgb_fm100.predict(X_test)
+    base_metrics = calc_metrics(y_test, preds100)
     xgb_results["FM100"] = {
-        'preds100': preds100,
-        'rmse': np.sqrt(mean_squared_error(y_test, preds100)),
-        'bias': np.mean(y_test - preds100),
-        'r2': r2_score(y_test, preds100)    
+        "preds100": preds100,
+        "base": base_metrics
     }
+    
 
     # Fit LM
     lm_fm100 = LM(params=params_lm)
     lm_fm100.fit(X_train, y_train)    
-
-    # Predict test and save for LM
     preds100 = lm_fm100.predict(X_test)
+    base_metrics = calc_metrics(y_test, preds100)
     lm_results["FM100"] = {
-        'preds100': preds100,
-        'rmse': np.sqrt(mean_squared_error(y_test, preds100)),
-        'bias': np.mean(y_test - preds100),
-        'r2': r2_score(y_test, preds100)      
-    }       
+        "preds100": preds100,
+        "base": base_metrics
+    }   
 
     # FM1000
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -209,7 +277,10 @@ if __name__ == '__main__':
     df1000["lon"] = conf.ok_lon
     df1000["lat"] = conf.ok_lat
     
+    # For training set, static models can only use the particular hours that the FMC exist, very sparse
+    # For test set, we can still generate predictions for each hour and examine resulting time series
     df1000_train = df1000[(df1000.utc >= conf.train_start) & (df1000.utc <= conf.val_end)]
+    df1000_train = df1000_train[df1000_train.fm1000.notna()]
     df1000_test  = df1000[(df1000.utc >= conf.f_start) & (df1000.utc <= conf.f_end)]
     print(f"    {df1000_train.shape=}")
     print(f"    {df1000_test.shape=}")
@@ -221,27 +292,22 @@ if __name__ == '__main__':
     # Fit XGB
     xgb_fm1000 = XGB(params=params_xgb)
     xgb_fm1000.fit(X_train, y_train)
-
-    # Predict test
     preds1000 = xgb_fm1000.predict(X_test)
+    base_metrics = calc_metrics(y_test, preds1000)
     xgb_results["FM1000"] = {
-        'preds1000': preds1000,
-        'rmse': np.sqrt(mean_squared_error(y_test, preds1000)),
-        'bias': np.mean(y_test - preds1000),
-        'r2': r2_score(y_test, preds1000)    
+        "preds1000": preds1000,
+        "base": base_metrics
     }
+    
 
     # Fit LM
     lm_fm1000 = LM(params=params_lm)
     lm_fm1000.fit(X_train, y_train)    
-
-    # Predict test and save for LM
     preds1000 = lm_fm1000.predict(X_test)
+    base_metrics = calc_metrics(y_test, preds1000)
     lm_results["FM1000"] = {
-        'preds1000': preds1000,
-        'rmse': np.sqrt(mean_squared_error(y_test, preds1000)),
-        'bias': np.mean(y_test - preds1000),
-        'r2': r2_score(y_test, preds1000)      
+        "preds1000": preds1000,
+        "base": base_metrics
     }   
 
     
