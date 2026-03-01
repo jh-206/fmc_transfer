@@ -178,7 +178,7 @@ if __name__ == '__main__':
     # For test set, we can still generate predictions for each hour and examine resulting time series
     df10_train = df10[(df10.utc >= conf.train_start) & (df10.utc <= conf.val_end)]
     df10_train = df10_train[df10_train.fm10.notna()]
-    df10_test  = df10[(df1.utc >= conf.f_start) & (df10.utc <= conf.f_end)]
+    df10_test  = df10[(df10.utc >= conf.f_start) & (df10.utc <= conf.f_end)]
     print(f"    {df10_train.shape=}")
     print(f"    {df10_test.shape=}")
     X_train = df10_train[params_xgb.features_list]
@@ -197,7 +197,6 @@ if __name__ == '__main__':
         "base": base_metrics,
         "lt30": lt30_metrics,
     }
-    
 
     # Fit LM
     lm_fm10 = LM(params=params_lm)
