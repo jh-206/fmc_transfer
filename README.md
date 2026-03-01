@@ -20,11 +20,9 @@ The code expects the following datasets to exist. Please reach out to correspond
 * `data/oklahoma_Carlson_data.xlsx` : formatted data delivered by Derek van der Kamp, original FMC measurements from Carlson and hourly data from portable weather station
 * `data/Slapout_96-97_weather.csv`, `data/Slapout_96-97_rain.csv` : formatted half-hourly weather from nearby Mesonet weather station
 
-The datasets for analysis are created in interactive jupyter notebooks. The notebooks can be opened and run with all cells. They also contain informative print statements and explain the logic used for processing the data. To recreate the datasets used in analysis, open and run:
+The datasets for analysis are created in interactive jupyter notebooks. The notebooks can be opened and run with all cells. They also contain informative print statements and explain the logic used for processing the data. To recreate the datasets used in analysis, open and run: `process_carlson_data.ipynb`
 
-1. `process_carlson_data.ipynb`
-2. `process_ok_mesonet.ipynb`
-3. ...weise data notebook coming soon...
+...weise data future work...
 
 
 ## Recreating Outputs
@@ -39,6 +37,12 @@ To recreate the accuracy metrics and visualizations associated with the FM10 zer
 
 Run `rnn_timewarp_reps.ipynb`
 
+### Steady State Analysis
+
+`python src/steady_state_reps.py etc/thesis_config.yaml`
+
+`analyze_steadystate_results.ipynb`
+
 ### FMC Transfer - No Fine Tune
 
 To recreate the accuracy metrics and visualizations associated with transfer learning, no fine-tune, run python module with config:
@@ -47,6 +51,11 @@ To recreate the accuracy metrics and visualizations associated with transfer lea
 
 To create the files `fm1_results.pkl`, `f100 this _results.pkl`, `fm1000_results.pkl`, `results_test_set.pkl`
 
+Then, tables and figures of results can be recreated with `analyze_transfer_results.ipynb`
 
+### Transfer Baselines - Static Models
 
+`python src/transfer_baselines.py etc/thesis_config.yaml`
+
+`analyze_static_results.ipynb`
 
