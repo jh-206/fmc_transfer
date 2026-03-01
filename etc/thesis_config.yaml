@@ -2,6 +2,7 @@
 
 output_dir: "outputs/"
 rnn_dir: "models/" # model directory
+reps_dir: "models/reps" # directory with subdirs seed_0, seed_1, etc for reps
 
 ## Train period set to be 1 full year, so at least a possibility of learning seasonal patterns
 train_start: "1996-03-26T23:00:00" # Rounded UTC time of earliest FM field observation
