@@ -72,6 +72,88 @@ def warp_weights(weights0, bi_warp, bf_warp):
 
     return w_warped
 
+
+def eval_interp_metrics(
+    *,
+    df_test,
+    y_test,
+    preds,
+    time_intp,
+    y_col=None,
+    t_model_col="utc",
+    t_obs_col="utc_prov",
+    missing_value=-9999,
+    threshold=None,
+):
+    """
+    Evaluate RMSE/bias/R2 after interpolating model predictions (on t_model_col)
+    to observation times (t_obs_col) for non-missing observations.
+
+    Parameters
+    ----------
+    df_test : pandas.DataFrame
+        Must contain columns t_model_col and t_obs_col.
+    y_test : array-like
+        Target values aligned with df_test rows (or pass y_col instead).
+    preds : array-like
+        Model predictions aligned with df_test rows at t_model_col times.
+        Can be shape (1, T, 1), (T,), etc.
+    time_intp : callable
+        Function time_intp(t1, v1, t2) -> interpolated values at t2.
+    y_col : str | None
+        If provided, y_test is ignored and y is pulled from df_test[y_col].
+    threshold : float | None
+        If provided, metrics are computed only where y <= threshold (after missing filter).
+
+    Returns
+    -------
+    out : dict
+        {
+          "rmse": float,
+          "bias": float,
+          "r2": float,
+          "n": int,
+          "preds_intp": np.ndarray,   # length n
+          "inds": np.ndarray          # indices into original df_test/y_test
+        }
+    """
+    # Pull y
+    if y_col is not None:
+        y = df_test[y_col].to_numpy()
+    else:
+        y = np.asarray(y_test)
+
+    # Flatten preds to 1D aligned with df_test rows
+    v1 = np.asarray(preds).reshape(-1)
+    if v1.shape[0] != len(df_test):
+        raise ValueError(f"preds length {v1.shape[0]} does not match df_test length {len(df_test)}")
+
+    # Non-missing observation indices
+    inds = np.where(y != missing_value)[0]
+    if inds.size == 0:
+        return {"rmse": np.nan, "bias": np.nan, "r2": np.nan, "n": 0, "preds_intp": np.array([]), "inds": inds}
+
+    # Optional threshold filter (applied after missing filter)
+    if threshold is not None:
+        inds = inds[y[inds] <= threshold]
+        if inds.size == 0:
+            return {"rmse": np.nan, "bias": np.nan, "r2": np.nan, "n": 0, "preds_intp": np.array([]), "inds": inds}
+
+    # Interpolate predictions to observed times
+    preds_intp = time_intp(
+        t1=df_test[t_model_col].to_numpy(),
+        v1=v1,
+        t2=df_test[t_obs_col].iloc[inds].to_numpy(),
+    )
+
+    y_eval = y[inds]
+    rmse = float(np.sqrt(mean_squared_error(y_eval, preds_intp)))
+    bias = float(np.mean(y_eval - preds_intp))
+    r2 = float(r2_score(y_eval, preds_intp))
+
+    return {"rmse": rmse, "bias": bias, "r2": r2, "n": int(inds.size), "preds_intp": np.asarray(preds_intp), "inds": inds}
+
+
 # Executed Code
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -91,7 +173,8 @@ if __name__ == '__main__':
     print(f"~"*50)
     print(f"Running Transfer-Learning, Full Fine-Tune with config file: {confpath}")
     print(f"~"*50)
-    reproducibility.set_seed(11001000) # arbitrary, made it by combining 1-100-1000
+    seed = 11001000 # arbitrary, made it by combining 1-100-1000
+    reproducibility.set_seed(seed) 
     
     # Time params
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -182,9 +265,10 @@ if __name__ == '__main__':
         print("~"*50)
         print(f"FM1 Param Combo {i+1} out of {len(fm1_grid)}")
         print(f"Params: {bs}")    
+        rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras')) # reset weights to baseline
         weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
         rnn.get_layer("lstm").set_weights(weightsi)
-        rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), verbose_fit = False, plot_history=False)
+        rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
         
         print(f"Predicting Val Set")
         preds = rnn.predict(XX_val)
@@ -204,14 +288,155 @@ if __name__ == '__main__':
     print(f"Min Val RMSE: {np.round(fm1_best['val_rmse'], 4)}")
     print(f"Time-Warp Params: {fm1_best['params']}")
 
+    # Re-train using best params (clean run)
+    # Reset to baseline pretrained weights
+    reproducibility.set_seed(seed)
+    rnn.load_weights(osp.join(conf.rnn_dir, "rnn.keras"))
+    
+    # Apply best warp to the LSTM weights
+    weights_best = warp_weights(
+        weights10,
+        bi_warp=fm1_best["params"]["bi"],
+        bf_warp=fm1_best["params"]["bf"],
+    )
+    rnn.get_layer("lstm").set_weights(weights_best)
+    # Train again (fresh run from baseline+warp)
+    rnn.fit(
+        X_train_samples,
+        y_train_samples,
+        validation_data=(XX_val, yy_val),
+        batch_size=params.batch_size,
+        epochs=params.epochs,
+        verbose_fit=False,
+        plot_history=False,
+    )
+
+    preds1 = rnn.predict(XX_test)
+    
+    # Calc Accuracy
+    fm1_test = eval_interp_metrics(
+        df_test=df1_test,
+        y_test=y_test,
+        preds=preds1,
+        time_intp=time_intp,
+        t_model_col="utc",
+        t_obs_col="utc_prov",
+        missing_value=-9999,
+        threshold=None,
+    )
+    
+    fm1_test_30 = eval_interp_metrics(
+        df_test=df1_test,
+        y_test=y_test,
+        preds=preds1,
+        time_intp=time_intp,
+        t_model_col="utc",
+        t_obs_col="utc_prov",
+        missing_value=-9999,
+        threshold=30,
+    )
+    
+    # Example storing into your fm1_best dict
+    fm1_best["rmse"] = fm1_test["rmse"]
+    fm1_best["bias"] = fm1_test["bias"]
+    fm1_best["r2"]   = fm1_test["r2"]
+    
+    fm1_best["rmse_30"] = fm1_test_30["rmse"]
+    fm1_best["bias_30"] = fm1_test_30["bias"]
+    fm1_best["r2_30"]   = fm1_test_30["r2"]
+
+    print(f"FM1 Test Accuracy")
+    print(f"    RMSE: {fm1_test['rmse']}")
+    print(f"    RMSE30: {fm1_test['rmse_30']}")
     breakpoint()
+    
+
+
+    # FM100
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    print(f"~"*50)
+    print(f"FM100 Train")
+
+    # Combine weather and fm, fill na, add geographic features
+    df100 = weather.merge(
+        fm100[["utc_rounded", "utc_prov", "fm100"]],
+        left_on="utc",
+        right_on="utc_rounded",
+        how="left"
+    ).drop(columns="utc_rounded")
+    df100["elev"] = conf.ok_elev
+    df100["lon"] = conf.ok_lon
+    df100["lat"] = conf.ok_lat
+    df100["fm100"] = df100["fm100"].fillna(-9999)
+    
+    df1_train = df1[(df1.utc >= conf.train_start) & (df1.utc <= conf.train_end)]
+    df1_val   = df1[(df1.utc >= conf.val_start) & (df1.utc <= conf.val_end)]
+    df1_test  = df1[(df1.utc >= conf.f_start) & (df1.utc <= conf.f_end)]
+    print(f"    {df1_train.shape=}")
+    print(f"    {df1_val.shape=}")
+    print(f"    {df1_test.shape=}")
+    X_train = df1_train[params.features_list]
+    y_train = df1_train["fm1"].to_numpy()
+    X_val = df1_val[params.features_list]
+    y_val = df1_val["fm1"].to_numpy()
+    X_test = df1_test[params.features_list]
+    y_test = df1_test["fm1"].to_numpy()
+
+    # Scale using saved scaler object from RNN, reshape val and test to 3d array
+    X_train_scaled = scaler.transform(X_train)
+    
+    XX_val = scaler.transform(X_val)
+    XX_val = XX_val.reshape(1, *XX_val.shape)
+    yy_val = y_val[np.newaxis, :, np.newaxis]
+    
+    XX_test = scaler.transform(X_test)
+    XX_test = XX_test.reshape(1, *XX_test.shape)
+
+    # Build training samples
+    X_train_samples, y_train_samples, masks = build_training_batches_univariate(X = X_train_scaled, y=y_train)
+    print(f"    {X_train_samples.shape=}")
+
+    bf_grid = np.linspace(conf.fm1_bf_low, conf.fm1_bf_high, num=conf.ngrid).round(4)
+    bi_grid = np.linspace(conf.fm1_bi_low, conf.fm1_bi_high, num=conf.ngrid).round(4)
+    fm1_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
+    print()
+    print(f"N time-warp Param Combos: {len(fm1_grid)}")
+
+    #d Loop over param grids, fit to training data w early stop, calculate RMSE on val
+    results_1 = {}
+    for i, bs in enumerate(fm1_grid):
+        print("~"*50)
+        print(f"FM1 Param Combo {i+1} out of {len(fm1_grid)}")
+        print(f"Params: {bs}")    
+        weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
+        rnn.get_layer("lstm").set_weights(weightsi)
+        rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
+        
+        print(f"Predicting Val Set")
+        preds = rnn.predict(XX_val)
+        val_mse = np.float32(mse_masked(y_val.flatten(), preds.flatten()))
+        print(f"    {val_mse=}")
+        results_1[i]={}
+        results_1[i]["val_rmse"] = np.sqrt(val_mse)
+        results_1[i]["params"] = bs
+        results_1[i]["preds"] = preds  
+
+
+    # Find min val_rmse case
+    fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["val_rmse"])
+    fm1_best = results_1[fm1_best_key]
+    print()
+    print("Best Config from Val Error:")
+    print(f"Min Val RMSE: {np.round(fm1_best['val_rmse'], 4)}")
+    print(f"Time-Warp Params: {fm1_best['params']}")
+
     # Compute Test Error and save, using params
     weights1 = warp_weights(weights10, bi_warp = fm1_best["params"]["bi"], bf_warp = fm1_best["params"]["bf"])
     rnn.get_layer("lstm").set_weights(weights1)
     preds1 = rnn.predict(XX_test)
 
     # Interp to exact time of observed data
-    inds= np.where(y_test != -9999)
+    inds= np.where(y_test != -9999)[0]
     preds2 = time_intp(
         t1 = df1_test.utc.to_numpy(),
         v1 = preds1.flatten(),
@@ -228,13 +453,7 @@ if __name__ == '__main__':
     inds2 = np.where(y_test2<=30)[0]
     fm1_best["test_rmse_30"] = np.sqrt(mean_squared_error(y_test2[inds2], preds2[inds2]))
     fm1_best["test_bias_30"]        = np.mean(y_test2[inds2] - preds2[inds2])
-    fm1_best["test_r2_30"]          = r2_score(y_test2[inds2], preds2[inds2])    
-    
-    breakpoint()
-    
-
-
-
+    fm1_best["test_r2_30"]          = r2_score(y_test2[inds2], preds2[inds2])   
 
 
 
