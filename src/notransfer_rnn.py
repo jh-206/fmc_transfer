@@ -1,5 +1,5 @@
-# Executable module to run transfer analysis 
-# Baseline XGBoost regression fit to data
+# Executable module to run directly train RNN on Oklahoma field data
+# No pretrain, no transfer
 
 import numpy as np
 import pandas as pd
@@ -12,6 +12,7 @@ import joblib
 import pickle
 from itertools import product
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 # Set Project Paths
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,38 +27,14 @@ DATA_DIR = osp.join(PROJECT_ROOT, "data")
 from utils import read_yml, Dict, time_range, time_intp
 from models import moisture_rnn as mrnn
 import reproducibility
-from models.moisture_static import XGB, LM
+from models.moisture_rnn import RNN_Flexible, mse_masked, build_training_batches_univariate, scale_3d
 
 # Metadata files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-params_xgb = Dict(read_yml(osp.join(CONFIG_DIR, "params_static.yaml"), subkey="xgb"))
-params_lm = Dict(read_yml(osp.join(CONFIG_DIR, "params_static.yaml"), subkey="lm"))
+params = Dict(read_yml(osp.join(PROJECT_ROOT, "models/params.yaml")))
 
 
-# Module Code
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-def calc_metrics(y_true: np.ndarray, y_pred: np.ndarray, mask: np.ndarray | None = None) -> dict:
-    """
-    Helper func =eturns rmse, r2, bias using NaN-safe means.
-    - NaNs are excluded based on y_true.
-    - Optional `mask` further subsets the valid points.
-    """
-    valid = ~np.isnan(y_true)
-    if mask is not None:
-        valid = valid & mask
-
-    # If no valid points, return NaNs (keeps downstream code from crashing unexpectedly)
-    if not np.any(valid):
-        return {"rmse": np.nan, "r2": np.nan, "bias": np.nan, "n": 0}
-
-    err = y_pred[valid] - y_true[valid]
-    mse = np.mean(err**2)              # safe: err has no NaN
-    bias = np.mean(y_true[valid] - y_pred[valid])
-    r2 = r2_score(y_true[valid], y_pred[valid])
-
-    return {"rmse": np.sqrt(mse), "r2": r2, "bias": bias, "n": int(np.sum(valid))}
 
 
 # Executed Code
@@ -74,12 +51,13 @@ if __name__ == '__main__':
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     confpath = sys.argv[1]
     conf = Dict(read_yml(confpath))
-    output_dir = osp.join(conf.output_dir, "transfer_baseline_static")
+    output_dir = osp.join(conf.output_dir, "notransfer_rnn")
     os.makedirs(output_dir, exist_ok=True)
     print(f"~"*50)
     print(f"Running Transfer-Learning, No-Fine-Tune with config file: {confpath}")
     print(f"~"*50)
-    reproducibility.set_seed(11001000) # arbitrary, made it by combining 1-100-1000
+    seed = 11001000 # arbitrary, made it by combining 1-100-1000
+    reproducibility.set_seed(seed) 
     
     # Time params
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,8 +80,7 @@ if __name__ == '__main__':
     fm1000 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_1000h.xlsx"))
 
     # Set up output object
-    xgb_results = {}
-    lm_results = {}
+    results = {}
     
     # FM1
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,44 +97,73 @@ if __name__ == '__main__':
     df1["elev"] = conf.ok_elev
     df1["lon"] = conf.ok_lon
     df1["lat"] = conf.ok_lat
-
-    # For training set, static models can only use the particular hours that the FMC exist, very sparse
-    # For test set, we can still generate predictions for each hour and examine resulting time series
-    df1_train = df1[(df1.utc >= conf.train_start) & (df1.utc <= conf.val_end)]
-    df1_train = df1_train[df1_train.fm1.notna()]
+    df1["fm1"] = df1["fm1"].fillna(-9999)
+    
+    df1_train = df1[(df1.utc >= conf.train_start) & (df1.utc <= conf.train_end)]
+    df1_val   = df1[(df1.utc >= conf.val_start) & (df1.utc <= conf.val_end)]
     df1_test  = df1[(df1.utc >= conf.f_start) & (df1.utc <= conf.f_end)]
     print(f"    {df1_train.shape=}")
+    print(f"    {df1_val.shape=}")
     print(f"    {df1_test.shape=}")
-    X_train = df1_train[params_xgb.features_list]
+    X_train = df1_train[params.features_list]
     y_train = df1_train["fm1"].to_numpy()
-    X_test = df1_test[params_xgb.features_list]
+    X_val = df1_val[params.features_list]
+    y_val = df1_val["fm1"].to_numpy()
+    X_test = df1_test[params.features_list]
     y_test = df1_test["fm1"].to_numpy()
-    
-    # Fit XGB
-    xgb_fm1 = XGB(params=params_xgb)
-    xgb_fm1.fit(X_train, y_train)
-    preds1 = xgb_fm1.predict(X_test)
-    base_metrics = calc_metrics(y_test, preds1)
-    lt30_metrics = calc_metrics(y_test, preds1, mask=(y_test <= 30))
-    xgb_results["FM1"] = {
-        "preds1": preds1,
-        "base": base_metrics,
-        "lt30": lt30_metrics,
-    }
-    
 
-    # Fit LM
-    lm_fm1 = LM(params=params_lm)
-    lm_fm1.fit(X_train, y_train)    
-    preds1 = lm_fm1.predict(X_test)
-    base_metrics = calc_metrics(y_test, preds1)
-    lt30_metrics = calc_metrics(y_test, preds1, mask=(y_test <= 30))
-    lm_results["FM1"] = {
-        "preds1": preds1,
-        "base": base_metrics,
-        "lt30": lt30_metrics,
-    }
+    # Scale by fitting scaler
+    scaler = StandardScaler()
+    scaler.fit(X_train)
+    X_train_scaled = scaler.transform(X_train)    
+    
+    XX_val = scaler.transform(X_val)
+    XX_val = XX_val.reshape(1, *XX_val.shape)
+    yy_val = y_val[np.newaxis, :, np.newaxis]
+    
+    XX_test = scaler.transform(X_test)
+    XX_test = XX_test.reshape(1, *XX_test.shape)
+    
+    # Build Samples
+    X_train_samples, y_train_samples, masks = build_training_batches_univariate(X = X_train_scaled, y=y_train)
+    print(f"    {X_train_samples.shape=}")
+    
+    # Build RNN and Train
+    rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
+    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
+    # Predict Test
+    preds1 = rnn.predict(XX_test)
+    
+    # Interp to exact time of observed data
+    inds= np.where(y_test != -9999)[0]
+    preds2 = time_intp(
+        t1 = df1_test.utc.to_numpy(),
+        v1 = preds1.flatten(),
+        t2 = df1_test.utc_prov.iloc[inds].to_numpy()
+    )
+
+    # Calc accuracy in output object
+    results = {}
+    results["FM1"] = {}
+    # Accuracy
+    results["FM1"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
+    results["FM1"]["bias"]        = np.mean(y_test[inds] - preds2)
+    results["FM1"]["r2"]          = r2_score(y_test[inds], preds2)
+
+    # Accuracy <=30
+    y_test2 = y_test[inds]
+    inds2 = np.where(y_test2<=30)[0]
+    results["FM1"]["rmse_30"] = np.sqrt(mean_squared_error(y_test2[inds2], preds2[inds2]))
+    results["FM1"]["bias_30"]        = np.mean(y_test2[inds2] - preds2[inds2])
+    results["FM1"]["r2_30"]          = r2_score(y_test2[inds2], preds2[inds2])    
+    results["FM1"]["preds1"] = preds1
+    results["FM1"]["preds1_intp"] = preds2
+    print("FM1 Accuracy Metrics Test Set")
+    print(f'    RMSE: {results["FM1"]["rmse"]}')
+    print(f'    RMSE 30: {results["FM1"]["rmse_30"]}')
+
+    
     # FM10
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print(f"~"*50)
@@ -173,151 +179,225 @@ if __name__ == '__main__':
     df10["elev"] = conf.ok_elev
     df10["lon"] = conf.ok_lon
     df10["lat"] = conf.ok_lat
-
-    # For training set, static models can only use the particular hours that the FMC exist, very sparse
-    # For test set, we can still generate predictions for each hour and examine resulting time series
-    df10_train = df10[(df10.utc >= conf.train_start) & (df10.utc <= conf.val_end)]
-    df10_train = df10_train[df10_train.fm10.notna()]
+    df10["fm10"] = df10["fm10"].fillna(-9999)
+    
+    df10_train = df10[(df10.utc >= conf.train_start) & (df10.utc <= conf.train_end)]
+    df10_val   = df10[(df10.utc >= conf.val_start) & (df10.utc <= conf.val_end)]
     df10_test  = df10[(df10.utc >= conf.f_start) & (df10.utc <= conf.f_end)]
     print(f"    {df10_train.shape=}")
+    print(f"    {df10_val.shape=}")
     print(f"    {df10_test.shape=}")
-    X_train = df10_train[params_xgb.features_list]
+    X_train = df10_train[params.features_list]
     y_train = df10_train["fm10"].to_numpy()
-    X_test = df10_test[params_xgb.features_list]
+    X_val = df10_val[params.features_list]
+    y_val = df10_val["fm10"].to_numpy()
+    X_test = df10_test[params.features_list]
     y_test = df10_test["fm10"].to_numpy()
-    
-    # Fit XGB
-    xgb_fm10 = XGB(params=params_xgb)
-    xgb_fm10.fit(X_train, y_train)
-    preds10 = xgb_fm10.predict(X_test)
-    base_metrics = calc_metrics(y_test, preds10)
-    lt30_metrics = calc_metrics(y_test, preds10, mask=(y_test <= 30))
-    xgb_results["FM10"] = {
-        "preds10": preds10,
-        "base": base_metrics,
-        "lt30": lt30_metrics,
-    }
 
-    # Fit LM
-    lm_fm10 = LM(params=params_lm)
-    lm_fm10.fit(X_train, y_train)    
-    preds10 = lm_fm10.predict(X_test)
-    base_metrics = calc_metrics(y_test, preds10)
-    lt30_metrics = calc_metrics(y_test, preds10, mask=(y_test <= 30))
-    lm_results["FM10"] = {
-        "preds10": preds10,
-        "base": base_metrics,
-        "lt30": lt30_metrics,
-    }
+    # Scale by fitting scaler
+    scaler = StandardScaler()
+    scaler.fit(X_train)
+    X_train_scaled = scaler.transform(X_train)    
     
+    XX_val = scaler.transform(X_val)
+    XX_val = XX_val.reshape(1, *XX_val.shape)
+    yy_val = y_val[np.newaxis, :, np.newaxis]
     
+    XX_test = scaler.transform(X_test)
+    XX_test = XX_test.reshape(1, *XX_test.shape)
+    
+    # Build Samples
+    X_train_samples, y_train_samples, masks = build_training_batches_univariate(X = X_train_scaled, y=y_train)
+    print(f"    {X_train_samples.shape=}")
+    
+    # Build RNN and Train
+    rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
+    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
+
+    # Predict Test
+    preds10 = rnn.predict(XX_test)
+    
+    # Interp to exact time of observed data
+    inds= np.where(y_test != -9999)[0]
+    preds2 = time_intp(
+        t1 = df10_test.utc.to_numpy(),
+        v1 = preds10.flatten(),
+        t2 = df10_test.utc_prov.iloc[inds].to_numpy()
+    )
+
+    # Calc accuracy in output object
+    results = {}
+    results["FM10"] = {}
+    # Accuracy
+    results["FM10"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
+    results["FM10"]["bias"]        = np.mean(y_test[inds] - preds2)
+    results["FM10"]["r2"]          = r2_score(y_test[inds], preds2)
+
+    # Accuracy <=30
+    y_test2 = y_test[inds]
+    inds2 = np.where(y_test2<=30)[0]
+    results["FM10"]["rmse_30"] = np.sqrt(mean_squared_error(y_test2[inds2], preds2[inds2]))
+    results["FM10"]["bias_30"]        = np.mean(y_test2[inds2] - preds2[inds2])
+    results["FM10"]["r2_30"]          = r2_score(y_test2[inds2], preds2[inds2])    
+    results["FM10"]["preds10"] = preds10
+    results["FM10"]["preds10_intp"] = preds2
+    print("FM10 Accuracy Metrics Test Set")
+    print(f'    RMSE: {results["FM10"]["rmse"]}')
+    print(f'    RMSE 30: {results["FM10"]["rmse_30"]}')    
+
+
+
     # FM100
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print(f"~"*50)
     print(f"FM100 Train")
-    
+
     # Combine weather and fm, fill na, add geographic features
     df100 = weather.merge(
         fm100[["utc_rounded", "utc_prov", "fm100"]],
         left_on="utc",
         right_on="utc_rounded",
-        how="inner"
-    ).drop(columns="utc_rounded")    
+        how="left"
+    ).drop(columns="utc_rounded")
     df100["elev"] = conf.ok_elev
     df100["lon"] = conf.ok_lon
     df100["lat"] = conf.ok_lat
+    df100["fm100"] = df100["fm100"].fillna(-9999)
     
-    # For training set, static models can only use the particular hours that the FMC exist, very sparse
-    # For test set, we can still generate predictions for each hour and examine resulting time series
-    df100_train = df100[(df100.utc >= conf.train_start) & (df100.utc <= conf.val_end)]
-    df100_train = df100_train[df100_train.fm100.notna()]
+    df100_train = df100[(df100.utc >= conf.train_start) & (df100.utc <= conf.train_end)]
+    df100_val   = df100[(df100.utc >= conf.val_start) & (df100.utc <= conf.val_end)]
     df100_test  = df100[(df100.utc >= conf.f_start) & (df100.utc <= conf.f_end)]
     print(f"    {df100_train.shape=}")
+    print(f"    {df100_val.shape=}")
     print(f"    {df100_test.shape=}")
-    X_train = df100_train[params_xgb.features_list]
+    X_train = df100_train[params.features_list]
     y_train = df100_train["fm100"].to_numpy()
-    X_test = df100_test[params_xgb.features_list]
+    X_val = df100_val[params.features_list]
+    y_val = df100_val["fm100"].to_numpy()
+    X_test = df100_test[params.features_list]
     y_test = df100_test["fm100"].to_numpy()
-    
-    # Fit XGB
-    xgb_fm100 = XGB(params=params_xgb)
-    xgb_fm100.fit(X_train, y_train)
-    preds100 = xgb_fm100.predict(X_test)
-    base_metrics = calc_metrics(y_test, preds100)
-    xgb_results["FM100"] = {
-        "preds100": preds100,
-        "base": base_metrics
-    }
-    
 
-    # Fit LM
-    lm_fm100 = LM(params=params_lm)
-    lm_fm100.fit(X_train, y_train)    
-    preds100 = lm_fm100.predict(X_test)
-    base_metrics = calc_metrics(y_test, preds100)
-    lm_results["FM100"] = {
-        "preds100": preds100,
-        "base": base_metrics
-    }   
+    # Scale by fitting scaler
+    scaler = StandardScaler()
+    scaler.fit(X_train)
+    X_train_scaled = scaler.transform(X_train)    
+    
+    XX_val = scaler.transform(X_val)
+    XX_val = XX_val.reshape(1, *XX_val.shape)
+    yy_val = y_val[np.newaxis, :, np.newaxis]
+    
+    XX_test = scaler.transform(X_test)
+    XX_test = XX_test.reshape(1, *XX_test.shape)
+    
+    # Build Samples
+    X_train_samples, y_train_samples, masks = build_training_batches_univariate(X = X_train_scaled, y=y_train)
+    print(f"    {X_train_samples.shape=}")
+    
+    # Build RNN and Train
+    rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
+    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
+
+    # Predict Test
+    preds100 = rnn.predict(XX_test)
+    
+    # Interp to exact time of observed data
+    inds= np.where(y_test != -9999)[0]
+    preds2 = time_intp(
+        t1 = df100_test.utc.to_numpy(),
+        v1 = preds100.flatten(),
+        t2 = df100_test.utc_prov.iloc[inds].to_numpy()
+    )
+
+    # Calc accuracy in output object
+    results = {}
+    results["FM100"] = {}
+    # Accuracy
+    results["FM100"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
+    results["FM100"]["bias"]        = np.mean(y_test[inds] - preds2)
+    results["FM100"]["r2"]          = r2_score(y_test[inds], preds2)
+
+    print("FM100 Accuracy Metrics Test Set")
+    print(f'    RMSE: {results["FM100"]["rmse"]}')
+
 
     # FM1000
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print(f"~"*50)
     print(f"FM1000 Train")
-    
+
     # Combine weather and fm, fill na, add geographic features
     df1000 = weather.merge(
         fm1000[["utc_rounded", "utc_prov", "fm1000"]],
         left_on="utc",
         right_on="utc_rounded",
-        how="inner"
-    ).drop(columns="utc_rounded")    
+        how="left"
+    ).drop(columns="utc_rounded")
     df1000["elev"] = conf.ok_elev
     df1000["lon"] = conf.ok_lon
     df1000["lat"] = conf.ok_lat
+    df1000["fm1000"] = df1000["fm1000"].fillna(-9999)
     
-    # For training set, static models can only use the particular hours that the FMC exist, very sparse
-    # For test set, we can still generate predictions for each hour and examine resulting time series
-    df1000_train = df1000[(df1000.utc >= conf.train_start) & (df1000.utc <= conf.val_end)]
-    df1000_train = df1000_train[df1000_train.fm1000.notna()]
+    df1000_train = df1000[(df1000.utc >= conf.train_start) & (df1000.utc <= conf.train_end)]
+    df1000_val   = df1000[(df1000.utc >= conf.val_start) & (df1000.utc <= conf.val_end)]
     df1000_test  = df1000[(df1000.utc >= conf.f_start) & (df1000.utc <= conf.f_end)]
     print(f"    {df1000_train.shape=}")
+    print(f"    {df1000_val.shape=}")
     print(f"    {df1000_test.shape=}")
-    X_train = df1000_train[params_xgb.features_list]
+    X_train = df1000_train[params.features_list]
     y_train = df1000_train["fm1000"].to_numpy()
-    X_test = df1000_test[params_xgb.features_list]
+    X_val = df1000_val[params.features_list]
+    y_val = df1000_val["fm1000"].to_numpy()
+    X_test = df1000_test[params.features_list]
     y_test = df1000_test["fm1000"].to_numpy()
+
+    # Scale by fitting scaler
+    scaler = StandardScaler()
+    scaler.fit(X_train)
+    X_train_scaled = scaler.transform(X_train)    
     
-    # Fit XGB
-    xgb_fm1000 = XGB(params=params_xgb)
-    xgb_fm1000.fit(X_train, y_train)
-    preds1000 = xgb_fm1000.predict(X_test)
-    base_metrics = calc_metrics(y_test, preds1000)
-    xgb_results["FM1000"] = {
-        "preds1000": preds1000,
-        "base": base_metrics
-    }
+    XX_val = scaler.transform(X_val)
+    XX_val = XX_val.reshape(1, *XX_val.shape)
+    yy_val = y_val[np.newaxis, :, np.newaxis]
+    
+    XX_test = scaler.transform(X_test)
+    XX_test = XX_test.reshape(1, *XX_test.shape)
+    
+    # Build Samples
+    X_train_samples, y_train_samples, masks = build_training_batches_univariate(X = X_train_scaled, y=y_train)
+    print(f"    {X_train_samples.shape=}")
+    
+    # Build RNN and Train
+    rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
+    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
+
+    # Predict Test
+    preds1000 = rnn.predict(XX_test)
+    
+    # Interp to exact time of observed data
+    inds= np.where(y_test != -9999)[0]
+    preds2 = time_intp(
+        t1 = df1000_test.utc.to_numpy(),
+        v1 = preds1000.flatten(),
+        t2 = df1000_test.utc_prov.iloc[inds].to_numpy()
+    )
+
+    # Calc accuracy in output object
+    results = {}
+    results["FM1000"] = {}
+    # Accuracy
+    results["FM1000"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
+    results["FM1000"]["bias"]        = np.mean(y_test[inds] - preds2)
+    results["FM1000"]["r2"]          = r2_score(y_test[inds], preds2)
+
+    print("FM1000 Accuracy Metrics Test Set")
+    print(f'    RMSE: {results["FM1000"]["rmse"]}')
+    
     
 
-    # Fit LM
-    lm_fm1000 = LM(params=params_lm)
-    lm_fm1000.fit(X_train, y_train)    
-    preds1000 = lm_fm1000.predict(X_test)
-    base_metrics = calc_metrics(y_test, preds1000)
-    lm_results["FM1000"] = {
-        "preds1000": preds1000,
-        "base": base_metrics
-    }   
-
-    
+    # Write Output
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Output
-    out_file = osp.join(output_dir, "results_xgb_testset.pkl")
+    out_file = osp.join(output_dir, "results_test_set.pkl")
     print(f"Writing Output to: {out_file}")
     with open(out_file, "wb") as f:
-        pickle.dump(xgb_results, f, protocol=pickle.HIGHEST_PROTOCOL)
-
-    out_file = osp.join(output_dir, "results_lm_testset.pkl")
-    print(f"Writing Output to: {out_file}")
-    with open(out_file, "wb") as f:
-        pickle.dump(lm_results, f, protocol=pickle.HIGHEST_PROTOCOL)
-
+        pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
