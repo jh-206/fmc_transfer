@@ -1,5 +1,5 @@
-# Executable module to run transfer analysis 
-# Fine tuning on observed FM data
+# Executable module to run transfer analysis
+# Only fine-tuning the time-warp shifts, all other weights frozen
 # Methodology: for each fuel class construct grid of time warp params, modify LSTM weights. Then, fine tune with training samples. Allowing all weights to update
 # Compare accuracy in validation set, pick best model.
 # Final accuracy estimate on test set.
@@ -224,8 +224,8 @@ if __name__ == '__main__':
         results_1[i]["bias"] = bias
         results_1[i]["r2"] = r2
 
-        # Accuracy <30
-        inds = np.where(df.fm1<30)[0]
+        # Accuracy <=30
+        inds = np.where(df.fm1<=30)[0]
         rmse_30 = np.sqrt(mean_squared_error(df.fm1.iloc[inds], df.preds.iloc[inds]))
         bias_30 = np.mean(df.fm1.iloc[inds] - df.preds.iloc[inds])
         r2_30   = r2_score(df.fm1.iloc[inds], df.preds.iloc[inds])
@@ -236,7 +236,7 @@ if __name__ == '__main__':
 
         print(f"Accuracy Metrics:")
         print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
-        print(f"RMSE (FM1<30): {rmse_30.round(4)},   R2 (FM1<30): {np.round(r2_30, 4)}")
+        print(f"RMSE (FM1<=30): {rmse_30.round(4)},   R2 (FM1<=30): {np.round(r2_30, 4)}")
 
         
     # Output
@@ -250,7 +250,7 @@ if __name__ == '__main__':
     fm1_best = results_1[fm1_best_key]
     print()
     print("Best Config from Training Error:")
-    print(f"Min Training RMSE (FM1<30): {np.round(fm1_best['rmse_30'], 4)}")
+    print(f"Min Training RMSE (FM1<=30): {np.round(fm1_best['rmse_30'], 4)}")
     print(f"Time-Warp Params: {fm1_best['params']}")
     
     # FM100
@@ -422,8 +422,8 @@ if __name__ == '__main__':
     rmse = np.sqrt(mean_squared_error(df.fm1, df.preds))
     bias = np.mean(df.fm1 - df.preds)
     r2   = r2_score(df.fm1, df.preds)  
-    # Accuracy <30
-    inds = np.where(df.fm1<30)[0]
+    # Accuracy <=30
+    inds = np.where(df.fm1<=30)[0]
     rmse_30 = np.sqrt(mean_squared_error(df.fm1.iloc[inds], df.preds.iloc[inds]))
     bias_30 = np.mean(df.fm1.iloc[inds] - df.preds.iloc[inds])
     r2_30   = r2_score(df.fm1.iloc[inds], df.preds.iloc[inds])
@@ -504,7 +504,7 @@ if __name__ == '__main__':
 
     print()
     print("Accuracy Metrics:")
-    print(f"    FM1 RMSE (<30): {results_test['FM1']['rmse_30']}")
+    print(f"    FM1 RMSE (<=30): {results_test['FM1']['rmse_30']}")
     print(f"    FM100 RMSE: {results_test['FM100']['rmse']}")
     print(f"    FM1000 RMSE: {results_test['FM1000']['rmse']}")
     
