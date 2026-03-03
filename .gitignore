@@ -5,5 +5,5 @@ __pycache__/
 .vend/
 .virtual_documents/
 data/
-models/
+/models/
 outputs/
