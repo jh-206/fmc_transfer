@@ -53,9 +53,15 @@ To create the files `fm1_results.pkl`, `f100 this _results.pkl`, `fm1000_results
 
 Then, tables and figures of results can be recreated with `analyze_transfer_results.ipynb`
 
-### Transfer Baselines - Static Models
+### No Transfer Baselines - Static Models
 
-`python src/transfer_baselines.py etc/thesis_config.yaml`
+`python src/notransfer_static.py etc/thesis_config.yaml`
 
 `analyze_static_results.ipynb`
+
+### No Transfer Baselines - RNN Direct Train
+
+`python src/notransfer_rnn.py etc/thesis_config.yaml`
+
+
 
