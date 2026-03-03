@@ -1,10 +1,8 @@
 # Executable module to run transfer analysis 
-# All weights frozen - only time-warp param fit
-# Methodology: for each fuel class construct grid of time warp params, modify LSTM and generate predictions
-### for training+validation period. Pick best fitting accuracy. Generate predictions for test set and compute as final accuracy
-# No fine-tuning, only the time-warp param is fit
-# This method doesn't utilize a train/validation set split, so combining them together
-# Fine-tuning requires the validation set split
+# Full fine-tune, no freezing
+# Methodology: for each fuel class construct grid of time warp params, modify LSTM, run fit on training set
+    # Pick best time warp on val set
+    # Predict test set for accuracy
 
 import numpy as np
 import pandas as pd
@@ -307,7 +305,7 @@ if __name__ == '__main__':
         validation_data=(XX_val, yy_val),
         batch_size=params.batch_size,
         epochs=params.epochs,
-        verbose_fit=False,
+        verbose_fit=True,
         plot_history=False,
     )
 
@@ -450,7 +448,7 @@ if __name__ == '__main__':
         validation_data=(XX_val, yy_val),
         batch_size=params.batch_size,
         epochs=params.epochs,
-        verbose_fit=False,
+        verbose_fit=True,
         plot_history=False,
     )
 
@@ -577,7 +575,7 @@ if __name__ == '__main__':
         validation_data=(XX_val, yy_val),
         batch_size=params.batch_size,
         epochs=params.epochs,
-        verbose_fit=False,
+        verbose_fit=True,
         plot_history=False,
     )
 

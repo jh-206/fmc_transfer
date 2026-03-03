@@ -1,4 +1,4 @@
-# Executable module to run transfer analysis
+# Executable module to run transfer analysis with no fine-tune
 # Only fine-tuning the time-warp shifts, all other weights frozen
 # Methodology: for each fuel class construct grid of time warp params, modify LSTM weights. Then, fine tune with training samples. Allowing all weights to update
 # Compare accuracy in validation set, pick best model.
@@ -89,7 +89,8 @@ if __name__ == '__main__':
     print(f"~"*50)
     print(f"Running Transfer-Learning, No-Fine-Tune with config file: {confpath}")
     print(f"~"*50)
-    reproducibility.set_seed(11001000) # arbitrary, made it by combining 1-100-1000
+    seed = 11001000 # arbitrary, made it by combining 1-100-1000
+    reproducibility.set_seed(seed) 
     
     # Time params
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
