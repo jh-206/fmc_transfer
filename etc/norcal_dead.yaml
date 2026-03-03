@@ -2,8 +2,8 @@
 # 
 # Code will save to outdir with standard naming
 
-startDate: "2023-01-01T00:00:00+00"
-endDate: "2023-12-31T23:00:00+00"
+startDate: "2021-01-01T00:00:00+00"
+endDate: "2021-12-31T23:00:00+00"
 bbox: "[37, -124, 42, -119.5]"
 fuelTypes:
   - "1-Hour"

@@ -1,6 +1,8 @@
-# Executable module to retrieve and save dead FEMS data
+# Executable module to join FEMS samples with HRRR atmospheric data
+# Assumes HRRR data stashed, code in project ml_fmda
+# Assumes FEMS retrieved with retrieve_fems.sh and config file
 # 
-# Main tools fems_api.py modified from fems_wirc.py provided by Angel and Chase
+
 
 import requests as requests
 import pandas as pd
@@ -21,13 +23,11 @@ CONFIG_DIR = osp.join(PROJECT_ROOT, "etc")
 # Local Modules
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import fems_api as fems
-from utils import read_yml, Dict, time_range, str2time
+from utils import read_yml, Dict
 
 # Metadata files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-fuels = read_yml(osp.join(CONFIG_DIR, "fuels.yaml")) # Created with fems_api/get_fuel_types()
-deads = [k for k in fuels if fuels[k]["category"] == "Dead"]
 gaccs = read_yml(osp.join(CONFIG_DIR, "gaccs.yaml")) # BBox from NIFC, copied from wrfxpy rtma_cycler
 
 # Module Functions
@@ -56,25 +56,14 @@ if __name__ == '__main__':
     if len(sys.argv) != 2:
         print(f"Invalid arguments. {len(sys.argv)} was given but 1 expected")
         print(f"Usage: {sys.argv[0]} <config_path>")
-        print("Example: python retrieve_fems_dead.py etc/test_dead.yaml")
+        print("Example: python retrieve_fems_dead.py data/test.csv")
         sys.exit(-1)  
 
-    confpath = sys.argv[1]
-    conf = Dict(read_yml(confpath))
-    outdir = conf.outdir
-    # Handle outpath
-    os.makedirs(osp.join(outdir, conf.name), exist_ok=True)
-    t0 = pd.to_datetime(conf.startDate)
-    t1 = pd.to_datetime(conf.endDate)
-    outpath = osp.join(outdir, conf.name, f"{conf.name}_{t0.strftime('%Y%m%d')}-{t1.strftime('%Y%m%d')}.csv")
-    if osp.exists(outpath):
-        print(f"Output already exists at {outpath}")
-        #sys.exit(0)
-
-
-    if not conf.fuelTypes == deads:
-        print(f"Warning: fuelTypes in configuration ({conf.fuelTypes}) do not match expected values {deads}. Check for missing or extra fuel categories.")
-
+    conf = read_yml(sys.argv[1])
+    
+    
+    
+    
     # Get sites in config bbox
     if "bbox" in conf:
         conf.update({"bbox": parse_bbox(conf.bbox)})
@@ -82,6 +71,7 @@ if __name__ == '__main__':
     else:
         stids = fems.get_all_sites(source="stash", stash_path = "data/fems_sts.xlsx")
 
+    
     # Query over all sites
     print(f"Retrieving FEMS samples with config: {confpath}")
     print(f"Writing Data to {outpath}")
@@ -95,8 +85,6 @@ if __name__ == '__main__':
     df = df.join(pd.json_normalize(df['fuel'])).drop(columns="fuel")
     stids = stids[['longitude', 'latitude', 'elevation', 'timeZone', "siteId", "siteName", "stateId", "slope", "aspect", "rawsId", "raws"]]
     df = df.merge(stids, left_on="site_id", right_on="siteId", how="left")
-    
-    
     print(f"Writing Data to {outpath}")
     os.makedirs(osp.dirname(outpath), exist_ok = True)
     if df.shape[0] > 0:
