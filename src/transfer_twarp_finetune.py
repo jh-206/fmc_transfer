@@ -29,7 +29,7 @@ DATA_DIR = osp.join(PROJECT_ROOT, "data")
 # Local Modules
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 from utils import read_yml, Dict, time_range, time_intp
-from models import moisture_rnn as mrnn
+from models.moisture_rnn import RNN_Flexible, mse_masked, build_training_batches_univariate
 import reproducibility
 
 # Metadata files
@@ -107,8 +107,10 @@ if __name__ == '__main__':
 
     # RNN
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    params = read_yml(osp.join(conf.rnn_dir, "params.yaml"))
-    rnn = mrnn.RNN_Flexible(params=params)
+    params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
+    seed = 42
+    reproducibility.set_seed(seed)
+    rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
     scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
     rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras'))
     ## Extract LSTM weights
@@ -124,416 +126,126 @@ if __name__ == '__main__':
     fm100 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_100h.xlsx"))
     fm1000 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_1000h.xlsx"))
     
-    # Build Data
+    # FM1
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # Geographic Variables from Slapout station
-    # NOTE: combining train and val periods, this method doesn't need train/val split
-    wtrain = weather[(weather.utc >= conf.train_start) & (weather.utc <= conf.train_end)]
-    wval = weather[(weather.utc >= conf.val_start) & (weather.utc <= conf.val_end)]
-    wtest  = weather[(weather.utc >= conf.f_start) & (weather.utc <= conf.f_end)]
-    wtrain.to_csv(osp.join(output_dir, "weather_train.csv"), index=False)
-    wval.to_csv(osp.join(output_dir, "weather_val.csv"), index=False)
-    wtest.to_csv(osp.join(output_dir, "weather_test.csv"), index=False)
-    
-    X_train = pd.DataFrame({
-        "Ed": wtrain.Ed,
-        "Ew": wtrain.Ew,
-        "solar": wtrain["solar"],
-        "wind": wtrain["wind"],
-        "elev": conf.ok_elev,
-        "lon": conf.ok_lon,
-        "lat": conf.ok_lat,
-        "rain": wtrain["rain"],
-        "hod": wtrain.hod_utc,
-        "doy": wtrain.doy_utc
-    })
-    X_val = pd.DataFrame({
-        "Ed": wval.Ed,
-        "Ew": wval.Ew,
-        "solar": wval["solar"],
-        "wind": wval["wind"],
-        "elev": conf.ok_elev,
-        "lon": conf.ok_lon,
-        "lat": conf.ok_lat,
-        "rain": wval["rain"],
-        "hod": wval.hod_utc,
-        "doy": wval.doy_utc
-    })    
-    X_test = pd.DataFrame({
-        "Ed": wtest.Ed,
-        "Ew": wtest.Ew,
-        "solar": wtest["solar"],
-        "wind": wtest["wind"],
-        "elev": conf.ok_elev,
-        "lon": conf.ok_lon,
-        "lat": conf.ok_lat,
-        "rain": wtest["rain"],
-        "hod": wtest.hod_utc,
-        "doy": wtest.doy_utc
-    })
+    print(f"~"*50)
+    print(f"FM1 Train")
 
+    # Combine weather and fm, fill na, add geographic features
+    df1 = weather.merge(
+        fm1[["utc_rounded", "utc_prov", "fm1"]],
+        left_on="utc",
+        right_on="utc_rounded",
+        how="left"
+    ).drop(columns="utc_rounded")
+    df1["elev"] = conf.ok_elev
+    df1["lon"] = conf.ok_lon
+    df1["lat"] = conf.ok_lat
+    df1["fm1"] = df1["fm1"].fillna(-9999)
     
-    assert X_train.columns.equals(pd.Index(params['features_list'])), f"Features list doesn't match built data columns, {params['features_list']=}, \n {X_train.columns}"
-    assert X_train.columns.equals(X_val.columns), f"Train and Val columns don't match, {X_train.columns=}, \n, {X_val.columns}"
-    assert X_train.columns.equals(X_test.columns), f"Train and Test columns don't match, {X_train.columns=}, \n, {X_test.columns}"
+    df1_train = df1[(df1.utc >= conf.train_start) & (df1.utc <= conf.train_end)]
+    df1_val   = df1[(df1.utc >= conf.val_start) & (df1.utc <= conf.val_end)]
+    df1_test  = df1[(df1.utc >= conf.f_start) & (df1.utc <= conf.f_end)]
+    print(f"    {df1_train.shape=}")
+    print(f"    {df1_val.shape=}")
+    print(f"    {df1_test.shape=}")
+    X_train = df1_train[params.features_list]
+    y_train = df1_train["fm1"].to_numpy()
+    X_val = df1_val[params.features_list]
+    y_val = df1_val["fm1"].to_numpy()
+    X_test = df1_test[params.features_list]
+    y_test = df1_test["fm1"].to_numpy()
 
+    # Scale using saved scaler object from RNN, reshape val and test to 3d array
+    X_train_scaled = scaler.transform(X_train)
     
-    # Scale using saved scaler object from RNN, reshape to 3d array
-    XX_train = scaler.transform(X_train)
-    XX_train = XX_train.reshape(1, *XX_train.shape)
-
     XX_val = scaler.transform(X_val)
     XX_val = XX_val.reshape(1, *XX_val.shape)
+    yy_val = y_val[np.newaxis, :, np.newaxis]
     
     XX_test = scaler.transform(X_test)
     XX_test = XX_test.reshape(1, *XX_test.shape)
 
-    print(f"Training Data Shape: {XX_train.shape}")
-    print(f"Validation Data Shape: {XX_val.shape}")
-    print(f"Test Data Shape: {XX_test.shape}")
+    # Build training samples
+    X_train_samples, y_train_samples, masks = build_training_batches_univariate(X = X_train_scaled, y=y_train)
+    print(f"    {X_train_samples.shape=}")
 
-    # # FM1
-    # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # print(f"~"*50)
-    # print(f"FM1 Train")
-    
-    # fm1_train = fm1[(fm1.utc_rounded >= conf.train_start) & (fm1.utc_rounded <= conf.val_end)]
-    # fm1_test  = fm1[(fm1.utc_rounded >= conf.f_start) & (fm1.utc_rounded <= conf.f_end)]
-    # print(f"    {fm1_train.shape=}")
-    # print(f"    {fm1_test.shape=}")
-    
-    # bf_grid = np.linspace(conf.fm1_bf_low, conf.fm1_bf_high, num=conf.ngrid).round(4)
-    # bi_grid = np.linspace(conf.fm1_bi_low, conf.fm1_bi_high, num=conf.ngrid).round(4)
-    # fm1_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
-    # print()
-    # print(f"N time-warp Param Combos: {len(fm1_grid)}")
+    bf_grid = np.linspace(conf.fm1_bf_low, conf.fm1_bf_high, num=conf.ngrid).round(4)
+    bi_grid = np.linspace(conf.fm1_bi_low, conf.fm1_bi_high, num=conf.ngrid).round(4)
+    fm1_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
+    print()
+    print(f"N time-warp Param Combos: {len(fm1_grid)}")
 
-    # ## Set up output object, loop over configs and run
-    # results_1 = {}
-    # for i, bs in enumerate(fm1_grid):
-    #     print("~"*50)
-    #     print(f"Param Combo {i+1} out of {len(fm1_grid)}")
-    #     print(f"Params: {bs}")
-
-    #     print(f"Warping LSTM params")
-    #     weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
-    #     rnn.get_layer("lstm").set_weights(weightsi)
-
-    #     print(f"Training Set Predictions")
-    #     preds = rnn.predict(XX_train).flatten()
+    #d Loop over param grids, fit to training data w early stop, calculate RMSE on val
+    results_1 = {}
+    for i, bs in enumerate(fm1_grid):
+        print("~"*50)
+        print(f"FM1 Param Combo {i+1} out of {len(fm1_grid)}")
+        print(f"Params: {bs}")    
+        weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
+        rnn.get_layer("lstm").set_weights(weightsi)
+        rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), verbose_fit = False, plot_history=False)
         
-    #     # Interp to exact time of observed data
-    #     preds2 = time_intp(
-    #         t1 = wtrain.utc.to_numpy(),
-    #         v1 = preds,
-    #         t2 = fm1_train.utc_prov.to_numpy()
-    #     )
+        print(f"Predicting Val Set")
+        preds = rnn.predict(XX_val)
+        val_mse = np.float32(mse_masked(y_val.flatten(), preds.flatten()))
+        print(f"    {val_mse=}")
+        results_1[i]={}
+        results_1[i]["val_rmse"] = np.sqrt(val_mse)
+        results_1[i]["params"] = bs
+        results_1[i]["preds"] = preds  
 
-    #     # Accuracy
-    #     df = fm1_train.copy()
-    #     df["preds"] = preds2
-    #     rmse = np.sqrt(mean_squared_error(df.fm1, df.preds))
-    #     bias = np.mean(df.fm1 - df.preds)
-    #     r2   = r2_score(df.fm1, df.preds)
-        
-    #     # Save to results
-    #     results_1[i] = {}
-    #     results_1[i]["params"] = bs
-    #     results_1[i]["preds"] = preds
-    #     results_1[i]["preds_intp"] = preds2
-    #     results_1[i]["rmse"] = rmse
-    #     results_1[i]["bias"] = bias
-    #     results_1[i]["r2"] = r2
 
-    #     # Accuracy <30
-    #     inds = np.where(df.fm1<30)[0]
-    #     rmse_30 = np.sqrt(mean_squared_error(df.fm1.iloc[inds], df.preds.iloc[inds]))
-    #     bias_30 = np.mean(df.fm1.iloc[inds] - df.preds.iloc[inds])
-    #     r2_30   = r2_score(df.fm1.iloc[inds], df.preds.iloc[inds])
+    # Find min val_rmse case
+    fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["val_rmse"])
+    fm1_best = results_1[fm1_best_key]
+    print()
+    print("Best Config from Val Error:")
+    print(f"Min Val RMSE: {np.round(fm1_best['val_rmse'], 4)}")
+    print(f"Time-Warp Params: {fm1_best['params']}")
 
-    #     results_1[i]["rmse_30"] = rmse_30
-    #     results_1[i]["bias_30"] = bias_30
-    #     results_1[i]["r2_30"] = r2_30
+    breakpoint()
+    # Compute Test Error and save, using params
+    weights1 = warp_weights(weights10, bi_warp = fm1_best["params"]["bi"], bf_warp = fm1_best["params"]["bf"])
+    rnn.get_layer("lstm").set_weights(weights1)
+    preds1 = rnn.predict(XX_test)
 
-    #     print(f"Accuracy Metrics:")
-    #     print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
-    #     print(f"RMSE (FM1<30): {rmse_30.round(4)},   R2 (FM1<30): {np.round(r2_30, 4)}")
+    # Interp to exact time of observed data
+    inds= np.where(y_test != -9999)
+    preds2 = time_intp(
+        t1 = df1_test.utc.to_numpy(),
+        v1 = preds1.flatten(),
+        t2 = df1_test.utc_prov.iloc[inds].to_numpy()
+    )
 
-        
-    # # Output
-    # out_file = osp.join(output_dir, "fm1_results.pkl")
-    # print(f"Writing Output to: {out_file}")
-    # with open(out_file, "wb") as f:
-    #     pickle.dump(results_1, f, protocol=pickle.HIGHEST_PROTOCOL)
+    # Accuracy
+    fm1_best["test_rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
+    fm1_best["test_bias"]        = np.mean(y_test[inds] - preds2)
+    fm1_best["test_r2"]          = r2_score(y_test[inds], preds2)
 
-    # # Find min RMSE config, basing on RMSE less than 30 for 1h alone
-    # fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["rmse_30"])
-    # fm1_best = results_1[fm1_best_key]
-    # print()
-    # print("Best Config from Training Error:")
-    # print(f"Min Training RMSE (FM1<30): {np.round(fm1_best['rmse_30'], 4)}")
-    # print(f"Time-Warp Params: {fm1_best['params']}")
+    # Accuracy <=30
+    y_test2 = y_test[inds]
+    inds2 = np.where(y_test2<=30)[0]
+    fm1_best["test_rmse_30"] = np.sqrt(mean_squared_error(y_test2[inds2], preds2[inds2]))
+    fm1_best["test_bias_30"]        = np.mean(y_test2[inds2] - preds2[inds2])
+    fm1_best["test_r2_30"]          = r2_score(y_test2[inds2], preds2[inds2])    
     
-    # # FM100
-    # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # print(f"~"*50)
-    # print(f"FM100 Train")
-    
-    # fm100_train = fm100[(fm100.utc_rounded >= conf.train_start) & (fm100.utc_rounded <= conf.val_end)]
-    # fm100_test  = fm100[(fm100.utc_rounded >= conf.f_start) & (fm100.utc_rounded <= conf.f_end)]
-    # print(f"    {fm100_train.shape=}")
-    # print(f"    {fm100_test.shape=}")
-    
-    # bf_grid = np.linspace(conf.fm100_bf_low, conf.fm100_bf_high, num=conf.ngrid).round(4)
-    # bi_grid = np.linspace(conf.fm100_bi_low, conf.fm100_bi_high, num=conf.ngrid).round(4)
-    # fm100_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
-    # print()
-    # print(f"N time-warp Param Combos: {len(fm100_grid)}")
-
-    # ## Set up output object, loop over configs and run
-    # results_100 = {}
-    # for i, bs in enumerate(fm100_grid):
-    #     print("~"*50)
-    #     print(f"Param Combo {i+1} out of {len(fm100_grid)}")
-    #     print(f"Params: {bs}")
-
-    #     print(f"Warping LSTM params")
-    #     weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
-    #     rnn.get_layer("lstm").set_weights(weightsi)
-
-    #     print(f"Training Set Predictions")
-    #     preds = rnn.predict(XX_train).flatten()
-        
-    #     # Interp to exact time of observed data
-    #     preds2 = time_intp(
-    #         t1 = wtrain.utc.to_numpy(),
-    #         v1 = preds,
-    #         t2 = fm100_train.utc_prov.to_numpy()
-    #     )
-
-    #     # Accuracy
-    #     df = fm100_train.copy()
-    #     df["preds"] = preds2
-    #     rmse = np.sqrt(mean_squared_error(df.fm100, df.preds))
-    #     bias = np.mean(df.fm100 - df.preds)
-    #     r2   = r2_score(df.fm100, df.preds)
-        
-    #     # Save to results
-    #     results_100[i] = {}
-    #     results_100[i]["params"] = bs
-    #     results_100[i]["preds"] = preds
-    #     results_100[i]["preds_intp"] = preds2
-    #     results_100[i]["rmse"] = rmse
-    #     results_100[i]["bias"] = bias
-    #     results_100[i]["r2"] = r2
-
-    #     print(f"Accuracy Metrics:")
-    #     print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
-        
-    # # Output
-    # out_file = osp.join(output_dir, "fm100_results.pkl")
-    # print(f"Writing Output to: {out_file}")
-    # with open(out_file, "wb") as f:
-    #     pickle.dump(results_100, f, protocol=pickle.HIGHEST_PROTOCOL)
-        
-    # # Find min RMSE config
-    # fm100_best_key = min(results_100, key=lambda ci: results_100[ci]["rmse"])
-    # fm100_best = results_100[fm100_best_key]
-    # print()
-    # print("Best Config from Training Error:")
-    # print(f"Min Training RMSE: {np.round(fm100_best['rmse'], 4)}")
-    # print(f"Time-Warp Params: {fm100_best['params']}")
+    breakpoint()
     
 
-    # # FM1000
-    # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # print(f"~"*50)
-    # print(f"FM1000 Train")
-    
-    # fm1000_train = fm1000[(fm1000.utc_rounded >= conf.train_start) & (fm1000.utc_rounded <= conf.val_end)]
-    # fm1000_test  = fm1000[(fm1000.utc_rounded >= conf.f_start) & (fm1000.utc_rounded <= conf.f_end)]
-    # print(f"    {fm1000_train.shape=}")
-    # print(f"    {fm1000_test.shape=}")
-
-    # bf_grid = np.linspace(conf.fm1000_bf_low, conf.fm1000_bf_high, num=conf.ngrid).round(4)
-    # bi_grid = np.linspace(conf.fm1000_bi_low, conf.fm1000_bi_high, num=conf.ngrid).round(4)
-    # fm1000_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
-    # print()
-    # print(f"N time-warp Param Combos: {len(fm1000_grid)}")
-
-    # ## Set up output object, loop over configs and run
-    # results_1000 = {}
-    # for i, bs in enumerate(fm1000_grid):
-    #     print("~"*50)
-    #     print(f"Param Combo {i+1} out of {len(fm1000_grid)}")
-    #     print(f"Params: {bs}")
-
-    #     print(f"Warping LSTM params")
-    #     weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
-    #     rnn.get_layer("lstm").set_weights(weightsi)
-
-    #     print(f"Training Set Predictions")
-    #     preds = rnn.predict(XX_train).flatten()
-        
-    #     # Interp to exact time of observed data
-    #     preds2 = time_intp(
-    #         t1 = wtrain.utc.to_numpy(),
-    #         v1 = preds,
-    #         t2 = fm1000_train.utc_prov.to_numpy()
-    #     )
-
-    #     # Accuracy
-    #     df = fm1000_train.copy()
-    #     df["preds"] = preds2
-    #     rmse = np.sqrt(mean_squared_error(df.fm1000, df.preds))
-    #     bias = np.mean(df.fm1000 - df.preds)
-    #     r2   = r2_score(df.fm1000, df.preds)
-        
-    #     # Save to results
-    #     results_1000[i] = {}
-    #     results_1000[i]["params"] = bs
-    #     results_1000[i]["preds"] = preds
-    #     results_1000[i]["preds_intp"] = preds2
-    #     results_1000[i]["rmse"] = rmse
-    #     results_1000[i]["bias"] = bias
-    #     results_1000[i]["r2"] = r2
-
-    #     print(f"Accuracy Metrics:")
-    #     print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
-        
-    # # Output
-    # out_file = osp.join(output_dir, "fm1000_results.pkl")
-    # print(f"Writing Output to: {out_file}")
-    # with open(out_file, "wb") as f:
-    #     pickle.dump(results_1000, f, protocol=pickle.HIGHEST_PROTOCOL)
-
-    # # Find min RMSE config
-    # fm1000_best_key = min(results_1000, key=lambda ci: results_1000[ci]["rmse"])
-    # fm1000_best = results_1000[fm1000_best_key]
-    # print()
-    # print("Best Config from Training Error:")
-    # print(f"Min Training RMSE: {np.round(fm1000_best['rmse'], 4)}")
-    # print(f"Time-Warp Params: {fm1000_best['params']}")
 
 
-    # # Run Test Set
-    # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    # print()
-    # print("~"*50)
-    # print("Running Test Set with Best Config")
 
-    # # Output object
-    # results_test = {}
 
-    # # 1hr
-    # bs = fm1_best['params']
-    # weights1 = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
-    # rnn.get_layer("lstm").set_weights(weights1)
-    # preds1 = rnn.predict(XX_test).flatten()
-    
-    # # Accuracy
-    # df = fm1_test.copy()        
-    # preds1_intp = time_intp( # Interp to exact time of observed data
-    #     t1 = wtest.utc.to_numpy(),
-    #     v1 = preds1,
-    #     t2 = fm1_test.utc_prov.to_numpy()
-    # )
-    # df["preds"] = preds1_intp
-    # rmse = np.sqrt(mean_squared_error(df.fm1, df.preds))
-    # bias = np.mean(df.fm1 - df.preds)
-    # r2   = r2_score(df.fm1, df.preds)  
-    # # Accuracy <30
-    # inds = np.where(df.fm1<30)[0]
-    # rmse_30 = np.sqrt(mean_squared_error(df.fm1.iloc[inds], df.preds.iloc[inds]))
-    # bias_30 = np.mean(df.fm1.iloc[inds] - df.preds.iloc[inds])
-    # r2_30   = r2_score(df.fm1.iloc[inds], df.preds.iloc[inds])
-    # results_test["FM1"] = {
-    #     'params': fm1_best['params'],
-    #     'preds1': preds1,
-    #     'preds1_intp': preds1_intp,
-    #     'times': wtest.utc,
-    #     'times_fm1': df.utc_prov,
-    #     'fm1_obs': df.fm1.to_numpy(),
-    #     'rmse': rmse,
-    #     'bias': bias,
-    #     'r2': r2,
-    #     'rmse_30': rmse_30,
-    #     'bias_30': bias_30,
-    #     'r2_30': r2_30        
-    # }
-    
-    
-    # # 100hr
-    # bs = fm100_best['params']
-    # weights100 = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
-    # rnn.get_layer("lstm").set_weights(weights100)
-    # preds100 = rnn.predict(XX_test).flatten()
 
-    # # Accuracy
-    # df = fm100_test.copy()        
-    # preds100_intp = time_intp( # Interp to exact time of observed data
-    #     t1 = wtest.utc.to_numpy(),
-    #     v1 = preds100,
-    #     t2 = fm100_test.utc_prov.to_numpy()
-    # )
-    # df["preds"] = preds100_intp
-    # rmse = np.sqrt(mean_squared_error(df.fm100, df.preds))
-    # bias = np.mean(df.fm100 - df.preds)
-    # r2   = r2_score(df.fm100, df.preds)  
-    # results_test["FM100"] = {
-    #     'params': fm100_best['params'],
-    #     'preds100': preds100,
-    #     'preds100_intp': preds100_intp,
-    #     'times': wtest.utc,
-    #     'times_fm100': df.utc_prov,
-    #     'fm100_obs': df.fm100.to_numpy(),
-    #     'rmse': rmse,
-    #     'bias': bias,
-    #     'r2': r2    
-    # }
 
-    
-    # # 1000hr
-    # bs = fm1000_best['params']
-    # weights1000 = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
-    # rnn.get_layer("lstm").set_weights(weights1000)
-    # preds1000 = rnn.predict(XX_test).flatten()
 
-    # # Accuracy
-    # df = fm1000_test.copy()        
-    # preds1000_intp = time_intp( # Interp to exact time of observed data
-    #     t1 = wtest.utc.to_numpy(),
-    #     v1 = preds1000,
-    #     t2 = fm1000_test.utc_prov.to_numpy()
-    # )
-    # df["preds"] = preds1000_intp
-    # rmse = np.sqrt(mean_squared_error(df.fm1000, df.preds))
-    # bias = np.mean(df.fm1000 - df.preds)
-    # r2   = r2_score(df.fm1000, df.preds)  
-    # results_test["FM1000"] = {
-    #     'params': fm1000_best['params'],
-    #     'preds1000': preds1000,
-    #     'preds1000_intp': preds1000_intp,
-    #     'times': wtest.utc,
-    #     'times_fm1000': df.utc_prov,
-    #     'fm1000_obs': df.fm1000.to_numpy(),        
-    #     'rmse': rmse,
-    #     'bias': bias,
-    #     'r2': r2    
-    # }
 
-    # print()
-    # print("Accuracy Metrics:")
-    # print(f"    FM1 RMSE (<30): {results_test['FM1']['rmse_30']}")
-    # print(f"    FM100 RMSE: {results_test['FM100']['rmse']}")
-    # print(f"    FM1000 RMSE: {results_test['FM1000']['rmse']}")
-    
-    # # Output
-    # out_file = osp.join(output_dir, "results_test_set.pkl")
-    # print(f"Writing Output to: {out_file}")
-    # with open(out_file, "wb") as f:
-    #     pickle.dump(results_test, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+
+
 
 
 
