@@ -1,0 +1,20 @@
+# Namelist for data from Oklahoma Mesonet
+# Half hourly data 1996-1997 purchased
+
+## Convention, names in orig data are top level keys (this matches pandas)
+##       old_name: new_name
+
+TIME: date
+TAIR: temp
+TMIN: tmin
+TMAX: tmax
+WDIR: wdir
+RELH: rh
+WSPD: wind
+SRAD: solar
+RAIN: rain
+WMAX: gust
+
+
+
+

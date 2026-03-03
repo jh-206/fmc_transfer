@@ -6,8 +6,8 @@
 ode:
     hours: 72                # Number of hours to run sim, forecast period will be hours-spinup_hours
     spinup_hours: 24         # number of timesteps to spinup model before validation metrics calculated (24 is conservative)
-    process_variance: 1e-3   # used to build diagonal Q matrix 
-    data_variance: 1e-3 
+    Q: 1e-3                  # process variance
+    R: 1e-3                  # data variance
     r0: 0.05                 # threshold rainfall [mm/h]
     rs: 8.0                  # saturation rain intensity [mm/h]
     Tr: 14.0                 # time constant for rain wetting model [h]

@@ -1,4 +1,8 @@
-conda create -n fems python=3.12 numpy matplotlib pandas pyyaml -y
-conda activate fems
-conda install requests -y
-conda install openpyxl -y
+# recipe for creating conda env
+
+conda create -y -n fmc python=3.11
+conda activate fmc
+conda install -y pandas numpy matplotlib jupyter pyyaml
+conda install -y tensorflow -c conda-forge
+conda install -y openpyxl
+
