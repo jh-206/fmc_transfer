@@ -1,0 +1,905 @@
+import numpy as np
+import math
+import copy
+from abc import ABC, abstractmethod
+from sklearn.metrics import mean_squared_error
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+import os.path as osp
+import sys
+from dateutil.relativedelta import relativedelta
+from tensorflow.keras.callbacks import Callback, EarlyStopping, TerminateOnNaN
+import tensorflow as tf
+from tensorflow.keras import layers
+from tensorflow.keras.layers import LSTM, SimpleRNN, Input, Dropout, Dense
+from tensorflow.keras.optimizers import Adam
+from keras.saving import register_keras_serializable
+import warnings
+from itertools import product
+
+# Set up project paths
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CURRENT_DIR = osp.dirname(osp.normpath(osp.abspath(__file__)))
+PROJECT_ROOT = osp.dirname(osp.dirname(osp.normpath(CURRENT_DIR)))
+sys.path.append(osp.join(PROJECT_ROOT, "src"))
+CONFIG_DIR = osp.join(PROJECT_ROOT, "etc")
+
+# Read Project Module Code
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# from utils import Dict, is_consecutive_hours, read_yml, hash_weights, hash_ndarray
+from utils import Dict, is_consecutive_hours, read_yml
+import data_funcs
+from data_funcs import MLData
+import reproducibility
+
+# Read Metadata
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+params_models = read_yml(osp.join(CONFIG_DIR, "params_models.yaml"))
+
+# RNN Data Functions
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def staircase(df, sequence_length=12, features_list=None, y_col="fm"):
+    """
+    Get sliding-window style sequences from input data frame. 
+    Checks date_time column for consecutive hours and only
+    returns sequences with consecutive hours.
+
+    NOTE: this replaces the staircase function from earlier versions of this project.
+
+    Args:
+        - df: (pandas dataframe) input data frame
+        - sequence_length: (int) number of hours to set samples, equivalent to timesteps param in RNNs
+        - features_list: (list) list of strings used to subset data
+        - y_col: (str) target column name
+        - verbose: (bool) whether to print debug info
+
+    Returns:
+        - X: (numpy array) array of shape (n_samples, sequence_length, n_features)
+        - y: (numpy array) array of shape (n_samples, sequence_length, 1)
+        - y_times: (numpy array) array of shape (n_samples, sequence_length, 1) containing datetime objects
+    """
+    
+    times = df["date_time"].values
+
+    if features_list is not None:
+        data = df[features_list].values  # Extract feature columns
+    
+    target = df[y_col].values        # Extract target column
+    X = []
+    y = []
+    t = []
+
+    for i in range(len(df) - sequence_length + 1):
+        time_window = times[i : i + sequence_length]
+        if is_consecutive_hours(time_window):
+            X.append(data[i : i + sequence_length])
+            y.append(target[i : i + sequence_length])
+            t.append(time_window)
+
+    X = np.array(X)
+    y = np.array(y)[..., np.newaxis]  # Ensure y has extra singleton dimension
+    t = np.array(t)[..., np.newaxis]  # Ensure y_times has extra singleton dimension
+
+    return X, y, t
+
+
+def staircase_dict(dict0, sequence_length, features_list, y_col="fm", verbose=True):
+    """
+    Wraps extract_sequences to apply to a dictionary and run for each case.
+    Intended to be run on train dict only
+    """
+    if verbose:
+        print(f"Extracting all consecutive sequences of length {sequence_length}")
+        print(f"Subsetting to features: {features_list}, target: {y_col}")    
+    
+    X_list, y_list, t_list = [], [], []
+    
+    for st, station_data in dict0.items():
+        dfi = station_data["data"]  # Extract DataFrame
+        Xi, yi, ti = staircase(dfi, sequence_length=sequence_length, features_list=features_list, y_col=y_col)
+
+        # if verbose:
+        #     print(f"Station: {st}")
+        #     print(f"All Sequences Shape: {Xi.shape}")
+
+        if len(Xi) > 0:
+            X_list.append(Xi)
+            y_list.append(yi)
+            t_list.append(ti)
+        
+    return X_list, y_list, t_list
+
+def _batch_random(X_list, y_list, random_state = None):
+    """
+    Randomly shuffle samples
+    """
+    if random_state is not None:
+        reproducibility.set_seed(random_state)  
+
+    X_all = np.concatenate(X_list, axis=0)
+    y_all = np.concatenate(y_list, axis=0)
+    indices = np.concatenate([np.full(len(x), i) for i, x in enumerate(X_list)])
+    
+    # Random shuffle location indicices
+    locs = np.random.permutation(len(X_all))
+    X_rand = X_all[locs]
+    y_rand = y_all[locs]
+    indices = indices[locs] 
+
+    return X_rand, y_rand, indices
+
+
+
+def build_training_batches(X_list, y_list, 
+                           batch_size = 32,
+                           return_sequences=True, method="random", 
+                           verbose=True, random_state=None
+                          ):
+    """
+
+    Args:
+        - method: (str) One of "random" or "stateful". NOTE: as of Feb 14 2025 stateful not implemented
+    """
+
+
+    if method == "random":
+        X, y, loc_indices = _batch_random(X_list, y_list, random_state=random_state)
+    elif method == "stateful":
+        raise ValueError("Stateful not implemented yet for spatial data")
+    else:
+        raise ValueError(f"Unrecognized batching method: {method}")
+
+    if not return_sequences:
+        y = y[:, -1, :]
+    
+    if verbose:
+        print(f"{batch_size=}")
+        print(f"X train shape: {X.shape}")
+        print(f"y train shape: {y.shape}")
+        print(f"Unique locations: {len(np.unique(loc_indices))}")
+        print(f"Total Batches: {X.shape[0] // batch_size}")
+    
+    return X, y, loc_indices
+
+
+
+def scale_3d(X, scaler, fit=False):
+    """
+    Apply an sklearn scaler to 3d numpy arrays
+    
+    Parameters:
+    -----------
+    X : ndarray of shape (n_locs, timesteps, features)
+    scaler : fitted scaler with .transform method
+    fit : bool, optional
+        If True, fit the scaler on X before transforming. Default is False.    
+
+    Returns:
+    --------
+    X_scaled : ndarray of same shape as X    
+    """
+    n_locs, timesteps, features = X.shape
+    X_flat = X.reshape(-1, features)
+    if fit:
+        scaler.fit(X_flat)
+    X_scaled_flat = scaler.transform(X_flat)
+    X_scaled = X_scaled_flat.reshape(n_locs, timesteps, features)
+
+    return X_scaled
+
+class RNNData(MLData):
+    """
+    Custom class to handle RNN data. Performs data scaling and stateful batch structuring.
+    In this context, a single "sample" from RNNData is a timeseries with dimensionality (timesteps, n_features)
+    """
+    def __init__(self, train, val=None, test=None, scaler="standard", features_list=["Ed", "Ew", "rain"], timesteps=48, method="random", random_state=None):   
+        self.timesteps = timesteps
+        super().__init__(train, val, test, scaler, features_list, random_state)
+
+        
+    def _setup_data(self, train, val, test, y_col="fm", method="random", random_state = None, verbose=True):
+        """
+        Combines DataFrames under 'data' keys for train, val, and test. 
+        Batch structure using staircase functions.
+
+        Creates numpy ndarrays X_train, y_train, X_val, y_val, X_test, y_test
+        """
+
+        train = data_funcs.sort_train_dict(train)
+        self.train_locs = [*train.keys()]
+        # Get training samples with staircase, and construct batches
+        # Subset features happens at this step
+        X_list, y_list, t_list = staircase_dict(train, sequence_length = self.timesteps, features_list = self.features_list)
+        X_train, y_train, loc_train_indices = build_training_batches(
+            X_list, y_list,
+            method=method, random_state = random_state
+        )
+        self.X_train = X_train
+        self.y_train = y_train
+
+        self.X_val, self.y_val = (None, None)
+        if val:
+            self.X_val = self._combine_data(val, self.features_list)
+            self.y_val = self._combine_data(val, [y_col])
+            self.val_locs = [*val.keys()]
+            assert len(self.val_locs) == self.X_val.shape[0], f"Mismatch number of unique stations in input val set and resulting X_val array, {len(self.val_locs)=}, {self.X_val.shape[0]=}"
+
+        self.X_test, self.y_test = (None, None)
+        if test:
+            self.X_test = self._combine_data(test, self.features_list)
+            self.y_test = self._combine_data(test, [y_col])
+            self.test_locs = [*test.keys()]
+            assert len(self.test_locs) == self.X_test.shape[0], f"Mismatch number of unique stations in input test set and resulting X_test array, {len(self.test_locs)=}, {self.X_test.shape[0]=}"
+
+        if verbose:
+            print(f"X_train shape: {self.X_train.shape}, y_train shape: {self.y_train.shape}")
+            if self.X_val is not None:
+                print(f"X_val shape: {self.X_val.shape}, y_val shape: {self.y_val.shape}")
+            if self.X_test is not None:
+                print(f"X_test shape: {self.X_test.shape}, y_test shape: {self.y_test.shape}")        
+                
+    def _combine_data(self, data_dict, features_list):
+        """Combines all DataFrames under 'data' keys into a single DataFrame, with dimesionality (n_locs, n_times, features).
+        This only used on test and validation sets, train sets combined with staircase functions
+        """
+        return np.array([v["data"][features_list] for v in data_dict.values()])
+
+
+    def scale_data(self, verbose=True):
+        """
+        Scales the training data using the set scaler. This requires
+        reshaping the 3d train data to 2 before fitting the scaler
+        NOTE: this converts pandas dataframes into numpy ndarrays.
+        Tensorflow requires numpy ndarrays so this is intended behavior
+
+        Parameters:
+        -----------
+        verbose : bool, optional
+            If True, prints status messages. Default is True.
+
+        Returns:
+        ---------
+        Nothing, modifies in place
+        """        
+
+        if not hasattr(self, "X_train"):
+            raise AttributeError("No X_train within object. Run train_test_split first. This is to avoid fitting the scaler with prediction data.")
+        if verbose:
+            print(f"Scaling training data with scaler {self.scaler}, fitting on X_train")
+
+        # Fit scaler on training data, Transform data using fitted scaler
+        self.X_train = scale_3d(self.X_train, self.scaler, fit=True)
+        
+        if hasattr(self, 'X_val'):
+            if self.X_val is not None:
+                self.X_val = scale_3d(self.X_val, self.scaler, fit=False)
+        if self.X_test is not None:
+            self.X_test = scale_3d(self.X_test, self.scaler, fit=False)
+
+    def inverse_scale(self, save_changes=False, verbose=True):
+        """
+        Inversely scales the data to its original form. Either save changes internally, or return tuple X_train, X_val, X_test. Need to
+        reshape 3d train array for this
+
+        Parameters:
+        -----------
+        return_X : str, optional
+            Specifies what data to return after inverse scaling. Default is 'all_hours'.
+        save_changes : bool, optional
+            If True, updates the internal data with the inversely scaled values. Default is False.
+        verbose : bool, optional
+            If True, prints status messages. Default is True.
+        """        
+        if verbose:
+            print("Inverse scaling data...")
+        n_samples, timesteps, features = self.X_train.shape
+        X_train2 = self.X_train.reshape(-1, features)
+        X_train2 = self.scaler.inverse_transform(X_train2)
+        X_train = X_train2.reshape(n_samples, timesteps, features)
+
+
+        n_loc, timesteps, features = self.X_val.shape
+        X_val = self.X_val.reshape(-1, features)
+        X_val = self.scaler.inverse_transform(X_val)
+        X_val = X_val.reshape(n_loc, timesteps, features)
+        
+        n_loc, timesteps, features = self.X_test.shape
+        X_test = self.X_test.reshape(-1, features)
+        X_test = self.scaler.inverse_transform(X_test)
+        X_test = X_test.reshape(n_loc, timesteps, features)
+
+        if save_changes:
+            print("Inverse transformed data saved")
+            self.X_train = X_train
+            self.X_val = X_val
+            self.X_test = X_test
+        else:
+            if verbose:
+                print("Inverse scaled, but internal data not changed.")
+            return X_train, X_val, X_test  
+
+
+# RNN Model Class
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+@register_keras_serializable()
+class RNN_Flexible(tf.keras.Model):
+    """
+    Custom Class for RNN with flexible batch size and timesteps. Training and prediction can be on arbitrary batches of arbitrary length sequences. 
+
+    Based on params, forces batch_size and timesteps to be None, and forces return sequences. Will raise warning if otherwise in params
+
+    freeze_layers: boolean list of same length as layers
+    """
+    
+    def __init__(self, params: dict = None, loss='mean_squared_error', random_state=None, freeze_layers=None, **kwargs):
+        # super().__init__(**kwargs)
+
+        if params is None:
+            params = Dict(params_models["rnn"])
+        self.params = Dict(params)
+        self.params.update({'n_features': len(params["features_list"])})
+        
+        if random_state is not None:
+            reproducibility.set_seed(random_state)
+            self.params.update({"random_state": random_state})
+        
+        # Define model type.
+        if 'lstm' in self.params["hidden_layers"]:
+            self.params['mod_type'] = "LSTM"
+        elif 'rnn' in self.params["hidden_layers"]:
+            self.params["mod_type"] = "SimpleRNN"
+        else:
+            self.params["mod"] = "NN"
+
+        # Build model architectures based on input params
+        self._check_params()
+        
+        inputs, outputs = self._build_model_graph()
+        super().__init__(inputs=inputs, outputs=outputs, **kwargs)
+
+        # Freeze layers
+        if "freeze_layers" in self.params:
+            if len(self.params["freeze_layers"]) != len(self.params["hidden_layers"]):
+                raise ValueError("freeze_layers must match hidden_layers length")
+
+        if "freeze_layers" in self.params:
+            freeze = self.params["freeze_layers"]
+            hidden_idx = 0
+            for layer in self.layers:
+                if isinstance(layer, tf.keras.layers.InputLayer):
+                    continue
+                if bool(freeze[hidden_idx]):
+                    layer.trainable = False
+                hidden_idx += 1
+                if hidden_idx == len(freeze):
+                    break      
+        
+        # Compile Models
+        optimizer=Adam(learning_rate=self.params['learning_rate'])
+        self.compile(loss=loss, optimizer=optimizer)
+
+    def _check_params(self):
+        """
+        Ensures return_sequences is True and batch_size and timesteps are None. 
+        Raises a warning if they were set differently in params.
+        """
+        for param in ["timesteps"]:
+            if self.params.get(param) is not None:
+                warnings.warn(f"{param} should be None for flexible RNNs. Overriding to None.")
+                self.params[param] = None
+        
+        if self.params.get("return_sequences") is not True:
+            warnings.warn("return_sequences should be True for flexible RNNs. Overriding to True.")
+            self.params["return_sequences"] = True          
+
+    def _build_hidden_layers(self, x, stateful=False):
+        """
+        Helper function used to define neural network layers using TF functional interface.
+        Has checks for the "return_sequences" setting. If a recurrent layer feeds in to 
+        another recurrent layer or an attention layer, forces return_sequences to be True
+
+        Uses params where hidden layers are listed in a single list, and corresponding hidden units and activation functions in a single list. If layer is attention or dropout, corresponding units and activation function should be None
+        """
+        params = self.params
+     
+        
+        # Loop over each layer specified in 'hidden_layers'
+        for i, layer_type in enumerate(params['hidden_layers']):
+            units = params['hidden_units'][i]
+            activation = params['hidden_activation'][i]
+    
+            if layer_type == 'dense':
+                x = layers.Dense(units=units, activation=activation)(x)
+    
+            elif layer_type == 'dropout':
+                x = layers.Dropout(params['dropout'])(x)
+            
+            elif layer_type == 'rnn':
+                x = layers.SimpleRNN(units=units, activation=activation, dropout=params['dropout'], recurrent_dropout=params['recurrent_dropout'], stateful=stateful,
+                                     return_sequences=True)(x)
+            
+            elif layer_type == 'lstm':
+                x = layers.LSTM(units=units, activation=activation, dropout=params['dropout'], recurrent_dropout=params['recurrent_dropout'], stateful=stateful,
+                                return_sequences=True)(x)    
+            
+            elif layer_type == 'attention':
+                x = layers.Attention()([x, x])
+            elif layer_type == 'conv1d':
+                kernel_size = params.get('kernel_size', 3)
+                x = layers.Conv1D(filters=units, kernel_size=kernel_size, activation=activation, padding='same')(x)
+            else:
+                raise ValueError(f"Unrecognized layer type: {layer_type}, skipping")
+        
+        return x     
+
+    def _build_model_graph(self):
+        """
+        Build the model architecture using functional API and return (inputs, outputs).
+        """
+        params = self.params
+    
+        inputs = Input(batch_shape=(None, None, params["n_features"]))
+        x = self._build_hidden_layers(inputs, stateful=params["stateful"])
+    
+        if params["output_layer"] == "dense":
+            out_layer = layers.Dense(
+                units=params["output_dimension"],
+                activation=params["output_activation"],
+                name="output_dense",
+            )
+    
+            # Optional: freeze output layer
+            if bool(params.get("freeze_output", 0)):
+                out_layer.trainable = False
+    
+            outputs = out_layer(x)
+    
+        else:
+            raise ValueError(f"Unsupported output layer type: {params['output_layer']}")
+    
+        return inputs, outputs
+    
+    # def _build_model(self):
+    #     """
+    #     Build the model architecture using functional API without creating an internal model object.
+    #     """
+    #     params = self.params
+        
+    #     inputs = Input(batch_shape=(None, None, params['n_features']))
+    #     x = self._build_hidden_layers(inputs, stateful=params['stateful'])    
+        
+    #     if params['output_layer'] == 'dense':
+    #         outputs = layers.Dense(units=params['output_dimension'], activation=params['output_activation'])(x)
+    #     else:
+    #         raise ValueError("Unsupported output layer type: {}".format(params['output_layer']))
+        
+    #     # super().__init__(inputs=inputs, outputs=outputs)
+
+    
+    def _setup_callbacks(self, val=False):
+        """
+        Create list of callbacks used in fitting stage based on model params.
+        Always use TerminateOnNaN to stop training if loss is ever NA.
+        Other supported callbacks are ResetStates, which controls when hidden states
+        of recurrent layers are reset, and EarlyStopping, which stops training when
+        validation error stops improving for a certain number of times. Early stopping only
+        used when validation data is used
+        """
+        callbacks = [TerminateOnNaN()]
+
+        if self.params["reset_states"]:
+            print("Using ResetStatesCallback.")
+            callbacks=callbacks+[ResetStatesCallback(verbose=False)]
+
+        if val:
+            print("Using EarlyStoppingCallback")
+            early_stop = EarlyStoppingCallback(patience = self.params['early_stopping_patience'])
+            callbacks=callbacks+[early_stop]
+        else:
+            early_stop = None
+        
+        return callbacks, early_stop
+
+    def is_stateful(self):
+        """
+        Checks whether any of the layers in the internal model (self.model_train) are stateful.
+
+        Returns:
+        bool: True if at least one layer in the model is stateful, False otherwise.
+        
+        This method iterates over all the layers in the model and checks if any of them
+        have the 'stateful' attribute set to True. This is useful for determining if 
+        the model is designed to maintain state across batches during training.
+
+        Example:
+        --------
+        model.is_stateful()
+        """          
+        for layer in self.model_train.layers:
+            if hasattr(layer, 'stateful') and layer.stateful:
+                return True
+        return False
+
+    def plot_history(self, history, plot_title, create_figure=True):
+        """
+        Plots the training history. Uses log scale on y axis for readability.
+
+        Parameters:
+        -----------
+        history : History object
+            The training history object from model fitting. Output of keras' .fit command
+        plot_title : str
+            The title for the plot.
+        """
+        import matplotlib.pyplot as plt
+        
+        if create_figure:
+            plt.figure(figsize=(10, 6))
+        plt.semilogy(history.history['loss'], label='Training loss')
+        if 'val_loss' in history.history:
+            plt.semilogy(history.history['val_loss'], label='Validation loss')
+        plt.title(f'{plot_title} Model loss')
+        plt.ylabel('Loss')
+        plt.xlabel('Epoch')
+        plt.legend(loc='upper left')
+        plt.show()
+
+    def fit(self, X_train, y_train, batch_size = 32, epochs=100,
+            verbose_fit = False, verbose_weights=False, 
+            plot_history=True, plot_title = '', 
+            weights=None, callbacks=[], validation_data=(None, None), return_epochs=False, *args, **kwargs):
+            """
+            Trains the model on the provided training data. Formats a list of callbacks to use within the fit method based on params input
+    
+            Parameters:
+            -----------
+            X_train : np.ndarray
+                The input matrix data for training.
+            y_train : np.ndarray
+                The target vector data for training.
+            plot_history : bool, optional
+                If True, plots the training history. Default is True.
+            plot_title : str, optional
+                The title for the training plot. Default is an empty string.
+            weights : optional
+                Initial weights for the model. Default is None.
+            callbacks : list, optional
+                A list of callback functions to use during training. Default is an empty list.
+            validation_data : tuple, optional
+                Validation data to use during training, expected format (X_val, y_val). Default is None.
+            return_epochs : bool
+                If True, return the number of epochs that training took. Used to test and optimize early stopping
+            """    
+            # Report frozen layers (based on params position)
+            if "freeze_layers" in self.params:
+                freeze = self.params["freeze_layers"]
+                hidden = self.params["hidden_layers"]
+            
+                frozen_positions = [i for i, f in enumerate(freeze) if bool(f)]
+                
+                if frozen_positions:
+                    print("Frozen hidden layers:")
+                    for i in frozen_positions:
+                        print(f"  index={i} type={hidden[i]}")
+                else:
+                    print("No hidden layers frozen.")
+        
+        
+            # Check if GPU is available
+            if tf.config.list_physical_devices('GPU'):
+                print("Training is using GPU acceleration.")
+            else:
+                print("Training is using CPU.")
+        
+            if verbose_weights:
+                print(f"Training simple RNN with params: {self.params}")
+                
+            # Setup callbacks, Check if validation data exists to modify callbacks
+            val = validation_data[0] is not None
+            callbacks, early_stop = self._setup_callbacks(val)
+
+            fit_args = {
+                "epochs": epochs,
+                "batch_size": batch_size,
+                "callbacks": callbacks,
+                "verbose": verbose_fit,
+                **kwargs
+            }
+            
+            if val:
+                fit_args["validation_data"] = validation_data
+            else:
+                warnings.warn("Running fit with no validation data, consider setting epochs to smaller number to avoid overfitting")
+
+            history = super().fit(X_train, y_train, **fit_args)      
+            
+            if plot_history:
+                self.plot_history(history,plot_title)
+                
+            if verbose_weights:
+                print(f"Fitted Weights Hash: {hash_weights(self.model_train)}")
+
+            if return_epochs:
+                # Epoch counting starts at 0, adding 1 for the count
+                return early_stop.best_epoch + 1        
+
+    def test_eval(self, X_test, y_test, verbose=False):
+        """
+        Runs predict and calculates accuracy metrics for given test set.
+        Can also be used on validation data in hyperparameter tuning runs
+        """
+        preds = self.predict(X_test)
+        # Overall MSE
+        mse = mean_squared_error(y_test.flatten(), preds.flatten())
+        
+        # Per loc MSE
+        batch_mse = np.array([
+            mean_squared_error(y_test[i].reshape(-1), preds[i].reshape(-1))
+            for i in range(y_test.shape[0])
+        ])
+        if verbose:
+            print(f"Overall Test MSE: {mse}")
+            print(f"Per-Location Mean Test MSE: {batch_mse.mean()}")
+        errs = {
+            'mse': mse,
+            'loc_mse': batch_mse
+        }
+        return preds, errs
+        
+
+            
+# Callbacks
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+class ResetStatesCallback(Callback):
+    """
+    Class used to control reset of hidden states for recurrent models.
+    """
+    def __init__(self, verbose=False):
+        super().__init__()
+        self.verbose = verbose
+
+    def _reset_rnn_states(self):
+        """Reset states for all RNN layers in the model. Helper function that can be called at various times"""
+        for layer in self.model.layers:
+            if hasattr(layer, "reset_states"):
+                layer.reset_states()
+        if self.verbose:
+            print("Reset hidden states.")
+    
+    def on_train_batch_end(self, batch, logs=None):
+        """
+        Reset after each batch of training. This treats batches as independent and intended for a non-stateful model. Would need to be adjusted for a stateful model
+        """
+        self._reset_rnn_states()
+        if self.verbose:
+            print(f"Reset hidden states at end of train batch {batch}")
+            
+    def on_epoch_end(self, epoch, logs=None):
+        """
+        Redundant with on_train_batch_end unless stateful model or a batch is skipped internally for some reason
+        """
+        self._reset_rnn_states()
+        if self.verbose:
+            print(f"Reset hidden states at end of epoch {epoch}")
+
+
+class UpdatePredictionCallback(Callback):
+    """
+    Class used to copy weights over from the training model to the prediction model at the end of each epoch. This is done so that the flexibility of the input shape of the prediction model can be used in the validation step at the end of an epoch, rather than forcing the validation data into the training model input shape. 
+    """
+    def __init__(self, model_predict, verbose=False):
+        super().__init__()
+        self.verbose=verbose
+        self.model_predict = model_predict  # Store reference to the prediction model
+
+    def on_epoch_end(self, epoch, logs=None):
+        if self.verbose:
+            print("Updating Prediction Model")
+        self.model_predict.set_weights(self.model.get_weights())  # Copy weights        
+
+
+
+def EarlyStoppingCallback(patience=5):
+    """
+    Creates an EarlyStopping callback with the specified patience.
+
+    Args:
+        patience (int): Number of epochs with no improvement after which training will be stopped.
+
+    Returns:
+        EarlyStopping: Configured EarlyStopping callback.
+    """
+    return EarlyStopping(
+        monitor='val_loss',
+        patience=patience,
+        verbose=1,
+        mode='min',
+        restore_best_weights=True
+    )
+
+# Hyperparameter Tuning helper functions
+# See description of restricted grid search
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+def model_grid(model_dict):
+    """
+    Create grid of hyperparamneters related to Model Architecture. Combine model hyperparameter configurations with various constraints. This is for hidden layers. Output layer determined by nature of the problem. 
+
+    Notes:
+    ----------
+        - Dense layers must follow recurrent, if using dense
+        - Units must decrease or stay the same following a funnel-architecture
+        - One Dropout layer added to final dense layer, if using
+    """
+    
+    recurrent_layers, dense_layers, layer_units = model_dict["recurrent_layers"], model_dict["dense_layers"], model_dict["units"]
+    
+    all_layer_combos = [
+        rec + dense
+        for rec, dense in product(recurrent_layers, dense_layers)
+    ]    
+
+    def generate_unit_configs(num_layers):
+        """Generate valid unit configurations where units decrease deeper in the network."""
+        return [list(combo) for combo in product(layer_units, repeat=num_layers)
+                if all(combo[i] >= combo[i+1] for i in range(len(combo)-1))]
+        
+    # Create parameter grid
+    grid = []
+    
+    for layers in all_layer_combos:
+        valid_units = generate_unit_configs(len(layers))  # Get unit configurations matching layer count
+        for units in valid_units:
+            grid.append({"hidden_layers": layers, "hidden_units": units})
+
+
+    # Add dropout following last dense layer
+    dense_grid = []
+    
+    for config in grid:
+        layers = config["hidden_layers"]
+        units = config["hidden_units"]
+    
+        # If last layer is Dense, add Dropout after it
+        if layers[-1] == "dense":
+            layers = layers + ["dropout"]
+            units = units + [None]  # Dropout has no units
+    
+        # Store the updated configuration
+        dense_grid.append({"hidden_layers": layers, "hidden_units": units})
+    
+    final_grid = []
+    
+    for config in dense_grid:
+        layers = config["hidden_layers"]
+        units = config["hidden_units"]
+        
+        # Assign default activation based on layer type
+        activations = []
+        for layer in layers:
+            if layer == "lstm":
+                activations.append("tanh")
+            elif layer == "dense":
+                activations.append("relu")
+            elif layer == "conv1d":
+                activations.append("relu")
+            elif layer == "dropout":
+                activations.append(None)  # Dropout has no activation
+    
+        # Store the updated configuration
+        final_grid.append({
+            "hidden_layers": layers,
+            "hidden_units": units,
+            "hidden_activation": activations
+        })    
+
+    return final_grid
+
+def optimization_grid(opt_dict):
+    """
+    Create simple grid of parameters, intended to use with optmization parameters, including batch size and learning rate. No constraints, just all combos
+
+    Inputs:
+    ----------
+        - opt_dict: (dict) dictionary with top_level  a list of grid values for 
+
+    Returns:
+    ----------
+        list: list of dictionaries with hyperparam configurations
+    """
+    # Get all parameter names (keys) and their possible values (lists)
+    keys, values = zip(*opt_dict.items())
+
+    # Generate all possible combinations
+    grid = [dict(zip(keys, combo)) for combo in product(*values)]
+    
+    return grid
+
+
+# Transfer Learning Functions - For Sparse FMC Observations
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+def build_training_batches_univariate(X, y, seq_length=48, stride_length=12, mask_val=-9999):
+    """
+    Build fixed-length sequence samples from an hourly univariate time series. Used for transfer learning with 2x daily FMC data, so sequences are masked with missing values
+
+    Inputs
+    - X: array-like, shape (N, n_features)
+    - y: array-like, shape (N,)
+         Response with missing labels encoded as mask_val.
+    - seq_length: int
+         Sequence length (e.g., 48 hours).
+    - stride_legnth: int
+        Number of time steps to shift sequence legnth window
+    - mask_val: float
+         Sentinel value indicating missing y.
+
+    Returns 
+    - X: np.ndarray, shape (n_samples, seq_length, n_features)
+    - y: np.ndarray, shape (n_samples, seq_length, 1)
+    - mask: np.ndarray, shape (n_samples, seq_length)  (1 where observed, 0 where missing)
+    """
+
+    # Checks
+    if X.ndim != 2:
+        raise ValueError(f"X must be 2D (N, n_features). Got shape {X.shape}")
+    if y.ndim != 1:
+        raise ValueError(f"y must be 1D (N,). Got shape {y.shape}")
+    if len(X) != len(y):
+        raise ValueError(f"X and y must have same length. Got {len(X)} and {len(y)}")
+    if seq_length <= 0:
+        raise ValueError("seq_length must be > 0")
+    if stride_length <= 0:
+        raise ValueError("stride_length must be > 0")
+    N = len(y)
+    if N < seq_length:
+        raise ValueError(f"Need N >= seq_length. Got N={N}, seq_length={seq_length}")
+
+    X_list = []
+    y_list = []
+    mask_list = []
+    for start in range(0, N - seq_length + 1, stride_length):
+        X_i = X[start:(start+seq_length),:]
+        y_i = y[start:(start+seq_length)]
+        mask_i = (y_i != mask_val)
+        X_list.append(X_i); y_list.append(y_i); mask_list.append(mask_i)
+    
+
+    XX = np.array(X_list); yy = np.array(y_list)[..., np.newaxis]; mask = np.array(mask_list)
+    return XX, yy, mask
+
+
+@tf.keras.utils.register_keras_serializable(package="custom")
+def mse_masked(y_true, y_pred, mask_val = -9999):
+    """
+    Masked MSE: ignores targets equal to mask_val.
+    Expects y_true and y_pred to have the same shape, e.g. (batch, T, 1).
+    """
+    y_true = tf.cast(y_true, tf.float32)
+    y_pred = tf.cast(y_pred, tf.float32)
+    mask_val = tf.cast(mask_val, tf.float32)
+
+    mask = tf.not_equal(y_true, mask_val)          # bool
+    mask_f = tf.cast(mask, tf.float32)             # 0/1
+
+    # Replace masked targets with predictions so their squared error is exactly 0
+    y_true_clean = tf.where(mask, y_true, y_pred)
+
+    sqe = tf.square(y_true_clean - y_pred)          # masked positions are 0
+    sqe = sqe * mask_f                               # keep only for clarity
+
+    denom = tf.reduce_sum(mask_f)
+    denom = tf.maximum(denom, 1.0)                 # avoid divide-by-zero
+
+    return tf.reduce_sum(sqe) / denom    
+
+
+
+if __name__ == '__main__':
+
+    print("Imports successful, no executable code")
+

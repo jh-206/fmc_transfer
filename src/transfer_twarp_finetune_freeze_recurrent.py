@@ -1,8 +1,10 @@
 # Executable module to run transfer analysis 
-# Full fine-tune, no freezing
+# Freeze Recurrent layer
 # Methodology: for each fuel class construct grid of time warp params, modify LSTM, run fit on training set
     # Pick best time warp on val set
     # Predict test set for accuracy
+# NOTE: this script will assume the form of the layer order from the pretrained model. The RNN_FLexible custom class can handle frozen weights at initiate step
+
 
 import numpy as np
 import pandas as pd
@@ -166,10 +168,10 @@ if __name__ == '__main__':
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     confpath = sys.argv[1]
     conf = Dict(read_yml(confpath))
-    output_dir = osp.join(conf.output_dir, "transfer_finetune")
+    output_dir = osp.join(conf.output_dir, "transfer_finetune_freeze_recurrent")
     os.makedirs(output_dir, exist_ok=True)
     print(f"~"*50)
-    print(f"Running Transfer-Learning, Full Fine-Tune with config file: {confpath}")
+    print(f"Running Transfer-Learning, Fine-Tune Freeze Recurrent with config file: {confpath}")
     print(f"~"*50)
     seed = 11001000 # arbitrary, made it by combining 1-100-1000
     reproducibility.set_seed(seed) 
@@ -189,6 +191,8 @@ if __name__ == '__main__':
     # RNN
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
+    params["freeze_layers"] = [1, 0, 0, 0] # matches hidden_layers=[lstm, dense, dense, dropout]
+
     seed = 42
     reproducibility.set_seed(seed)
     rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)

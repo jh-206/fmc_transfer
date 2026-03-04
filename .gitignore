@@ -6,5 +6,5 @@ __pycache__/
 .virtual_documents/
 data/
 logs/
-models/
+/models/
 outputs/
