@@ -97,7 +97,7 @@ if __name__ == '__main__':
         print(f"RNN Model Dir: {osp.join(conf.reps_dir, f'seed_{seed}')}")
         params = Dict(read_yml(osp.join(conf.reps_dir, f"seed_{seed}", "params.yaml")))
         rnn = mrnn.RNN_Flexible(params=params)
-        scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
+        scaler = joblib.load(osp.join(conf.reps_dir, f'seed_{seed}', "scaler.joblib"))
         rnn.load_weights(osp.join(conf.reps_dir, f"seed_{seed}", 'rnn.keras'))
     else:
         seed = 11001000 # arbitrary, made it by combining 1-100-1000

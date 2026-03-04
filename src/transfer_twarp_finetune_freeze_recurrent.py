@@ -180,7 +180,7 @@ if __name__ == '__main__':
         params = Dict(read_yml(osp.join(conf.reps_dir, f"seed_{seed}", "params.yaml")))
         params["freeze_layers"] = [1, 0, 0, 0] # matches hidden_layers=[lstm, dense, dense, dropout]
         rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
-        scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
+        scaler = joblib.load(osp.join(conf.reps_dir, f"seed_{seed}", "scaler.joblib"))
         rnn.load_weights(osp.join(conf.reps_dir, f"seed_{seed}", 'rnn.keras'))
     else:
         seed = 11001000 # arbitrary, made it by combining 1-100-1000
@@ -359,9 +359,8 @@ if __name__ == '__main__':
     fm1_best["r2_30"]   = fm1_test_30["r2"]
 
     print(f"FM1 Test Accuracy")
-    print(f"    RMSE: {fm1_test['rmse']}")
-    print(f"    RMSE30: {fm1_test['rmse_30']}")
-    breakpoint()
+    print(f"    RMSE: {fm1_best['rmse']}")
+    print(f"    RMSE30: {fm1_best['rmse_30']}")
     
 
 
