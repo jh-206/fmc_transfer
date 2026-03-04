@@ -60,6 +60,8 @@ Run `rnn_timewarp_reps.ipynb`
 
 `./run_reps.sh run_twarp.sh etc/thesis_config.yaml 100`
 
+`python src/analyze_twarp0_reps.py`
+
 
 To recreate the accuracy metrics and visualizations associated with transfer learning, no fine-tune, run python module with config:
 
