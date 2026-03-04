@@ -29,6 +29,9 @@ The datasets for analysis are created in interactive jupyter notebooks. The note
 
 ### FM10 Zeroshot
 
+`./run_reps.sh run_10h_zeroshot.sh etc/thesis_config.yaml 100`
+
+
 To recreate the accuracy metrics and visualizations associated with the FM10 zeroshot analysis, run all cells in `rnn_10h_zeroshot.ipynb`. The accuracy metrics are printed in-line and two figures are saved:
 - `outputs/ts_rnn_zeroshot.png`
 - `outputs/ts_BAWC2.png`

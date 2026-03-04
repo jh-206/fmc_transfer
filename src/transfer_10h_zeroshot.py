@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     if seed is not None:
         reproducibility.set_seed(seed)
-        output_dir = osp.join(conf.output_dir, "zeroshot_10h")
+        output_dir = osp.join(conf.output_dir, "zeroshot_10h_reps", f"seed_{seed}")
         print(f"RNN Model Dir: {osp.join(conf.reps_dir, f'seed_{seed}')}")
         params = Dict(read_yml(osp.join(conf.reps_dir, f"seed_{seed}", "params.yaml")))
         rnn = mrnn.RNN_Flexible(params=params)
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     else:
         seed = 11001000 # arbitrary, made it by combining 1-100-1000
         reproducibility.set_seed(seed)
-        output_dir = osp.join(conf.output_dir, "zeroshot_10h_reps")
+        output_dir = osp.join(conf.output_dir, "zeroshot_10h")
         print(f"RNN Model Dir: {conf.rnn_dir}")
         params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
         rnn = mrnn.RNN_Flexible(params=params)
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     # Write Output
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Output
-    out_file = osp.join(output_dir, "results_zeroshot.pkl")
+    out_file = osp.join(output_dir, f"results_zeroshot_{seed}.pkl")
     print(f"Writing Output to: {out_file}")
     with open(out_file, "wb") as f:
         pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
