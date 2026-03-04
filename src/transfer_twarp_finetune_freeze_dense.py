@@ -156,25 +156,45 @@ def eval_interp_metrics(
 
 # Executed Code
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print(f"Invalid arguments. {len(sys.argv)} was given but 2 expected")
-        print(f"Usage: {sys.argv[0]} <config_path>")
-        print("Example: python src/transfer_zeroshot_analysis.py etc/thesis_config.yaml")
-        sys.exit(-1)  
+    if len(sys.argv) not in [2, 3]:
+        print(f"Invalid arguments. {len(sys.argv)-1} was given but 1 or 2 expected")
+        print(f"Usage: {sys.argv[0]} <config_path> [seed]")
+        print("Example: python src/transfer_twarp_finetune_freeze_dense.py etc/thesis_config.yaml")
+        print("Example: python src/transfer_twarp_finetune_freeze_dense.py etc/thesis_config.yaml 17")
+        sys.exit(-1)
 
     # Setup 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     confpath = sys.argv[1]
+    seed = int(sys.argv[2]) if len(sys.argv) == 3 else None
     conf = Dict(read_yml(confpath))
-    output_dir = osp.join(conf.output_dir, "transfer_finetune_freeze_recurrent")
-    os.makedirs(output_dir, exist_ok=True)
+    
     print(f"~"*50)
-    print(f"Running Transfer-Learning, Fine-Tune Freeze Recurrent with config file: {confpath}")
-    print(f"~"*50)
-    seed = 11001000 # arbitrary, made it by combining 1-100-1000
-    reproducibility.set_seed(seed) 
+    print(f"Running Transfer-Learning, Fine-Tune Freeze Dense Layers with config file: {confpath}")
+    if seed is not None:
+        reproducibility.set_seed(seed)
+        output_dir = osp.join(conf.output_dir, "freeze_dense_reps", f"seed_{seed}")
+        print(f"RNN Model Dir: {osp.join(conf.reps_dir, f'seed_{seed}')}")
+        params = Dict(read_yml(osp.join(conf.reps_dir, f"seed_{seed}", "params.yaml")))
+        params["freeze_layers"] = [0, 1, 1, 0] # matches hidden_layers=[lstm, dense, dense, dropout]
+        params["freeze_output"] = 1        
+        rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
+        scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
+        rnn.load_weights(osp.join(conf.reps_dir, f"seed_{seed}", 'rnn.keras'))
+    else:
+        seed = 11001000 # arbitrary, made it by combining 1-100-1000
+        reproducibility.set_seed(seed)
+        output_dir = osp.join(conf.output_dir, "freeze_dense")
+        print(f"RNN Model Dir: {conf.rnn_dir}")
+        params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
+        params["freeze_layers"] = [0, 1, 1, 0] # matches hidden_layers=[lstm, dense, dense, dropout]
+        params["freeze_output"] = 1
+        rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
+        scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
+        rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras'))
+
+    os.makedirs(output_dir, exist_ok=True)    
     
     # Time params
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -188,17 +208,6 @@ if __name__ == '__main__':
     print(f"Test Period:  {conf.f_start} to {conf.f_end}")
     print(f"    N. Hours: {test_times.shape[0]}")
 
-    # RNN
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
-    params["freeze_layers"] = [0, 1, 1, 0] # matches hidden_layers=[lstm, dense, dense, dropout]
-    params["freeze_output"] = 1
-
-    seed = 42
-    reproducibility.set_seed(seed)
-    rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
-    scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
-    rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras'))
     ## Extract LSTM weights
     lstm = rnn.get_layer("lstm")
     lstm_units = lstm.units

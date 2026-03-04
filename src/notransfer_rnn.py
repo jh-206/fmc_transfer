@@ -41,24 +41,35 @@ params = Dict(read_yml(osp.join(PROJECT_ROOT, "models/params.yaml")))
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print(f"Invalid arguments. {len(sys.argv)} was given but 2 expected")
-        print(f"Usage: {sys.argv[0]} <config_path>")
-        print("Example: python src/transfer_zeroshot_analysis.py etc/thesis_config.yaml")
-        sys.exit(-1)  
+    if len(sys.argv) not in [2, 3]:
+        print(f"Invalid arguments. {len(sys.argv)-1} was given but 1 or 2 expected")
+        print(f"Usage: {sys.argv[0]} <config_path> [seed]")
+        print("Example: python src/notransfer_rnn.py etc/thesis_config.yaml")
+        print("Example: python src/notransfer_rnn.py etc/thesis_config.yaml 17")
+        sys.exit(-1)
+
 
     # Setup 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
     confpath = sys.argv[1]
+    seed = int(sys.argv[2]) if len(sys.argv) == 3 else None
     conf = Dict(read_yml(confpath))
-    output_dir = osp.join(conf.output_dir, "notransfer_rnn")
-    os.makedirs(output_dir, exist_ok=True)
+
+
     print(f"~"*50)
     print(f"Running Transfer-Learning, No-Fine-Tune with config file: {confpath}")
-    print(f"~"*50)
-    seed = 11001000 # arbitrary, made it by combining 1-100-1000
-    reproducibility.set_seed(seed) 
     
+    if seed is not None:
+        reproducibility.set_seed(seed)
+        output_dir = osp.join(conf.output_dir, "notransfer_rnn", f"seed_{seed}")
+    else:
+        seed = 11001000 # arbitrary, made it by combining 1-100-1000
+        reproducibility.set_seed(seed)
+        output_dir = osp.join(conf.output_dir, "notransfer_rnn")
+
+    os.makedirs(output_dir, exist_ok=True)
+
     # Time params
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     train_times = time_range(conf.train_start, conf.train_end, freq="1h")
