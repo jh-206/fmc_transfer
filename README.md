@@ -55,6 +55,20 @@ Run `rnn_timewarp_reps.ipynb`
 
 `analyze_steadystate_results.ipynb`
 
+## Transfer Learning Scenarios
+
+### No Transfer Baselines - Static Models
+
+`python src/notransfer_static.py etc/thesis_config.yaml`
+
+`analyze_static_results.ipynb`
+
+### No Transfer Baselines - RNN Direct Train
+
+`./run_reps.sh run_notransfer.sh etc/thesis_config.yaml 100`
+
+`python src/notransfer_rnn.py etc/thesis_config.yaml`
+
 ### FMC Transfer - No Fine Tune
 
 
@@ -71,19 +85,6 @@ To create the files `fm1_results.pkl`, `f100_results.pkl`, `fm1000_results.pkl`,
 
 Then, tables and figures of results can be recreated with `analyze_transfer_results.ipynb`
 
-### No Transfer Baselines - Static Models
-
-`python src/notransfer_static.py etc/thesis_config.yaml`
-
-`analyze_static_results.ipynb`
-
-### No Transfer Baselines - RNN Direct Train
-
-`./run_reps.sh run_notransfer.sh etc/thesis_config.yaml 100`
-
-`python src/notransfer_rnn.py etc/thesis_config.yaml`
-
-
 ### Transfer - Freeze Recurrent Layer
 
 `./run_reps.sh run_twarp_freeze_recurrent.sh etc/thesis_config.yaml 100`
@@ -97,7 +98,9 @@ Then, tables and figures of results can be recreated with `analyze_transfer_resu
 
 `python src/transfer_twarp_finetune_freeze_dense.py etc/thesis_config.yaml`
 
+### Transfer - TimeWarp and Full Fine Tune
 
+`./run_reps.sh run_twarp_finetune.sh etc/thesis_config.yaml 100`
 
-
+`python src/transfer_twarp_finetune.py etc/thesis_config.yaml`
 
