@@ -24,8 +24,15 @@ The datasets for analysis are created in interactive jupyter notebooks. The note
 
 ...weise data future work...
 
+## Pretrained RNNs
+
+The pretrained RNN used as the source learning task is from the project `openwfm/ml_fmda`. Instructions on how to recreate those models are in the README. The steps involve retrieving and formatting all HRRR and RAWS within a spatial domain (Rocky Mountain GACC for the paper and this thesis). Then, `train_cpu_reps.sh` is run with the config file `etc/train_config.yaml`, generating 100 replications of the RNN. The replications vary train/val split in training and initial weights of the RNN. No test set is utilized for the source domain in this case. The target tasks make the test set in this project. The source domain RNN was validated with an extensive spatiotemporal cross validation and reported in the paper. 
+
+The required models to recreate the thesis are the set of weights for each 100 replication, and live in the directory `models/reps/seed_i` for i=0,...,99
 
 ## Recreating Outputs
+
+The analyses are run with statistical replications using SLURM arrays. To recreate efficiently you will need access to a computing cluster with slurm workflow. Individual python modules could be run with individual seeds as a check, but it won't be efficient to recreate the entire analysis. 
 
 ### FM10 Zeroshot
 
@@ -48,11 +55,15 @@ Run `rnn_timewarp_reps.ipynb`
 
 ### FMC Transfer - No Fine Tune
 
+
+`./run_reps.sh run_twarp.sh etc/thesis_config.yaml 100`
+
+
 To recreate the accuracy metrics and visualizations associated with transfer learning, no fine-tune, run python module with config:
 
 `python src/transfer_twarp_analysis.py etc/thesis_config.yaml`
 
-To create the files `fm1_results.pkl`, `f100 this _results.pkl`, `fm1000_results.pkl`, `results_test_set.pkl`
+To create the files `fm1_results.pkl`, `f100_results.pkl`, `fm1000_results.pkl`, `results_test_set.pkl`
 
 Then, tables and figures of results can be recreated with `analyze_transfer_results.ipynb`
 
@@ -64,7 +75,25 @@ Then, tables and figures of results can be recreated with `analyze_transfer_resu
 
 ### No Transfer Baselines - RNN Direct Train
 
+`./run_reps.sh run_notransfer.sh etc/thesis_config.yaml 100`
+
 `python src/notransfer_rnn.py etc/thesis_config.yaml`
+
+
+### Transfer - Freeze Recurrent Layer
+
+`./run_reps.sh run_twarp_freeze_recurrent.sh etc/thesis_config.yaml 100`
+
+`python src/transfer_twarp_finetune_freeze_recurrent.py etc/thesis_config.yaml`
+
+
+### Transfer - Freeze Dense Layer
+
+`./run_reps.sh run_twarp_freeze_dense.sh etc/thesis_config.yaml 100`
+
+`python src/transfer_twarp_finetune_freeze_dense.py etc/thesis_config.yaml`
+
+
 
 
 
