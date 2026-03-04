@@ -9,7 +9,7 @@ xgb:
   subsample: 0.8          # Percent of training data to be randomly selected in each boosting iteration
   colsample_bytree: 0.9   # Percent of features to be randomly selected in each boosting iteration
   scale_pos_weight: 1     
-  n_estimators: 100       # number of trees in ensemble
+  n_estimators: 25       # number of trees in ensemble
   gamma: .1               # minimum loss reduction required to make a tree partition
   scaler: 'standard'      # for consistency with RNN, but XGB doesn't require scaling 
 
