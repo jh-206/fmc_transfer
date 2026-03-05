@@ -346,7 +346,7 @@ if __name__ == '__main__':
 
     print(f"Fine Tuning RNN to FM100 data - Freeze Dense Layers")
     results_100 = {}
-    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
+    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
     # Check that dense weights didn't change
     dense1_weights_new = rnn.get_layer("dense_1").get_weights()
@@ -439,7 +439,7 @@ if __name__ == '__main__':
 
     print(f"Fine Tuning RNN to FM1000 data - Freeze Dense Layers")
     results_1000 = {}
-    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
+    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
     # Check that dense weights didn't change
     dense1_weights_new = rnn.get_layer("dense_1").get_weights()
@@ -484,7 +484,7 @@ if __name__ == '__main__':
     results_test["FM1"] = results_1
     results_test["FM100"] = results_100
     results_test["FM1000"] = results_1000
-    out_file = osp.join(output_dir, "results_finetune.pkl")
+    out_file = osp.join(output_dir, "results_freeze_dense.pkl")
     print(f"Writing Output to: {out_file}")
     with open(out_file, "wb") as f:
         pickle.dump(results_test, f, protocol=pickle.HIGHEST_PROTOCOL)

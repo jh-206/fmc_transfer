@@ -87,9 +87,10 @@ Then, tables and figures of results can be recreated with `analyze_transfer_resu
 
 ### Transfer - Freeze Recurrent Layer
 
-`./run_reps.sh run_twarp_freeze_recurrent.sh etc/thesis_config.yaml 100`
+Transfer learning taking pretrained RNN and fine-tuning to OK field data with frozen recurrent layer. No time warping
 
-`python src/transfer_twarp_finetune_freeze_recurrent.py etc/thesis_config.yaml`
+`./run_reps.sh run_freeze_recurrent.sh etc/thesis_config.yaml 100`
+
 
 
 ### Transfer - Freeze Dense Layer
@@ -98,7 +99,8 @@ Transfer learning taking pretrained RNN and fine-tuning to OK field data with fr
 
 `./run_reps.sh run_freeze_dense.sh etc/thesis_config.yaml 100`
 
-`python src/transfer_freeze_dense.py etc/thesis_config.yaml`
+`python src/analyze_freeze_dense.py`
+
 
 ### Transfer - TimeWarp and Full Fine Tune
 
