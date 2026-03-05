@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-#SBATCH --job-name=twarp
+#SBATCH --job-name=twarpf
 #SBATCH --partition=math-alderaan
 #SBATCH --output=logs/reps_%j.out
 #SBATCH --ntasks=4

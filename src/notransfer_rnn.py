@@ -62,7 +62,7 @@ if __name__ == '__main__':
     
     if seed is not None:
         reproducibility.set_seed(seed)
-        output_dir = osp.join(conf.output_dir, "notransfer_rnn", f"seed_{seed}")
+        output_dir = osp.join(conf.output_dir, "notransfer_rnn_reps", f"seed_{seed}")
     else:
         seed = 11001000 # arbitrary, made it by combining 1-100-1000
         reproducibility.set_seed(seed)
@@ -146,13 +146,13 @@ if __name__ == '__main__':
     rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
     # Predict Test
-    preds1 = rnn.predict(XX_test)
+    preds1 = rnn.predict(XX_test).flatten()
     
     # Interp to exact time of observed data
     inds= np.where(y_test != -9999)[0]
     preds2 = time_intp(
         t1 = df1_test.utc.to_numpy(),
-        v1 = preds1.flatten(),
+        v1 = preds1,
         t2 = df1_test.utc_prov.iloc[inds].to_numpy()
     )
 
@@ -230,18 +230,17 @@ if __name__ == '__main__':
     rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
     # Predict Test
-    preds10 = rnn.predict(XX_test)
+    preds10 = rnn.predict(XX_test).flatten()
     
     # Interp to exact time of observed data
     inds= np.where(y_test != -9999)[0]
     preds2 = time_intp(
         t1 = df10_test.utc.to_numpy(),
-        v1 = preds10.flatten(),
+        v1 = preds10,
         t2 = df10_test.utc_prov.iloc[inds].to_numpy()
     )
 
     # Calc accuracy in output object
-    results = {}
     results["FM10"] = {}
     # Accuracy
     results["FM10"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
@@ -315,23 +314,24 @@ if __name__ == '__main__':
     rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
     # Predict Test
-    preds100 = rnn.predict(XX_test)
+    preds100 = rnn.predict(XX_test).flatten()
     
     # Interp to exact time of observed data
     inds= np.where(y_test != -9999)[0]
     preds2 = time_intp(
         t1 = df100_test.utc.to_numpy(),
-        v1 = preds100.flatten(),
+        v1 = preds100,
         t2 = df100_test.utc_prov.iloc[inds].to_numpy()
     )
 
     # Calc accuracy in output object
-    results = {}
     results["FM100"] = {}
     # Accuracy
     results["FM100"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
     results["FM100"]["bias"]        = np.mean(y_test[inds] - preds2)
     results["FM100"]["r2"]          = r2_score(y_test[inds], preds2)
+    results["FM100"]["preds100"] = preds100
+    results["FM100"]["preds100_intp"] = preds2
 
     print("FM100 Accuracy Metrics Test Set")
     print(f'    RMSE: {results["FM100"]["rmse"]}')
@@ -390,23 +390,24 @@ if __name__ == '__main__':
     rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
     # Predict Test
-    preds1000 = rnn.predict(XX_test)
+    preds1000 = rnn.predict(XX_test).flatten()
     
     # Interp to exact time of observed data
     inds= np.where(y_test != -9999)[0]
     preds2 = time_intp(
         t1 = df1000_test.utc.to_numpy(),
-        v1 = preds1000.flatten(),
+        v1 = preds1000,
         t2 = df1000_test.utc_prov.iloc[inds].to_numpy()
     )
 
     # Calc accuracy in output object
-    results = {}
     results["FM1000"] = {}
     # Accuracy
     results["FM1000"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
     results["FM1000"]["bias"]        = np.mean(y_test[inds] - preds2)
     results["FM1000"]["r2"]          = r2_score(y_test[inds], preds2)
+    results["FM1000"]["preds1000"] = preds1000
+    results["FM1000"]["preds1000_intp"] = preds2
 
     print("FM1000 Accuracy Metrics Test Set")
     print(f'    RMSE: {results["FM1000"]["rmse"]}')

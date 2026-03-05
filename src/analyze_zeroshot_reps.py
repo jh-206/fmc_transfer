@@ -93,4 +93,3 @@ if __name__ == '__main__':
         for m in metrics:
             f.write(f"{m}: {results[median_idx][m]}\n")
 
-

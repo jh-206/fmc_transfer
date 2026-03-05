@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-#SBATCH --job-name=twarp
+#SBATCH --job-name=notr
 #SBATCH --partition=math-alderaan
 #SBATCH --output=logs/reps_%j.out
 #SBATCH --ntasks=4
@@ -17,4 +17,4 @@ CONF_PATH="$1"
 source ~/.bashrc
 conda activate fmc
 
-python src/src/notransfer_rnn.py $CONF_PATH $SEED 
+python src/notransfer_rnn.py $CONF_PATH $SEED 
