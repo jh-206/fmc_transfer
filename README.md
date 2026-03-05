@@ -69,21 +69,23 @@ Run `rnn_timewarp_reps.ipynb`
 
 `python src/notransfer_rnn.py etc/thesis_config.yaml`
 
-### FMC Transfer - No Fine Tune
+### FMC Time Warp Transfer - No Fine Tune
 
+Fits timewarp params, all other weights frozen
+
+Makes grid of timewarp params and picks best on validation set. Uses to predict test set.
 
 `./run_reps.sh run_twarp.sh etc/thesis_config.yaml 100`
 
 `python src/analyze_twarp0_reps.py`
 
+### Transfer - Full Fine Tune
 
-To recreate the accuracy metrics and visualizations associated with transfer learning, no fine-tune, run python module with config:
+No time warp, no frozen layers
 
-`python src/transfer_twarp_analysis.py etc/thesis_config.yaml`
+`./run_reps.sh run_finetune.sh etc/thesis_config.yaml 100`
 
-To create the files `fm1_results.pkl`, `f100_results.pkl`, `fm1000_results.pkl`, `results_test_set.pkl`
-
-Then, tables and figures of results can be recreated with `analyze_transfer_results.ipynb`
+`python src/analyze_finetune.py`
 
 ### Transfer - Freeze Recurrent Layer
 
@@ -91,7 +93,7 @@ Transfer learning taking pretrained RNN and fine-tuning to OK field data with fr
 
 `./run_reps.sh run_freeze_recurrent.sh etc/thesis_config.yaml 100`
 
-
+`python src/analyze_freeze_recurrent.py`
 
 ### Transfer - Freeze Dense Layer
 
