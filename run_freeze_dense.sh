@@ -7,7 +7,7 @@
 #SBATCH --ntasks=4
 #SBATCH --mem=64G
 
-# Shell file to run a replications of time warp, freeze dense layer
+# Shell file to run a replications of transfer + freeze dense layer
 
 
 SEED="$SLURM_ARRAY_TASK_ID"
@@ -17,4 +17,4 @@ CONF_PATH="$1"
 source ~/.bashrc
 conda activate fmc
 
-python src/transfer_twarp_finetune_freeze_dense.py $CONF_PATH $SEED 
+python src/transfer_freeze_dense.py $CONF_PATH $SEED 
