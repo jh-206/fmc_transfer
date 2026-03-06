@@ -313,6 +313,9 @@ def get_sites_in_bbox(bbox, source="api", stash_path = None, access_token = None
 
     if source == "stash":
         if stash_path is None: stash_path = "data/fems_sts.xlsx"; print(f"Searching for stash path at: {stash_path}")
+        if not osp.exists(stash_path):
+            print(f"Getting all FEMS stations and building stash at {stash_path}")
+            get_all_sites(stash_path = stash_path)
         print(f"Reading Local station data stash: {stash_path}")
         df = pd.read_excel(stash_path)
     elif source == "api":
@@ -435,7 +438,7 @@ def get_fuel_data(fuel_params, access_token=None, verbose=True,
     results = []
     delay = base_delay
     if verbose:
-        print(f"Querying FEMS from {fuel_params["startDate"]}")
+        print(f"Querying FEMS from {fuel_params['startDate']}")
         print(f"Number of stations to query: {len(site_ids)}")
     for siteId in site_ids:
         print("~"*50)

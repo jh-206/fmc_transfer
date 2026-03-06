@@ -41,24 +41,35 @@ params = Dict(read_yml(osp.join(PROJECT_ROOT, "models/params.yaml")))
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print(f"Invalid arguments. {len(sys.argv)} was given but 2 expected")
-        print(f"Usage: {sys.argv[0]} <config_path>")
-        print("Example: python src/transfer_zeroshot_analysis.py etc/thesis_config.yaml")
-        sys.exit(-1)  
+    if len(sys.argv) not in [2, 3]:
+        print(f"Invalid arguments. {len(sys.argv)-1} was given but 1 or 2 expected")
+        print(f"Usage: {sys.argv[0]} <config_path> [seed]")
+        print("Example: python src/notransfer_rnn.py etc/thesis_config.yaml")
+        print("Example: python src/notransfer_rnn.py etc/thesis_config.yaml 17")
+        sys.exit(-1)
+
 
     # Setup 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
     confpath = sys.argv[1]
+    seed = int(sys.argv[2]) if len(sys.argv) == 3 else None
     conf = Dict(read_yml(confpath))
-    output_dir = osp.join(conf.output_dir, "notransfer_rnn")
-    os.makedirs(output_dir, exist_ok=True)
+
+
     print(f"~"*50)
     print(f"Running Transfer-Learning, No-Fine-Tune with config file: {confpath}")
-    print(f"~"*50)
-    seed = 11001000 # arbitrary, made it by combining 1-100-1000
-    reproducibility.set_seed(seed) 
     
+    if seed is not None:
+        reproducibility.set_seed(seed)
+        output_dir = osp.join(conf.output_dir, "notransfer_rnn_reps", f"seed_{seed}")
+    else:
+        seed = 11001000 # arbitrary, made it by combining 1-100-1000
+        reproducibility.set_seed(seed)
+        output_dir = osp.join(conf.output_dir, "notransfer_rnn")
+
+    os.makedirs(output_dir, exist_ok=True)
+
     # Time params
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     train_times = time_range(conf.train_start, conf.train_end, freq="1h")
@@ -94,6 +105,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="left"
     ).drop(columns="utc_rounded")
+    df1.loc[:, "hod"] = df1.hod_utc
+    df1.loc[:, "doy"] = df1.doy_utc
     df1["elev"] = conf.ok_elev
     df1["lon"] = conf.ok_lon
     df1["lat"] = conf.ok_lat
@@ -133,13 +146,13 @@ if __name__ == '__main__':
     rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
     # Predict Test
-    preds1 = rnn.predict(XX_test)
+    preds1 = rnn.predict(XX_test).flatten()
     
     # Interp to exact time of observed data
     inds= np.where(y_test != -9999)[0]
     preds2 = time_intp(
         t1 = df1_test.utc.to_numpy(),
-        v1 = preds1.flatten(),
+        v1 = preds1,
         t2 = df1_test.utc_prov.iloc[inds].to_numpy()
     )
 
@@ -176,6 +189,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="left"
     ).drop(columns="utc_rounded")
+    df10.loc[:, "hod"] = df10.hod_utc
+    df10.loc[:, "doy"] = df10.doy_utc
     df10["elev"] = conf.ok_elev
     df10["lon"] = conf.ok_lon
     df10["lat"] = conf.ok_lat
@@ -215,18 +230,17 @@ if __name__ == '__main__':
     rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
     # Predict Test
-    preds10 = rnn.predict(XX_test)
+    preds10 = rnn.predict(XX_test).flatten()
     
     # Interp to exact time of observed data
     inds= np.where(y_test != -9999)[0]
     preds2 = time_intp(
         t1 = df10_test.utc.to_numpy(),
-        v1 = preds10.flatten(),
+        v1 = preds10,
         t2 = df10_test.utc_prov.iloc[inds].to_numpy()
     )
 
     # Calc accuracy in output object
-    results = {}
     results["FM10"] = {}
     # Accuracy
     results["FM10"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
@@ -259,6 +273,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="left"
     ).drop(columns="utc_rounded")
+    df100.loc[:, "hod"] = df100.hod_utc
+    df100.loc[:, "doy"] = df100.doy_utc
     df100["elev"] = conf.ok_elev
     df100["lon"] = conf.ok_lon
     df100["lat"] = conf.ok_lat
@@ -298,23 +314,24 @@ if __name__ == '__main__':
     rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
     # Predict Test
-    preds100 = rnn.predict(XX_test)
+    preds100 = rnn.predict(XX_test).flatten()
     
     # Interp to exact time of observed data
     inds= np.where(y_test != -9999)[0]
     preds2 = time_intp(
         t1 = df100_test.utc.to_numpy(),
-        v1 = preds100.flatten(),
+        v1 = preds100,
         t2 = df100_test.utc_prov.iloc[inds].to_numpy()
     )
 
     # Calc accuracy in output object
-    results = {}
     results["FM100"] = {}
     # Accuracy
     results["FM100"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
     results["FM100"]["bias"]        = np.mean(y_test[inds] - preds2)
     results["FM100"]["r2"]          = r2_score(y_test[inds], preds2)
+    results["FM100"]["preds100"] = preds100
+    results["FM100"]["preds100_intp"] = preds2
 
     print("FM100 Accuracy Metrics Test Set")
     print(f'    RMSE: {results["FM100"]["rmse"]}')
@@ -332,6 +349,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="left"
     ).drop(columns="utc_rounded")
+    df1000.loc[:, "hod"] = df1000.hod_utc
+    df1000.loc[:, "doy"] = df1000.doy_utc
     df1000["elev"] = conf.ok_elev
     df1000["lon"] = conf.ok_lon
     df1000["lat"] = conf.ok_lat
@@ -371,23 +390,24 @@ if __name__ == '__main__':
     rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
     # Predict Test
-    preds1000 = rnn.predict(XX_test)
+    preds1000 = rnn.predict(XX_test).flatten()
     
     # Interp to exact time of observed data
     inds= np.where(y_test != -9999)[0]
     preds2 = time_intp(
         t1 = df1000_test.utc.to_numpy(),
-        v1 = preds1000.flatten(),
+        v1 = preds1000,
         t2 = df1000_test.utc_prov.iloc[inds].to_numpy()
     )
 
     # Calc accuracy in output object
-    results = {}
     results["FM1000"] = {}
     # Accuracy
     results["FM1000"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
     results["FM1000"]["bias"]        = np.mean(y_test[inds] - preds2)
     results["FM1000"]["r2"]          = r2_score(y_test[inds], preds2)
+    results["FM1000"]["preds1000"] = preds1000
+    results["FM1000"]["preds1000_intp"] = preds2
 
     print("FM1000 Accuracy Metrics Test Set")
     print(f'    RMSE: {results["FM1000"]["rmse"]}')

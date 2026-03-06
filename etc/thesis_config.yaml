@@ -22,22 +22,22 @@ ok_lat: 36.597490
 tl_epochs: 10 # NOTE: not using validation set to control early stopping, just hard coding 10 epochs
 
 ## Param Grids
-ngrid: 20 # number of params in grid to search
+ngrid: 25 # number of params in grid to search
 ## 1h, speed up dynamics. Forget DOWN, Input UP
-fm1_bf_low:  1    # Lower bound forget gate bias time-warp 
-fm1_bf_high: -4    # Upper bound forget gate bias time-warp 
-fm1_bi_low:  -1    # Lower bound input gate bias time-warp 
-fm1_bi_high: 4    # Upper bound input gate bias time-warp 
+fm1_bf_low:  -5    # Lower bound forget gate bias time-warp 
+fm1_bf_high:  5    # Upper bound forget gate bias time-warp 
+fm1_bi_low:  -5    # Lower bound input gate bias time-warp 
+fm1_bi_high:  5    # Upper bound input gate bias time-warp 
 ## 100h, slow down dynamics. Forget UP, Input DOWN
-fm100_bf_low:  -1    # Lower bound forget gate bias time-warp 
-fm100_bf_high: 4    # Upper bound forget gate bias time-warp 
-fm100_bi_low:  -4    # Lower bound input gate bias time-warp 
-fm100_bi_high: 1    # Upper bound input gate bias time-warp 
+fm100_bf_low:  -5    # Lower bound forget gate bias time-warp 
+fm100_bf_high:  5    # Upper bound forget gate bias time-warp 
+fm100_bi_low:  -5    # Lower bound input gate bias time-warp 
+fm100_bi_high:  5    # Upper bound input gate bias time-warp 
 ## 1000h, slow down dynamics. Forget UP, Input DOWN
-fm1000_bf_low:  -1    # Lower bound forget gate bias time-warp 
-fm1000_bf_high: 4    # Upper bound forget gate bias time-warp 
-fm1000_bi_low:  -4    # Lower bound input gate bias time-warp 
-fm1000_bi_high: 1    # Upper bound input gate bias time-warp 
+fm1000_bf_low:  -5    # Lower bound forget gate bias time-warp 
+fm1000_bf_high:  5    # Upper bound forget gate bias time-warp 
+fm1000_bi_low:  -5    # Lower bound input gate bias time-warp 
+fm1000_bi_high:  5    # Upper bound input gate bias time-warp 
 
 
 

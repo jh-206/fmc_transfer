@@ -117,6 +117,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="left"
     ).drop(columns="utc_rounded")
+    df1.loc[:, "hod"] = df1.hod_utc
+    df1.loc[:, "doy"] = df1.doy_utc    
     df1["elev"] = conf.ok_elev
     df1["lon"] = conf.ok_lon
     df1["lat"] = conf.ok_lat
@@ -170,6 +172,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="left"
     ).drop(columns="utc_rounded")
+    df10.loc[:, "hod"] = df10.hod_utc
+    df10.loc[:, "doy"] = df10.doy_utc    
     df10["elev"] = conf.ok_elev
     df10["lon"] = conf.ok_lon
     df10["lat"] = conf.ok_lat
@@ -223,6 +227,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="inner"
     ).drop(columns="utc_rounded")    
+    df100.loc[:, "hod"] = df100.hod_utc
+    df100.loc[:, "doy"] = df100.doy_utc    
     df100["elev"] = conf.ok_elev
     df100["lon"] = conf.ok_lon
     df100["lat"] = conf.ok_lat
@@ -272,6 +278,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="inner"
     ).drop(columns="utc_rounded")    
+    df1000.loc[:, "hod"] = df1000.hod_utc
+    df1000.loc[:, "doy"] = df1000.doy_utc    
     df1000["elev"] = conf.ok_elev
     df1000["lon"] = conf.ok_lon
     df1000["lat"] = conf.ok_lat

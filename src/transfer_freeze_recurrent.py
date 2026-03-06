@@ -1,8 +1,6 @@
-# Executable module to run transfer analysis 
-# Freeze Recurrent layer
-# Methodology: for each fuel class construct grid of time warp params, modify LSTM, run fit on training set
-    # Pick best time warp on val set
-    # Predict test set for accuracy
+# Executable module to run transfer learning analysis 
+# Start with pretrained RNN, fine tune to OK data and Freeze Recurrent layer
+# No time warp
 # NOTE: this script will assume the form of the layer order from the pretrained model. The RNN_FLexible custom class can handle frozen weights at initiate step
 
 
@@ -35,42 +33,6 @@ import reproducibility
 # Metadata files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Module Functions
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-def make_param_grid(**grids):
-    """
-    Creates all combos of input param grids. Input are lists of grids of any shape, put them in with named arg, name determined by user
-
-    Usage: make_param_grid(bi=bi_grid, bf=bf_grid)
-    """
-    keys = grids.keys()
-    values = grids.values()
-    
-    return [
-        dict(zip(keys, combo))
-        for combo in product(*values)
-    ]
-
-def warp_weights(weights0, bi_warp, bf_warp):
-    """
-    Given LSTM layer weights and time-warp parameters, return a new list
-    of time-warped LSTM weights without modifying the input weights.
-    """
-    # Copy all arrays to avoid mutating the originals
-    w_warped = [w.copy() for w in weights0]
-    # Bias vector (Keras LSTM layout: [i, f, c, o])
-    b = w_warped[2]
-    # Infer number of LSTM units from bias length
-    if b.ndim != 1 or b.shape[0] % 4 != 0:
-        raise ValueError("Unexpected LSTM bias shape.")
-    lstm_units = b.shape[0] // 4
-    # Input gate biases (i)
-    b[0:lstm_units] += bi_warp
-    # Forget gate biases (f)
-    b[lstm_units:2 * lstm_units] += bf_warp
-
-    return w_warped
 
 
 def eval_interp_metrics(
@@ -156,26 +118,44 @@ def eval_interp_metrics(
 
 # Executed Code
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print(f"Invalid arguments. {len(sys.argv)} was given but 2 expected")
-        print(f"Usage: {sys.argv[0]} <config_path>")
-        print("Example: python src/transfer_zeroshot_analysis.py etc/thesis_config.yaml")
-        sys.exit(-1)  
+    if len(sys.argv) not in [2, 3]:
+        print(f"Invalid arguments. {len(sys.argv)-1} was given but 1 or 2 expected")
+        print(f"Usage: {sys.argv[0]} <config_path> [seed]")
+        print("Example: python src/transfer_freeze_recurrent.py etc/thesis_config.yaml")
+        print("Example: python src/transfer_freeze_recurrent.py etc/thesis_config.yaml 17")
+        sys.exit(-1)
 
     # Setup 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     confpath = sys.argv[1]
+    seed = int(sys.argv[2]) if len(sys.argv) == 3 else None
     conf = Dict(read_yml(confpath))
-    output_dir = osp.join(conf.output_dir, "transfer_finetune_freeze_recurrent")
-    os.makedirs(output_dir, exist_ok=True)
-    print(f"~"*50)
-    print(f"Running Transfer-Learning, Fine-Tune Freeze Recurrent with config file: {confpath}")
-    print(f"~"*50)
-    seed = 11001000 # arbitrary, made it by combining 1-100-1000
-    reproducibility.set_seed(seed) 
     
+    print(f"~"*50)
+    print(f"Running Transfer-Learning, Fine-Tune Freeze Recurrent Layer with config file: {confpath}")
+    if seed is not None:
+        reproducibility.set_seed(seed)
+        output_dir = osp.join(conf.output_dir, "freeze_recurrent_reps", f"seed_{seed}")
+        print(f"RNN Model Dir: {osp.join(conf.reps_dir, f'seed_{seed}')}")
+        params = Dict(read_yml(osp.join(conf.reps_dir, f"seed_{seed}", "params.yaml")))
+        params["freeze_layers"] = [1, 0, 0, 0] # matches hidden_layers=[lstm, dense, dense, dropout]
+        rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
+        scaler = joblib.load(osp.join(conf.reps_dir, f"seed_{seed}", "scaler.joblib"))
+        weights_path = osp.join(conf.reps_dir, f"seed_{seed}", 'rnn.keras')
+    else:
+        seed = 11001000 # arbitrary, made it by combining 1-100-1000
+        reproducibility.set_seed(seed)
+        output_dir = osp.join(conf.output_dir, "freeze_recurrent")
+        print(f"RNN Model Dir: {conf.rnn_dir}")
+        params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
+        params["freeze_layers"] = [1, 0, 0, 0] # matches hidden_layers=[lstm, dense, dense, dropout]
+        rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
+        scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
+        weights_path = osp.join(conf.rnn_dir, 'rnn.keras')
+
+    os.makedirs(output_dir, exist_ok=True)    
+
     # Time params
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     train_times = time_range(conf.train_start, conf.train_end, freq="1h")
@@ -188,20 +168,16 @@ if __name__ == '__main__':
     print(f"Test Period:  {conf.f_start} to {conf.f_end}")
     print(f"    N. Hours: {test_times.shape[0]}")
 
-    # RNN
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
-    params["freeze_layers"] = [1, 0, 0, 0] # matches hidden_layers=[lstm, dense, dense, dropout]
-
-    seed = 42
-    reproducibility.set_seed(seed)
-    rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
-    scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
-    rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras'))
-    ## Extract LSTM weights
+    # Load pretrained weights
+    rnn.load_weights(weights_path)
+    ## Extract LSTM weights - to make sure they don't change in fine tune
     lstm = rnn.get_layer("lstm")
     lstm_units = lstm.units
-    weights10 = lstm.get_weights()    
+    lweights = [w.copy() for w in lstm.get_weights()]
+
+    ## Extract one Dense Layer weights - to track changes in fine tune
+    dense1 = rnn.get_layer("dense_1")
+    dense1_weights = [w.copy() for w in dense1.get_weights()]
 
     # Data
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -223,6 +199,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="left"
     ).drop(columns="utc_rounded")
+    df1.loc[:, "hod"] = df1.hod_utc
+    df1.loc[:, "doy"] = df1.doy_utc    
     df1["elev"] = conf.ok_elev
     df1["lon"] = conf.ok_lon
     df1["lat"] = conf.ok_lat
@@ -255,65 +233,29 @@ if __name__ == '__main__':
     X_train_samples, y_train_samples, masks = build_training_batches_univariate(X = X_train_scaled, y=y_train)
     print(f"    {X_train_samples.shape=}")
 
-    bf_grid = np.linspace(conf.fm1_bf_low, conf.fm1_bf_high, num=conf.ngrid).round(4)
-    bi_grid = np.linspace(conf.fm1_bi_low, conf.fm1_bi_high, num=conf.ngrid).round(4)
-    fm1_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
-    print()
-    print(f"N time-warp Param Combos: {len(fm1_grid)}")
+    # Set weights to initial pretrained
+    rnn.load_weights(weights_path)
 
-    #d Loop over param grids, fit to training data w early stop, calculate RMSE on val
+    print(f"Fine Tuning RNN to FM1 data - Freeze Recurrent Layers")
     results_1 = {}
-    for i, bs in enumerate(fm1_grid):
-        print("~"*50)
-        print(f"FM1 Param Combo {i+1} out of {len(fm1_grid)}")
-        print(f"Params: {bs}")    
-        rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras')) # reset weights to baseline
-        weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
-        rnn.get_layer("lstm").set_weights(weightsi)
-        rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
-        
-        print(f"Predicting Val Set")
-        preds = rnn.predict(XX_val)
-        val_mse = np.float32(mse_masked(y_val.flatten(), preds.flatten()))
-        print(f"    {val_mse=}")
-        results_1[i]={}
-        results_1[i]["val_rmse"] = np.sqrt(val_mse)
-        results_1[i]["params"] = bs
-        results_1[i]["preds"] = preds  
+    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
+    # Check that dense weights didn't change
+    dense1_weights_new = rnn.get_layer("dense_1").get_weights()
+    assert not (
+        np.array_equal(dense1_weights_new[0], dense1_weights[0]) and
+        np.array_equal(dense1_weights_new[1], dense1_weights[1])
+    ), "Dense layer weights did not change during training"
 
-    # Find min val_rmse case
-    fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["val_rmse"])
-    fm1_best = results_1[fm1_best_key]
-    print()
-    print("Best Config from Val Error:")
-    print(f"Min Val RMSE: {np.round(fm1_best['val_rmse'], 4)}")
-    print(f"Time-Warp Params: {fm1_best['params']}")
+    lweights_new = rnn.get_layer("lstm").get_weights()
+    assert (
+        np.array_equal(lweights_new[0], lweights[0]) and
+        np.array_equal(lweights_new[1], lweights[1]) and
+        np.array_equal(lweights_new[2], lweights[2])
+    ), "LSTM layer changed despite trainable=False"
 
-    # Re-train using best params (clean run)
-    # Reset to baseline pretrained weights
-    reproducibility.set_seed(seed)
-    rnn.load_weights(osp.join(conf.rnn_dir, "rnn.keras"))
-    
-    # Apply best warp to the LSTM weights
-    weights_best = warp_weights(
-        weights10,
-        bi_warp=fm1_best["params"]["bi"],
-        bf_warp=fm1_best["params"]["bf"],
-    )
-    rnn.get_layer("lstm").set_weights(weights_best)
-    # Train again (fresh run from baseline+warp)
-    rnn.fit(
-        X_train_samples,
-        y_train_samples,
-        validation_data=(XX_val, yy_val),
-        batch_size=params.batch_size,
-        epochs=params.epochs,
-        verbose_fit=True,
-        plot_history=False,
-    )
-
-    preds1 = rnn.predict(XX_test)
+    # Predict Test set
+    preds1 = rnn.predict(XX_test).flatten()
     
     # Calc Accuracy
     fm1_test = eval_interp_metrics(
@@ -337,22 +279,21 @@ if __name__ == '__main__':
         missing_value=-9999,
         threshold=30,
     )
+   
+    results_1["preds1"] = preds1
+    results_1["preds1_intp"] = fm1_test["preds_intp"]
+
+    results_1["rmse"] = fm1_test["rmse"]
+    results_1["bias"] = fm1_test["bias"]
+    results_1["r2"]   = fm1_test["r2"]
     
-    # Example storing into your fm1_best dict
-    fm1_best["rmse"] = fm1_test["rmse"]
-    fm1_best["bias"] = fm1_test["bias"]
-    fm1_best["r2"]   = fm1_test["r2"]
-    
-    fm1_best["rmse_30"] = fm1_test_30["rmse"]
-    fm1_best["bias_30"] = fm1_test_30["bias"]
-    fm1_best["r2_30"]   = fm1_test_30["r2"]
+    results_1["rmse_30"] = fm1_test_30["rmse"]
+    results_1["bias_30"] = fm1_test_30["bias"]
+    results_1["r2_30"]   = fm1_test_30["r2"]
 
     print(f"FM1 Test Accuracy")
-    print(f"    RMSE: {fm1_test['rmse']}")
-    print(f"    RMSE30: {fm1_test['rmse_30']}")
-    breakpoint()
-    
-
+    print(f"    RMSE: {results_1['rmse']}")
+    print(f"    RMSE30: {results_1['rmse_30']}")
 
     # FM100
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -366,6 +307,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="left"
     ).drop(columns="utc_rounded")
+    df100.loc[:, "hod"] = df100.hod_utc
+    df100.loc[:, "doy"] = df100.doy_utc    
     df100["elev"] = conf.ok_elev
     df100["lon"] = conf.ok_lon
     df100["lat"] = conf.ok_lat
@@ -398,65 +341,29 @@ if __name__ == '__main__':
     X_train_samples, y_train_samples, masks = build_training_batches_univariate(X = X_train_scaled, y=y_train)
     print(f"    {X_train_samples.shape=}")
 
-    bf_grid = np.linspace(conf.fm100_bf_low, conf.fm100_bf_high, num=conf.ngrid).round(4)
-    bi_grid = np.linspace(conf.fm100_bi_low, conf.fm100_bi_high, num=conf.ngrid).round(4)
-    fm100_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
-    print()
-    print(f"N time-warp Param Combos: {len(fm100_grid)}")
+    # Set weights to initial pretrained
+    rnn.load_weights(weights_path)
 
-    #d Loop over param grids, fit to training data w early stop, calculate RMSE on val
+    print(f"Fine Tuning RNN to FM100 data - Freeze Recurrent Layers")
     results_100 = {}
-    for i, bs in enumerate(fm100_grid):
-        print("~"*50)
-        print(f"FM100 Param Combo {i+1} out of {len(fm100_grid)}")
-        print(f"Params: {bs}")    
-        rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras')) # reset weights to baseline
-        weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
-        rnn.get_layer("lstm").set_weights(weightsi)
-        rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
-        
-        print(f"Predicting Val Set")
-        preds = rnn.predict(XX_val)
-        val_mse = np.float32(mse_masked(y_val.flatten(), preds.flatten()))
-        print(f"    {val_mse=}")
-        results_100[i]={}
-        results_100[i]["val_rmse"] = np.sqrt(val_mse)
-        results_100[i]["params"] = bs
-        results_100[i]["preds"] = preds  
+    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
+    # Check that dense weights didn't change
+    dense1_weights_new = rnn.get_layer("dense_1").get_weights()
+    assert not (
+        np.array_equal(dense1_weights_new[0], dense1_weights[0]) and
+        np.array_equal(dense1_weights_new[1], dense1_weights[1])
+    ), "Dense layer weights did not change during training"
 
-    # Find min val_rmse case
-    fm100_best_key = min(results_100, key=lambda ci: results_100[ci]["val_rmse"])
-    fm100_best = results_100[fm100_best_key]
-    print()
-    print("Best Config from Val Error:")
-    print(f"Min Val RMSE: {np.round(fm100_best['val_rmse'], 4)}")
-    print(f"Time-Warp Params: {fm100_best['params']}")
+    lweights_new = rnn.get_layer("lstm").get_weights()
+    assert (
+        np.array_equal(lweights_new[0], lweights[0]) and
+        np.array_equal(lweights_new[1], lweights[1]) and
+        np.array_equal(lweights_new[2], lweights[2])
+    ), "LSTM layer changed despite trainable=False"
 
-    # Re-train using best params (clean run)
-    # Reset to baseline pretrained weights
-    reproducibility.set_seed(seed)
-    rnn.load_weights(osp.join(conf.rnn_dir, "rnn.keras"))
-    
-    # Apply best warp to the LSTM weights
-    weights_best = warp_weights(
-        weights10,
-        bi_warp=fm100_best["params"]["bi"],
-        bf_warp=fm100_best["params"]["bf"],
-    )
-    rnn.get_layer("lstm").set_weights(weights_best)
-    # Train again (fresh run from baseline+warp)
-    rnn.fit(
-        X_train_samples,
-        y_train_samples,
-        validation_data=(XX_val, yy_val),
-        batch_size=params.batch_size,
-        epochs=params.epochs,
-        verbose_fit=True,
-        plot_history=False,
-    )
-
-    preds100 = rnn.predict(XX_test)
+    # Predict Test set
+    preds100 = rnn.predict(XX_test).flatten()
     
     # Calc Accuracy
     fm100_test = eval_interp_metrics(
@@ -469,14 +376,16 @@ if __name__ == '__main__':
         missing_value=-9999,
         threshold=None,
     )
-    
-    # Example storing into your fm100_best dict
-    fm100_best["rmse"] = fm100_test["rmse"]
-    fm100_best["bias"] = fm100_test["bias"]
-    fm100_best["r2"]   = fm100_test["r2"]
+   
+    results_100["preds100"] = preds100
+    results_100["preds100_intp"] = fm100_test["preds_intp"]
+
+    results_100["rmse"] = fm100_test["rmse"]
+    results_100["bias"] = fm100_test["bias"]
+    results_100["r2"]   = fm100_test["r2"]
     
     print(f"FM100 Test Accuracy")
-    print(f"    RMSE: {fm100_test['rmse']}")
+    print(f"    RMSE: {results_100['rmse']}")
 
 
 
@@ -493,6 +402,8 @@ if __name__ == '__main__':
         right_on="utc_rounded",
         how="left"
     ).drop(columns="utc_rounded")
+    df1000.loc[:, "hod"] = df1000.hod_utc
+    df1000.loc[:, "doy"] = df1000.doy_utc    
     df1000["elev"] = conf.ok_elev
     df1000["lon"] = conf.ok_lon
     df1000["lat"] = conf.ok_lat
@@ -525,65 +436,28 @@ if __name__ == '__main__':
     X_train_samples, y_train_samples, masks = build_training_batches_univariate(X = X_train_scaled, y=y_train)
     print(f"    {X_train_samples.shape=}")
 
-    bf_grid = np.linspace(conf.fm1000_bf_low, conf.fm1000_bf_high, num=conf.ngrid).round(4)
-    bi_grid = np.linspace(conf.fm1000_bi_low, conf.fm1000_bi_high, num=conf.ngrid).round(4)
-    fm1000_grid = make_param_grid(bf=bf_grid, bi=bi_grid)
-    print()
-    print(f"N time-warp Param Combos: {len(fm1000_grid)}")
+    # Set weights to initial pretrained
+    rnn.load_weights(weights_path)
 
-    #d Loop over param grids, fit to training data w early stop, calculate RMSE on val
+    print(f"Fine Tuning RNN to FM1000 data - Freeze Recurrent Layers")
     results_1000 = {}
-    for i, bs in enumerate(fm1000_grid):
-        print("~"*50)
-        print(f"FM1000 Param Combo {i+1} out of {len(fm1000_grid)}")
-        print(f"Params: {bs}")    
-        rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras')) # reset weights to baseline
-        weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
-        rnn.get_layer("lstm").set_weights(weightsi)
-        rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
-        
-        print(f"Predicting Val Set")
-        preds = rnn.predict(XX_val)
-        val_mse = np.float32(mse_masked(y_val.flatten(), preds.flatten()))
-        print(f"    {val_mse=}")
-        results_1000[i]={}
-        results_1000[i]["val_rmse"] = np.sqrt(val_mse)
-        results_1000[i]["params"] = bs
-        results_1000[i]["preds"] = preds  
+    rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = True, plot_history=False)
 
+    # Check that dense weights didn't change
+    assert not (
+        np.array_equal(dense1_weights_new[0], dense1_weights[0]) and
+        np.array_equal(dense1_weights_new[1], dense1_weights[1])
+    ), "Dense layer weights did not change during training"
 
-    # Find min val_rmse case
-    fm1000_best_key = min(results_1000, key=lambda ci: results_1000[ci]["val_rmse"])
-    fm1000_best = results_1000[fm1000_best_key]
-    print()
-    print("Best Config from Val Error:")
-    print(f"Min Val RMSE: {np.round(fm1000_best['val_rmse'], 4)}")
-    print(f"Time-Warp Params: {fm1000_best['params']}")
+    lweights_new = rnn.get_layer("lstm").get_weights()
+    assert (
+        np.array_equal(lweights_new[0], lweights[0]) and
+        np.array_equal(lweights_new[1], lweights[1]) and
+        np.array_equal(lweights_new[2], lweights[2])
+    ), "LSTM layer changed despite trainable=False"
 
-    # Re-train using best params (clean run)
-    # Reset to baseline pretrained weights
-    reproducibility.set_seed(seed)
-    rnn.load_weights(osp.join(conf.rnn_dir, "rnn.keras"))
-    
-    # Apply best warp to the LSTM weights
-    weights_best = warp_weights(
-        weights10,
-        bi_warp=fm1000_best["params"]["bi"],
-        bf_warp=fm1000_best["params"]["bf"],
-    )
-    rnn.get_layer("lstm").set_weights(weights_best)
-    # Train again (fresh run from baseline+warp)
-    rnn.fit(
-        X_train_samples,
-        y_train_samples,
-        validation_data=(XX_val, yy_val),
-        batch_size=params.batch_size,
-        epochs=params.epochs,
-        verbose_fit=True,
-        plot_history=False,
-    )
-
-    preds1000 = rnn.predict(XX_test)
+    # Predict Test Set
+    preds1000 = rnn.predict(XX_test).flatten()
     
     # Calc Accuracy
     fm1000_test = eval_interp_metrics(
@@ -596,23 +470,24 @@ if __name__ == '__main__':
         missing_value=-9999,
         threshold=None,
     )
-    
-    # Example storing into your fm1000_best dict
-    fm1000_best["rmse"] = fm1000_test["rmse"]
-    fm1000_best["bias"] = fm1000_test["bias"]
-    fm1000_best["r2"]   = fm1000_test["r2"]
+   
+    results_1000["preds1000"] = preds1000
+    results_1000["preds1000_intp"] = fm1000_test["preds_intp"]
+
+    results_1000["rmse"] = fm1000_test["rmse"]
+    results_1000["bias"] = fm1000_test["bias"]
+    results_1000["r2"]   = fm1000_test["r2"]
     
     print(f"FM1000 Test Accuracy")
-    print(f"    RMSE: {fm1000_test['rmse']}")
+    print(f"    RMSE: {results_1000['rmse']}")
         
 
     # Output
     results_test = {}
-    results_test["FM1"] = fm1_best
-    results_test["FM10"] = fm10_best
-    results_test["FM100"] = fm100_best
-    results_test["FM1000"] = fm1000_best
-    out_file = osp.join(output_dir, "results_finetune.pkl")
+    results_test["FM1"] = results_1
+    results_test["FM100"] = results_100
+    results_test["FM1000"] = results_1000
+    out_file = osp.join(output_dir, "results_freeze_recurrent.pkl")
     print(f"Writing Output to: {out_file}")
     with open(out_file, "wb") as f:
         pickle.dump(results_test, f, protocol=pickle.HIGHEST_PROTOCOL)

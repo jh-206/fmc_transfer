@@ -74,23 +74,42 @@ def warp_weights(weights0, bi_warp, bf_warp):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print(f"Invalid arguments. {len(sys.argv)} was given but 2 expected")
-        print(f"Usage: {sys.argv[0]} <config_path>")
-        print("Example: python src/transfer_zeroshot_analysis.py etc/thesis_config.yaml")
-        sys.exit(-1)  
+    if len(sys.argv) not in [2, 3]:
+        print(f"Invalid arguments. {len(sys.argv)-1} was given but 1 or 2 expected")
+        print(f"Usage: {sys.argv[0]} <config_path> [seed]")
+        print("Example: python src/transfer_twarp_analysis.py etc/thesis_config.yaml")
+        print("Example: python src/transfer_twarp_analysis.py etc/thesis_config.yaml 17")
+        sys.exit(-1)
 
     # Setup 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
     confpath = sys.argv[1]
+    seed = int(sys.argv[2]) if len(sys.argv) == 3 else None
     conf = Dict(read_yml(confpath))
-    output_dir = osp.join(conf.output_dir, "transfer0")
-    os.makedirs(output_dir, exist_ok=True)
+
     print(f"~"*50)
     print(f"Running Transfer-Learning, No-Fine-Tune with config file: {confpath}")
-    print(f"~"*50)
-    seed = 11001000 # arbitrary, made it by combining 1-100-1000
-    reproducibility.set_seed(seed) 
+
+    if seed is not None:
+        reproducibility.set_seed(seed)
+        output_dir = osp.join(conf.output_dir, "transfer0_reps", f"seed_{seed}")
+        print(f"RNN Model Dir: {osp.join(conf.reps_dir, f'seed_{seed}')}")
+        params = Dict(read_yml(osp.join(conf.reps_dir, f"seed_{seed}", "params.yaml")))
+        rnn = mrnn.RNN_Flexible(params=params)
+        scaler = joblib.load(osp.join(conf.reps_dir, f'seed_{seed}', "scaler.joblib"))
+        rnn.load_weights(osp.join(conf.reps_dir, f"seed_{seed}", 'rnn.keras'))
+    else:
+        seed = 11001000 # arbitrary, made it by combining 1-100-1000
+        reproducibility.set_seed(seed)
+        output_dir = osp.join(conf.output_dir, "transfer0")
+        print(f"RNN Model Dir: {conf.rnn_dir}")
+        params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
+        rnn = mrnn.RNN_Flexible(params=params)
+        scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
+        rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras'))     
+    
+    os.makedirs(output_dir, exist_ok=True)
     
     # Time params
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,10 +125,6 @@ if __name__ == '__main__':
 
     # Baseline RNN
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    params = read_yml(osp.join(conf.rnn_dir, "params.yaml"))
-    rnn = mrnn.RNN_Flexible(params=params)
-    scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
-    rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras'))
     ## Extract LSTM weights
     lstm = rnn.get_layer("lstm")
     lstm_units = lstm.units
@@ -129,8 +144,6 @@ if __name__ == '__main__':
     # NOTE: combining train and val periods, this method doesn't need train/val split
     wtrain = weather[(weather.utc >= conf.train_start) & (weather.utc <= conf.val_end)]
     wtest  = weather[(weather.utc >= conf.f_start) & (weather.utc <= conf.f_end)]
-    wtrain.to_csv(osp.join(output_dir, "weather_train.csv"), index=False)
-    wtest.to_csv(osp.join(output_dir, "weather_test.csv"), index=False)
     
     X_train = pd.DataFrame({
         "Ed": wtrain.Ed,
@@ -240,12 +253,6 @@ if __name__ == '__main__':
         print(f"RMSE (FM1<=30): {rmse_30.round(4)},   R2 (FM1<=30): {np.round(r2_30, 4)}")
 
         
-    # Output
-    out_file = osp.join(output_dir, "fm1_results.pkl")
-    print(f"Writing Output to: {out_file}")
-    with open(out_file, "wb") as f:
-        pickle.dump(results_1, f, protocol=pickle.HIGHEST_PROTOCOL)
-
     # Find min RMSE config, basing on RMSE less than 30 for 1h alone
     fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["rmse_30"])
     fm1_best = results_1[fm1_best_key]
@@ -310,11 +317,6 @@ if __name__ == '__main__':
         print(f"Accuracy Metrics:")
         print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
         
-    # Output
-    out_file = osp.join(output_dir, "fm100_results.pkl")
-    print(f"Writing Output to: {out_file}")
-    with open(out_file, "wb") as f:
-        pickle.dump(results_100, f, protocol=pickle.HIGHEST_PROTOCOL)
         
     # Find min RMSE config
     fm100_best_key = min(results_100, key=lambda ci: results_100[ci]["rmse"])
@@ -381,12 +383,6 @@ if __name__ == '__main__':
         print(f"Accuracy Metrics:")
         print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
         
-    # Output
-    out_file = osp.join(output_dir, "fm1000_results.pkl")
-    print(f"Writing Output to: {out_file}")
-    with open(out_file, "wb") as f:
-        pickle.dump(results_1000, f, protocol=pickle.HIGHEST_PROTOCOL)
-
     # Find min RMSE config
     fm1000_best_key = min(results_1000, key=lambda ci: results_1000[ci]["rmse"])
     fm1000_best = results_1000[fm1000_best_key]
