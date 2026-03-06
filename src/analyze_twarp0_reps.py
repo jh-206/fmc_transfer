@@ -69,6 +69,22 @@ if __name__ == '__main__':
             "High": vals.max()
         })
     df = pd.DataFrame(rows)
+
+    # Summarize Gate Bias Params
+    # Accuracy Summaries, average metric and calc pm 1 std
+    values = ['bf', 'bi']
+    bfs = np.array([r["params"]["bf"] for r in fm1])
+    bis = np.array([r["params"]["bi"] for r in fm1])
+    rows = []
+    dfb = pd.DataFrame({
+        'Time-Warp Parameter': ['bf', 'bi'],
+        "Mean Value": [bfs.mean(), bis.mean()],
+        "Std": [bfs.std(), bis.std()],
+        "Median": [np.median(bfs), np.median(bis)],
+        "Low": [bfs.min(), bis.min()],
+        "High": [bfs.max(), bis.max()]
+    })
+
     # Median RMSE Case
     ## will be used for plotting
     vals = np.array([r['rmse_30'] for r in fm1], dtype=float)
@@ -82,6 +98,8 @@ if __name__ == '__main__':
     print(f"Writing accuracy metrics to: {osp.join(reps_dir, 'fm1_accuracy_testset.csv')}")
     df.to_csv(osp.join(reps_dir, "fm1_accuracy_testset.csv"))
 
+    print(f"Writing Twarp Param Summary to: {osp.join(reps_dir, 'fm1_twarps.csv')}")
+    dfb.to_csv(osp.join(reps_dir, 'fm1_twarps.csv'))
     print(f"Writing median replication report to: {osp.join(reps_dir, 'fm1_median_rep_report.txt')}")
     with open(osp.join(reps_dir, "fm1_median_rep_report.txt"), "w") as f:
         f.write(f"Median replication index: {median_idx}\n")
@@ -119,6 +137,22 @@ if __name__ == '__main__':
             "High": vals.max()
         })
     df = pd.DataFrame(rows)
+
+    # Summarize Gate Bias Params
+    # Accuracy Summaries, average metric and calc pm 1 std
+    values = ['bf', 'bi']
+    bfs = np.array([r["params"]["bf"] for r in fm100])
+    bis = np.array([r["params"]["bi"] for r in fm100])
+    rows = []
+    dfb = pd.DataFrame({
+        'Time-Warp Parameter': ['bf', 'bi'],
+        "Mean Value": [bfs.mean(), bis.mean()],
+        "Std": [bfs.std(), bis.std()],
+        "Median": [np.median(bfs), np.median(bis)],
+        "Low": [bfs.min(), bis.min()],
+        "High": [bfs.max(), bis.max()]
+    }) 
+
     # Median RMSE Case
     ## will be used for plotting
     vals = np.array([r['rmse'] for r in fm100], dtype=float)
@@ -131,6 +165,9 @@ if __name__ == '__main__':
     tab100.to_csv(osp.join(reps_dir, "fm100_summary_counts.csv"))
     print(f"Writing accuracy metrics to: {osp.join(reps_dir, 'fm100_accuracy_testset.csv')}")
     df.to_csv(osp.join(reps_dir, "fm100_accuracy_testset.csv"))
+
+    print(f"Writing Twarp Param Summary to: {osp.join(reps_dir, 'fm100_twarps.csv')}")
+    dfb.to_csv(osp.join(reps_dir, 'fm100_twarps.csv'))
 
     print(f"Writing median replication report to: {osp.join(reps_dir, 'fm100_median_rep_report.txt')}")
     with open(osp.join(reps_dir, "fm100_median_rep_report.txt"), "w") as f:
@@ -170,6 +207,22 @@ if __name__ == '__main__':
             "High": vals.max()
         })
     df = pd.DataFrame(rows)
+
+    # Summarize Gate Bias Params
+    # Accuracy Summaries, average metric and calc pm 1 std
+    values = ['bf', 'bi']
+    bfs = np.array([r["params"]["bf"] for r in fm1000])
+    bis = np.array([r["params"]["bi"] for r in fm1000])
+    rows = []
+    dfb = pd.DataFrame({
+        'Time-Warp Parameter': ['bf', 'bi'],
+        "Mean Value": [bfs.mean(), bis.mean()],
+        "Std": [bfs.std(), bis.std()],
+        "Median": [np.median(bfs), np.median(bis)],
+        "Low": [bfs.min(), bis.min()],
+        "High": [bfs.max(), bis.max()]
+    })
+
     # Median RMSE Case
     ## will be used for plotting
     vals = np.array([r['rmse'] for r in fm1000], dtype=float)
@@ -183,6 +236,9 @@ if __name__ == '__main__':
     tab1000.to_csv(osp.join(reps_dir, "fm1000_summary_counts.csv"))
     print(f"Writing accuracy metrics to: {osp.join(reps_dir, 'fm1000_accuracy_testset.csv')}")
     df.to_csv(osp.join(reps_dir, "fm1000_accuracy_testset.csv"))
+
+    print(f"Writing Twarp Param Summary to: {osp.join(reps_dir, 'fm1000_twarps.csv')}")
+    dfb.to_csv(osp.join(reps_dir, 'fm1000_twarps.csv'))
 
     print(f"Writing median replication report to: {osp.join(reps_dir, 'fm1000_median_rep_report.txt')}")
     with open(osp.join(reps_dir, "fm1000_median_rep_report.txt"), "w") as f:

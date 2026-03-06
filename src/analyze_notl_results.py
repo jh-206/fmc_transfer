@@ -103,7 +103,7 @@ if __name__ == '__main__':
     })
 
     # Accuracy Summaries, average metric and calc pm 1 std
-    metrics = ['rmse', 'bias', 'r2']
+    metrics = ['rmse', 'bias', 'r2', 'rmse_30', 'bias_30', 'r2_30']
     rows = []
     for m in metrics:
         vals = np.array([r[m] for r in fm10], dtype=float)

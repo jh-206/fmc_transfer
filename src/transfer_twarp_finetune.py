@@ -1,5 +1,5 @@
 # Executable module to run transfer analysis 
-# Full fine-tune, no freezing
+# Full fine-tune, no freezing AND timewarp 
 # Methodology: for each fuel class construct grid of time warp params, modify LSTM, run fit on training set
     # Pick best time warp on val set
     # Predict test set for accuracy
@@ -171,25 +171,25 @@ if __name__ == '__main__':
     conf = Dict(read_yml(confpath))
 
     print(f"~"*50)
-    print(f"Running Transfer-Learning, Full Fine-Tune with config file: {confpath}")
+    print(f"Running Transfer-Learning, Time-Warp and Full Fine-Tune with config file: {confpath}")
 
     if seed is not None:
         reproducibility.set_seed(seed)
-        output_dir = osp.join(conf.output_dir, "transfer_finetune_reps", f"seed_{seed}")
+        output_dir = osp.join(conf.output_dir, "transfer_twarp_finetune_reps", f"seed_{seed}")
         print(f"RNN Model Dir: {osp.join(conf.reps_dir, f'seed_{seed}')}")
         params = Dict(read_yml(osp.join(conf.reps_dir, f"seed_{seed}", "params.yaml")))
-        rnn = RNN_Flexible(params=params)
+        rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
         scaler = joblib.load(osp.join(conf.reps_dir, f'seed_{seed}', "scaler.joblib"))
-        rnn.load_weights(osp.join(conf.reps_dir, f"seed_{seed}", 'rnn.keras'))
+        weights_path = osp.join(conf.reps_dir, f"seed_{seed}", 'rnn.keras')
     else:
         seed = 11001000 # arbitrary, made it by combining 1-100-1000
         reproducibility.set_seed(seed)
-        output_dir = osp.join(conf.output_dir, "transfer_finetune")
+        output_dir = osp.join(conf.output_dir, "transfer_twarp_finetune")
         print(f"RNN Model Dir: {conf.rnn_dir}")
         params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
-        rnn = RNN_Flexible(params=params)
+        rnn = RNN_Flexible(params=params, loss=mse_masked, random_state=seed)
         scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
-        rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras'))
+        weights_path = osp.join(conf.rnn_dir, 'rnn.keras')
 
     os.makedirs(output_dir, exist_ok=True)
 
@@ -205,10 +205,12 @@ if __name__ == '__main__':
     print(f"Test Period:  {conf.f_start} to {conf.f_end}")
     print(f"    N. Hours: {test_times.shape[0]}")
 
-    ## Extract LSTM weights
+    # Load Weights and extract LSTM
+    rnn.load_weights(weights_path)
     lstm = rnn.get_layer("lstm")
     lstm_units = lstm.units
-    weights10 = lstm.get_weights()    
+    lweights = [w.copy() for w in lstm.get_weights()]
+
 
     # Data
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -276,8 +278,8 @@ if __name__ == '__main__':
         print("~"*50)
         print(f"FM1 Param Combo {i+1} out of {len(fm1_grid)}")
         print(f"Params: {bs}")    
-        rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras')) # reset weights to baseline
-        weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
+        rnn.load_weights(weights_path) # reset weights to baseline
+        weightsi = warp_weights(lweights, bi_warp = bs["bi"], bf_warp = bs["bf"])
         rnn.get_layer("lstm").set_weights(weightsi)
         rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
         
@@ -302,7 +304,7 @@ if __name__ == '__main__':
     # Re-train using best params (clean run)
     # Reset to baseline pretrained weights
     reproducibility.set_seed(seed)
-    rnn.load_weights(osp.join(conf.rnn_dir, "rnn.keras"))
+    rnn.load_weights(weights_path)
     
     # Apply best warp to the LSTM weights
     weights_best = warp_weights(
@@ -321,7 +323,6 @@ if __name__ == '__main__':
         verbose_fit=True,
         plot_history=False,
     )
-
     preds1 = rnn.predict(XX_test)
     
     # Calc Accuracy
