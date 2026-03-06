@@ -4,12 +4,12 @@
 xgb:
   features_list: ['Ed', 'Ew', 'solar', 'wind', 'elev', 'lon', 'lat', 'rain', 'hod', 'doy'] 
   max_depth: 3            # maximum tree depth
-  eta: 0.1                # Learning rate
+  learning_rate: 0.1                # Learning rate
   min_child_weight: 1     # minimum sum of Hessian of samples needed to make a partition
   subsample: 0.8          # Percent of training data to be randomly selected in each boosting iteration
   colsample_bytree: 0.9   # Percent of features to be randomly selected in each boosting iteration
   scale_pos_weight: 1     
-  n_estimators: 100       # number of trees in ensemble
+  n_estimators: 25       # number of trees in ensemble
   gamma: .1               # minimum loss reduction required to make a tree partition
   scaler: 'standard'      # for consistency with RNN, but XGB doesn't require scaling 
 
