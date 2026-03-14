@@ -292,7 +292,6 @@ if __name__ == '__main__':
         results_1[i]["params"] = bs
         results_1[i]["preds"] = preds  
 
-
     # Find min val_rmse case
     fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["val_rmse"])
     fm1_best = results_1[fm1_best_key]
@@ -308,7 +307,7 @@ if __name__ == '__main__':
     
     # Apply best warp to the LSTM weights
     weights_best = warp_weights(
-        weights10,
+        lweights,
         bi_warp=fm1_best["params"]["bi"],
         bf_warp=fm1_best["params"]["bf"],
     )
@@ -359,10 +358,7 @@ if __name__ == '__main__':
 
     print(f"FM1 Test Accuracy")
     print(f"    RMSE: {fm1_test['rmse']}")
-    print(f"    RMSE30: {fm1_test['rmse_30']}")
-    breakpoint()
-    
-
+    print(f"    RMSE30: {fm1_test_30['rmse']}")
 
     # FM100
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -423,7 +419,7 @@ if __name__ == '__main__':
         print(f"FM100 Param Combo {i+1} out of {len(fm100_grid)}")
         print(f"Params: {bs}")    
         rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras')) # reset weights to baseline
-        weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
+        weightsi = warp_weights(lweights, bi_warp = bs["bi"], bf_warp = bs["bf"])
         rnn.get_layer("lstm").set_weights(weightsi)
         rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
         
@@ -452,7 +448,7 @@ if __name__ == '__main__':
     
     # Apply best warp to the LSTM weights
     weights_best = warp_weights(
-        weights10,
+        lweights,
         bi_warp=fm100_best["params"]["bi"],
         bf_warp=fm100_best["params"]["bf"],
     )
@@ -552,7 +548,7 @@ if __name__ == '__main__':
         print(f"FM1000 Param Combo {i+1} out of {len(fm1000_grid)}")
         print(f"Params: {bs}")    
         rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras')) # reset weights to baseline
-        weightsi = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
+        weightsi = warp_weights(lweights, bi_warp = bs["bi"], bf_warp = bs["bf"])
         rnn.get_layer("lstm").set_weights(weightsi)
         rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
         
@@ -581,7 +577,7 @@ if __name__ == '__main__':
     
     # Apply best warp to the LSTM weights
     weights_best = warp_weights(
-        weights10,
+        lweights,
         bi_warp=fm1000_best["params"]["bi"],
         bf_warp=fm1000_best["params"]["bf"],
     )
@@ -623,7 +619,7 @@ if __name__ == '__main__':
     # Output
     results_test = {}
     results_test["FM1"] = fm1_best
-    results_test["FM10"] = fm10_best
+    
     results_test["FM100"] = fm100_best
     results_test["FM1000"] = fm1000_best
     out_file = osp.join(output_dir, "results_finetune.pkl")

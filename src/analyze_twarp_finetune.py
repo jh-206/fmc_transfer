@@ -1,5 +1,5 @@
-# Executable module to analyze results of timewarp that only tunes bias shift
-# Requires existing output: outputs/transfer0_reps
+# Executable module to analyze results of timewarp plus FineTune
+# Requires existing output: outputs/transfer_twarp_finetune_reps
 # Reads in results and summarizes with tables and plots
 
 import numpy as np
@@ -31,29 +31,23 @@ from utils import read_yml, Dict
 
 if __name__ == '__main__':
 
-    reps_dir = "outputs/transfer0_reps"
+    reps_dir = "outputs/transfer_twarp_finetune_reps"
     if not osp.exists(reps_dir):
         print(f"Can't find required output directory: {reps_dir}")
         sys.exit(-1)
 
-    print(f"Summarizing Time-Warp Transfer Results from directory: {reps_dir}")
+    print(f"Summarizing Time-Warp+Fine-Tune Transfer Results from directory: {reps_dir}")
     conf = Dict(read_yml(osp.join(CONFIG_DIR, "thesis_config.yaml")))
     
     # Get all results files across replications
-    files = sorted(Path(reps_dir).glob("seed_*/results_test_set.pkl"),key=lambda x: int(x.parent.name.split("_")[-1]))
+    files = sorted(Path(reps_dir).glob("seed_*/results_finetune.pkl"),key=lambda x: int(x.parent.name.split("_")[-1]))
     results = [pd.read_pickle(f) for f in files]
-    
     # FM1 Results
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Data Count Summaries
     fm1 = [r["FM1"] for r in results]
-    n_preds = [r["preds1"].shape[0] for r in fm1];      assert len(np.unique(n_preds)) == 1, f"Preds length don't match"
-    n_obs   = [r["preds1_intp"].shape[0] for r in fm1]; assert len(np.unique(n_obs)) == 1, f"Observed length don't match"
-    tab1 = pd.DataFrame({
-        'Metric': ["Start Time", "End Time", "N. Hours", "N. Obs"],
-        'Value' : [conf.f_start, conf.f_end, int(n_preds[0]), int(n_obs[0])]
-    })
-
+    n_preds = [r["preds"].shape[0] for r in fm1];      assert len(np.unique(n_preds)) == 1, f"Preds length don't match"
+    
     # Accuracy Summaries, average metric and calc pm 1 std
     metrics = ['rmse', 'bias', 'r2', 'rmse_30', 'bias_30', 'r2_30']
     rows = []
@@ -69,7 +63,7 @@ if __name__ == '__main__':
             "High": vals.max()
         })
     df = pd.DataFrame(rows)
-
+   
     # Summarize Gate Bias Params
     # Accuracy Summaries, average metric and calc pm 1 std
     values = ['bf', 'bi']
@@ -84,7 +78,7 @@ if __name__ == '__main__':
         "Low": [bfs.min(), bis.min()],
         "High": [bfs.max(), bis.max()]
     })
-
+    
     # Median RMSE Case
     ## will be used for plotting
     vals = np.array([r['rmse_30'] for r in fm1], dtype=float)
@@ -93,8 +87,6 @@ if __name__ == '__main__':
     seed_path = files[median_idx].parent
 
     # Write output
-    print(f"Writing summary counts to: {osp.join(reps_dir, 'fm1_summary_counts.csv')}")
-    tab1.to_csv(osp.join(reps_dir, "fm1_summary_counts.csv"))
     print(f"Writing accuracy metrics to: {osp.join(reps_dir, 'fm1_accuracy_testset.csv')}")
     df.to_csv(osp.join(reps_dir, "fm1_accuracy_testset.csv"))
 
@@ -115,12 +107,7 @@ if __name__ == '__main__':
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Data Count Summaries
     fm100 = [r["FM100"] for r in results]
-    n_preds = [r["preds100"].shape[0] for r in fm100];      assert len(np.unique(n_preds)) == 1, f"Preds length don't match"
-    n_obs   = [r["preds100_intp"].shape[0] for r in fm100]; assert len(np.unique(n_obs)) == 1, f"Observed length don't match"
-    tab100 = pd.DataFrame({
-        'Metric': ["Start Time", "End Time", "N. Hours", "N. Obs"],
-        'Value' : [conf.f_start, conf.f_end, int(n_preds[0]), int(n_obs[0])]
-    })
+    n_preds = [r["preds"].shape[0] for r in fm100];      assert len(np.unique(n_preds)) == 1, f"Preds length don't match"
 
 
     # Accuracy Summaries, average metric and calc pm 1 std
@@ -162,8 +149,6 @@ if __name__ == '__main__':
     seed_path = files[median_idx].parent
 
     # Write output
-    print(f"Writing summary counts to: {osp.join(reps_dir, 'fm100_summary_counts.csv')}")
-    tab100.to_csv(osp.join(reps_dir, "fm100_summary_counts.csv"))
     print(f"Writing accuracy metrics to: {osp.join(reps_dir, 'fm100_accuracy_testset.csv')}")
     df.to_csv(osp.join(reps_dir, "fm100_accuracy_testset.csv"))
 
@@ -186,13 +171,7 @@ if __name__ == '__main__':
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Data Count Summaries
     fm1000 = [r["FM1000"] for r in results]
-    n_preds = [r["preds1000"].shape[0] for r in fm1000];      assert len(np.unique(n_preds)) == 1, f"Preds length don't match"
-    n_obs   = [r["preds1000_intp"].shape[0] for r in fm1000]; assert len(np.unique(n_obs)) == 1, f"Observed length don't match"
-    tab1000 = pd.DataFrame({
-        'Metric': ["Start Time", "End Time", "N. Hours", "N. Obs"],
-        'Value' : [conf.f_start, conf.f_end, int(n_preds[0]), int(n_obs[0])]
-    })
-
+    n_preds = [r["preds"].shape[0] for r in fm1000];      assert len(np.unique(n_preds)) == 1, f"Preds length don't match"
 
     # Accuracy Summaries, average metric and calc pm 1 std
     metrics = ['rmse', 'bias', 'r2']
@@ -234,8 +213,6 @@ if __name__ == '__main__':
 
 
     # Write output
-    print(f"Writing summary counts to: {osp.join(reps_dir, 'fm1000_summary_counts.csv')}")
-    tab1000.to_csv(osp.join(reps_dir, "fm1000_summary_counts.csv"))
     print(f"Writing accuracy metrics to: {osp.join(reps_dir, 'fm1000_accuracy_testset.csv')}")
     df.to_csv(osp.join(reps_dir, "fm1000_accuracy_testset.csv"))
 

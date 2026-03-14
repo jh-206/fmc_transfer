@@ -125,6 +125,7 @@ if __name__ == '__main__':
     df["preds"] = preds2
 
     results["preds"] = preds
+    results["times"] = df10.utc.to_numpy()
     results["preds_intp"] = preds2
     results["rmse"] = np.sqrt(mean_squared_error(df.fm10, df.preds))
     results["bias"] = np.mean(df.fm10 - df.preds)
