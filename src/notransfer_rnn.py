@@ -160,21 +160,21 @@ if __name__ == '__main__':
     results = {}
     results["FM1"] = {}
     # Accuracy
-    results["FM1"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
+    results["FM1"]["mse"] = mean_squared_error(y_test[inds], preds2)
     results["FM1"]["bias"]        = np.mean(y_test[inds] - preds2)
     results["FM1"]["r2"]          = r2_score(y_test[inds], preds2)
 
     # Accuracy <=30
     y_test2 = y_test[inds]
     inds2 = np.where(y_test2<=30)[0]
-    results["FM1"]["rmse_30"] = np.sqrt(mean_squared_error(y_test2[inds2], preds2[inds2]))
+    results["FM1"]["mse_30"] = mean_squared_error(y_test2[inds2], preds2[inds2])
     results["FM1"]["bias_30"]        = np.mean(y_test2[inds2] - preds2[inds2])
     results["FM1"]["r2_30"]          = r2_score(y_test2[inds2], preds2[inds2])    
     results["FM1"]["preds1"] = preds1
     results["FM1"]["preds1_intp"] = preds2
     print("FM1 Accuracy Metrics Test Set")
-    print(f'    RMSE: {results["FM1"]["rmse"]}')
-    print(f'    RMSE 30: {results["FM1"]["rmse_30"]}')
+    print(f'    MSE: {results["FM1"]["mse"]}')
+    print(f'    MSE 30: {results["FM1"]["mse_30"]}')
 
     
     # FM10
@@ -243,21 +243,21 @@ if __name__ == '__main__':
     # Calc accuracy in output object
     results["FM10"] = {}
     # Accuracy
-    results["FM10"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
+    results["FM10"]["mse"] = mean_squared_error(y_test[inds], preds2)
     results["FM10"]["bias"]        = np.mean(y_test[inds] - preds2)
     results["FM10"]["r2"]          = r2_score(y_test[inds], preds2)
 
     # Accuracy <=30
     y_test2 = y_test[inds]
     inds2 = np.where(y_test2<=30)[0]
-    results["FM10"]["rmse_30"] = np.sqrt(mean_squared_error(y_test2[inds2], preds2[inds2]))
+    results["FM10"]["mse_30"] = mean_squared_error(y_test2[inds2], preds2[inds2])
     results["FM10"]["bias_30"]        = np.mean(y_test2[inds2] - preds2[inds2])
     results["FM10"]["r2_30"]          = r2_score(y_test2[inds2], preds2[inds2])    
     results["FM10"]["preds10"] = preds10
     results["FM10"]["preds10_intp"] = preds2
     print("FM10 Accuracy Metrics Test Set")
-    print(f'    RMSE: {results["FM10"]["rmse"]}')
-    print(f'    RMSE 30: {results["FM10"]["rmse_30"]}')    
+    print(f'    MSE: {results["FM10"]["mse"]}')
+    print(f'    MSE 30: {results["FM10"]["mse_30"]}')    
 
 
 
@@ -327,14 +327,14 @@ if __name__ == '__main__':
     # Calc accuracy in output object
     results["FM100"] = {}
     # Accuracy
-    results["FM100"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
+    results["FM100"]["mse"] = mean_squared_error(y_test[inds], preds2)
     results["FM100"]["bias"]        = np.mean(y_test[inds] - preds2)
     results["FM100"]["r2"]          = r2_score(y_test[inds], preds2)
     results["FM100"]["preds100"] = preds100
     results["FM100"]["preds100_intp"] = preds2
 
     print("FM100 Accuracy Metrics Test Set")
-    print(f'    RMSE: {results["FM100"]["rmse"]}')
+    print(f'    MSE: {results["FM100"]["mse"]}')
 
 
     # FM1000
@@ -403,14 +403,14 @@ if __name__ == '__main__':
     # Calc accuracy in output object
     results["FM1000"] = {}
     # Accuracy
-    results["FM1000"]["rmse"] = np.sqrt(mean_squared_error(y_test[inds], preds2))
+    results["FM1000"]["mse"] = mean_squared_error(y_test[inds], preds2)
     results["FM1000"]["bias"]        = np.mean(y_test[inds] - preds2)
     results["FM1000"]["r2"]          = r2_score(y_test[inds], preds2)
     results["FM1000"]["preds1000"] = preds1000
     results["FM1000"]["preds1000_intp"] = preds2
 
     print("FM1000 Accuracy Metrics Test Set")
-    print(f'    RMSE: {results["FM1000"]["rmse"]}')
+    print(f'    MSE: {results["FM1000"]["mse"]}')
     
     
 

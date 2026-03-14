@@ -127,23 +127,23 @@ if __name__ == '__main__':
     results["preds"] = preds
     results["times"] = df10.utc.to_numpy()
     results["preds_intp"] = preds2
-    results["rmse"] = np.sqrt(mean_squared_error(df.fm10, df.preds))
+    results["mse"] = mean_squared_error(df.fm10, df.preds)
     results["bias"] = np.mean(df.fm10 - df.preds)
     results["r2"]   = r2_score(df.fm10, df.preds)
 
     # Accuracy <=30
     inds = np.where(df.fm10<=30)[0]
-    results["rmse_30"] = np.sqrt(mean_squared_error(df.fm10.iloc[inds], df.preds.iloc[inds]))
+    results["mse_30"] = mean_squared_error(df.fm10.iloc[inds], df.preds.iloc[inds])
     results["bias_30"] = np.mean(df.fm10.iloc[inds] - df.preds.iloc[inds])
     results["r2_30"]   =  r2_score(df.fm10.iloc[inds], df.preds.iloc[inds])
     
     
     print("FM10 Zeroshot Accuracy Metrics - Full Time Period")
     print(f"    N. Obs: {fm10.shape[0]}")
-    print(f'    RMSE: {results["rmse"]}')
+    print(f'    MSE: {results["mse"]}')
 
     print(f"    N. Obs Less than equal to 30: {np.sum(fm10.fm10 <= 30)}")
-    print(f'    RMSE 30: {results["rmse_30"]}')    
+    print(f'    MSE 30: {results["mse_30"]}')    
 
     # Write Output
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

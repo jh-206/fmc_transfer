@@ -55,7 +55,7 @@ if __name__ == '__main__':
     })
 
     # Accuracy Summaries, average metric and calc pm 1 std
-    metrics = ['rmse', 'bias', 'r2', 'rmse_30', 'bias_30', 'r2_30']
+    metrics = ['mse', 'bias', 'r2', 'mse_30', 'bias_30', 'r2_30']
     rows = []
     for m in metrics:
         vals = np.array([r[m] for r in fm1], dtype=float)
@@ -69,9 +69,9 @@ if __name__ == '__main__':
             "High": vals.max()
         })
     df = pd.DataFrame(rows)
-    # Median RMSE Case
+    # Median MSE Case
     ## will be used for plotting
-    vals = np.array([r['rmse_30'] for r in fm1], dtype=float)
+    vals = np.array([r['mse_30'] for r in fm1], dtype=float)
     median_val = np.median(vals)
     median_idx = np.argmin(np.abs(vals - median_val))
     seed_path = files[median_idx].parent
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     })
 
     # Accuracy Summaries, average metric and calc pm 1 std
-    metrics = ['rmse', 'bias', 'r2', 'rmse_30', 'bias_30', 'r2_30']
+    metrics = ['mse', 'bias', 'r2', 'mse_30', 'bias_30', 'r2_30']
     rows = []
     for m in metrics:
         vals = np.array([r[m] for r in fm10], dtype=float)
@@ -117,9 +117,9 @@ if __name__ == '__main__':
             "High": vals.max()
         })
     df = pd.DataFrame(rows)
-    # Median RMSE Case
+    # Median MSE Case
     ## will be used for plotting
-    vals = np.array([r['rmse'] for r in fm10], dtype=float)
+    vals = np.array([r['mse'] for r in fm10], dtype=float)
     median_val = np.median(vals)
     median_idx = np.argmin(np.abs(vals - median_val))
     seed_path = files[median_idx].parent
@@ -152,7 +152,7 @@ if __name__ == '__main__':
 
 
     # Accuracy Summaries, average metric and calc pm 1 std
-    metrics = ['rmse', 'bias', 'r2']
+    metrics = ['mse', 'bias', 'r2']
     rows = []
     for m in metrics:
         vals = np.array([r[m] for r in fm100], dtype=float)
@@ -166,9 +166,9 @@ if __name__ == '__main__':
             "High": vals.max()
         })
     df = pd.DataFrame(rows)
-    # Median RMSE Case
+    # Median MSE Case
     ## will be used for plotting
-    vals = np.array([r['rmse'] for r in fm100], dtype=float)
+    vals = np.array([r['mse'] for r in fm100], dtype=float)
     median_val = np.median(vals)
     median_idx = np.argmin(np.abs(vals - median_val))
     seed_path = files[median_idx].parent
@@ -203,7 +203,7 @@ if __name__ == '__main__':
 
 
     # Accuracy Summaries, average metric and calc pm 1 std
-    metrics = ['rmse', 'bias', 'r2']
+    metrics = ['mse', 'bias', 'r2']
     rows = []
     for m in metrics:
         vals = np.array([r[m] for r in fm1000], dtype=float)
@@ -217,9 +217,9 @@ if __name__ == '__main__':
             "High": vals.max()
         })
     df = pd.DataFrame(rows)
-    # Median RMSE Case
+    # Median MSE Case
     ## will be used for plotting
-    vals = np.array([r['rmse'] for r in fm1000], dtype=float)
+    vals = np.array([r['mse'] for r in fm1000], dtype=float)
     median_val = np.median(vals)
     median_idx = np.argmin(np.abs(vals - median_val))
     seed_path = files[median_idx].parent

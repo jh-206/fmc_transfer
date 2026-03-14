@@ -53,7 +53,7 @@ if __name__ == '__main__':
     })
 
     # Accuracy Summaries, average metric and calc pm 1 std
-    metrics = ['rmse', 'bias', 'r2', 'rmse_30', 'bias_30', 'r2_30']
+    metrics = ['mse', 'bias', 'r2', 'mse_30', 'bias_30', 'r2_30']
     rows = []
     for m in metrics:
         vals = np.array([r[m] for r in results], dtype=float)
@@ -70,9 +70,9 @@ if __name__ == '__main__':
     df = pd.DataFrame(rows)
 
 
-    # Median RMSE Case
+    # Median MSE Case
     ## will be used for plotting
-    vals = np.array([r['rmse_30'] for r in results], dtype=float)
+    vals = np.array([r['mse_30'] for r in results], dtype=float)
     median_val = np.median(vals)
     median_idx = np.argmin(np.abs(vals - median_val))
     seed_path = files[median_idx].parent

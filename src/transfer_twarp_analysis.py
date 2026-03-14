@@ -225,7 +225,7 @@ if __name__ == '__main__':
         # Accuracy
         df = fm1_train.copy()
         df["preds"] = preds2
-        rmse = np.sqrt(mean_squared_error(df.fm1, df.preds))
+        mse = mean_squared_error(df.fm1, df.preds)
         bias = np.mean(df.fm1 - df.preds)
         r2   = r2_score(df.fm1, df.preds)
         
@@ -234,31 +234,31 @@ if __name__ == '__main__':
         results_1[i]["params"] = bs
         results_1[i]["preds"] = preds
         results_1[i]["preds_intp"] = preds2
-        results_1[i]["rmse"] = rmse
+        results_1[i]["mse"] = mse
         results_1[i]["bias"] = bias
         results_1[i]["r2"] = r2
 
         # Accuracy <=30
         inds = np.where(df.fm1<=30)[0]
-        rmse_30 = np.sqrt(mean_squared_error(df.fm1.iloc[inds], df.preds.iloc[inds]))
+        mse_30 = mean_squared_error(df.fm1.iloc[inds], df.preds.iloc[inds])
         bias_30 = np.mean(df.fm1.iloc[inds] - df.preds.iloc[inds])
         r2_30   = r2_score(df.fm1.iloc[inds], df.preds.iloc[inds])
 
-        results_1[i]["rmse_30"] = rmse_30
+        results_1[i]["mse_30"] = mse_30
         results_1[i]["bias_30"] = bias_30
         results_1[i]["r2_30"] = r2_30
 
         print(f"Accuracy Metrics:")
-        print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
-        print(f"RMSE (FM1<=30): {rmse_30.round(4)},   R2 (FM1<=30): {np.round(r2_30, 4)}")
+        print(f"MSE: {mse:.4f},   R2: {np.round(r2, 4)}")
+        print(f"MSE (FM1<=30): {mse_30:.4f},   R2 (FM1<=30): {np.round(r2_30, 4)}")
 
         
-    # Find min RMSE config, basing on RMSE less than 30 for 1h alone
-    fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["rmse_30"])
+    # Find min MSE config, basing on MSE less than 30 for 1h alone
+    fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["mse_30"])
     fm1_best = results_1[fm1_best_key]
     print()
     print("Best Config from Training Error:")
-    print(f"Min Training RMSE (FM1<=30): {np.round(fm1_best['rmse_30'], 4)}")
+    print(f"Min Training MSE (FM1<=30): {np.round(fm1_best['mse_30'], 4)}")
     print(f"Time-Warp Params: {fm1_best['params']}")
     
     # FM100
@@ -301,7 +301,7 @@ if __name__ == '__main__':
         # Accuracy
         df = fm100_train.copy()
         df["preds"] = preds2
-        rmse = np.sqrt(mean_squared_error(df.fm100, df.preds))
+        mse = mean_squared_error(df.fm100, df.preds)
         bias = np.mean(df.fm100 - df.preds)
         r2   = r2_score(df.fm100, df.preds)
         
@@ -310,20 +310,20 @@ if __name__ == '__main__':
         results_100[i]["params"] = bs
         results_100[i]["preds"] = preds
         results_100[i]["preds_intp"] = preds2
-        results_100[i]["rmse"] = rmse
+        results_100[i]["mse"] = mse
         results_100[i]["bias"] = bias
         results_100[i]["r2"] = r2
 
         print(f"Accuracy Metrics:")
-        print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
+        print(f"MSE: {mse:.4f},   R2: {np.round(r2, 4)}")
         
         
-    # Find min RMSE config
-    fm100_best_key = min(results_100, key=lambda ci: results_100[ci]["rmse"])
+    # Find min MSE config
+    fm100_best_key = min(results_100, key=lambda ci: results_100[ci]["mse"])
     fm100_best = results_100[fm100_best_key]
     print()
     print("Best Config from Training Error:")
-    print(f"Min Training RMSE: {np.round(fm100_best['rmse'], 4)}")
+    print(f"Min Training MSE: {np.round(fm100_best['mse'], 4)}")
     print(f"Time-Warp Params: {fm100_best['params']}")
     
 
@@ -367,7 +367,7 @@ if __name__ == '__main__':
         # Accuracy
         df = fm1000_train.copy()
         df["preds"] = preds2
-        rmse = np.sqrt(mean_squared_error(df.fm1000, df.preds))
+        mse = mean_squared_error(df.fm1000, df.preds)
         bias = np.mean(df.fm1000 - df.preds)
         r2   = r2_score(df.fm1000, df.preds)
         
@@ -376,19 +376,19 @@ if __name__ == '__main__':
         results_1000[i]["params"] = bs
         results_1000[i]["preds"] = preds
         results_1000[i]["preds_intp"] = preds2
-        results_1000[i]["rmse"] = rmse
+        results_1000[i]["mse"] = mse
         results_1000[i]["bias"] = bias
         results_1000[i]["r2"] = r2
 
         print(f"Accuracy Metrics:")
-        print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
+        print(f"MSE: {mse:.4f},   R2: {np.round(r2, 4)}")
         
-    # Find min RMSE config
-    fm1000_best_key = min(results_1000, key=lambda ci: results_1000[ci]["rmse"])
+    # Find min MSE config
+    fm1000_best_key = min(results_1000, key=lambda ci: results_1000[ci]["mse"])
     fm1000_best = results_1000[fm1000_best_key]
     print()
     print("Best Config from Training Error:")
-    print(f"Min Training RMSE: {np.round(fm1000_best['rmse'], 4)}")
+    print(f"Min Training MSE: {np.round(fm1000_best['mse'], 4)}")
     print(f"Time-Warp Params: {fm1000_best['params']}")
 
 
@@ -416,12 +416,12 @@ if __name__ == '__main__':
         t2 = fm1_test.utc_prov.to_numpy()
     )
     df["preds"] = preds1_intp
-    rmse = np.sqrt(mean_squared_error(df.fm1, df.preds))
+    mse = mean_squared_error(df.fm1, df.preds)
     bias = np.mean(df.fm1 - df.preds)
     r2   = r2_score(df.fm1, df.preds)  
     # Accuracy <=30
     inds = np.where(df.fm1<=30)[0]
-    rmse_30 = np.sqrt(mean_squared_error(df.fm1.iloc[inds], df.preds.iloc[inds]))
+    mse_30 = mean_squared_error(df.fm1.iloc[inds], df.preds.iloc[inds])
     bias_30 = np.mean(df.fm1.iloc[inds] - df.preds.iloc[inds])
     r2_30   = r2_score(df.fm1.iloc[inds], df.preds.iloc[inds])
     results_test["FM1"] = {
@@ -431,10 +431,10 @@ if __name__ == '__main__':
         'times': wtest.utc,
         'times_fm1': df.utc_prov,
         'fm1_obs': df.fm1.to_numpy(),
-        'rmse': rmse,
+        'mse': mse,
         'bias': bias,
         'r2': r2,
-        'rmse_30': rmse_30,
+        'mse_30': mse_30,
         'bias_30': bias_30,
         'r2_30': r2_30        
     }
@@ -454,7 +454,7 @@ if __name__ == '__main__':
         t2 = fm100_test.utc_prov.to_numpy()
     )
     df["preds"] = preds100_intp
-    rmse = np.sqrt(mean_squared_error(df.fm100, df.preds))
+    mse = mean_squared_error(df.fm100, df.preds)
     bias = np.mean(df.fm100 - df.preds)
     r2   = r2_score(df.fm100, df.preds)  
     results_test["FM100"] = {
@@ -464,7 +464,7 @@ if __name__ == '__main__':
         'times': wtest.utc,
         'times_fm100': df.utc_prov,
         'fm100_obs': df.fm100.to_numpy(),
-        'rmse': rmse,
+        'mse': mse,
         'bias': bias,
         'r2': r2    
     }
@@ -484,7 +484,7 @@ if __name__ == '__main__':
         t2 = fm1000_test.utc_prov.to_numpy()
     )
     df["preds"] = preds1000_intp
-    rmse = np.sqrt(mean_squared_error(df.fm1000, df.preds))
+    mse = mean_squared_error(df.fm1000, df.preds)
     bias = np.mean(df.fm1000 - df.preds)
     r2   = r2_score(df.fm1000, df.preds)  
     results_test["FM1000"] = {
@@ -494,16 +494,16 @@ if __name__ == '__main__':
         'times': wtest.utc,
         'times_fm1000': df.utc_prov,
         'fm1000_obs': df.fm1000.to_numpy(),        
-        'rmse': rmse,
+        'mse': mse,
         'bias': bias,
         'r2': r2    
     }
 
     print()
     print("Accuracy Metrics:")
-    print(f"    FM1 RMSE (<=30): {results_test['FM1']['rmse_30']}")
-    print(f"    FM100 RMSE: {results_test['FM100']['rmse']}")
-    print(f"    FM1000 RMSE: {results_test['FM1000']['rmse']}")
+    print(f"    FM1 MSE (<=30): {results_test['FM1']['mse_30']}")
+    print(f"    FM100 MSE: {results_test['FM100']['mse']}")
+    print(f"    FM1000 MSE: {results_test['FM1000']['mse']}")
     
     # Output
     out_file = osp.join(output_dir, "results_test_set.pkl")

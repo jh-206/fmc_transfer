@@ -67,7 +67,8 @@ Run `rnn_timewarp_reps.ipynb`
 
 `./run_reps.sh run_notransfer.sh etc/thesis_config.yaml 100`
 
-`python src/notransfer_rnn.py etc/thesis_config.yaml`
+`python src/analyze_notl_results.py`
+
 
 ### FMC Time Warp Transfer - No Fine Tune
 

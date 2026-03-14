@@ -48,7 +48,7 @@ def eval_interp_metrics(
     threshold=None,
 ):
     """
-    Evaluate RMSE/bias/R2 after interpolating model predictions (on t_model_col)
+    Evaluate MSE/bias/R2 after interpolating model predictions (on t_model_col)
     to observation times (t_obs_col) for non-missing observations.
 
     Parameters
@@ -71,7 +71,7 @@ def eval_interp_metrics(
     -------
     out : dict
         {
-          "rmse": float,
+          "mse": float,
           "bias": float,
           "r2": float,
           "n": int,
@@ -93,13 +93,13 @@ def eval_interp_metrics(
     # Non-missing observation indices
     inds = np.where(y != missing_value)[0]
     if inds.size == 0:
-        return {"rmse": np.nan, "bias": np.nan, "r2": np.nan, "n": 0, "preds_intp": np.array([]), "inds": inds}
+        return {"mse": np.nan, "bias": np.nan, "r2": np.nan, "n": 0, "preds_intp": np.array([]), "inds": inds}
 
     # Optional threshold filter (applied after missing filter)
     if threshold is not None:
         inds = inds[y[inds] <= threshold]
         if inds.size == 0:
-            return {"rmse": np.nan, "bias": np.nan, "r2": np.nan, "n": 0, "preds_intp": np.array([]), "inds": inds}
+            return {"mse": np.nan, "bias": np.nan, "r2": np.nan, "n": 0, "preds_intp": np.array([]), "inds": inds}
 
     # Interpolate predictions to observed times
     preds_intp = time_intp(
@@ -109,11 +109,11 @@ def eval_interp_metrics(
     )
 
     y_eval = y[inds]
-    rmse = float(np.sqrt(mean_squared_error(y_eval, preds_intp)))
+    mse = float(mean_squared_error(y_eval, preds_intp))
     bias = float(np.mean(y_eval - preds_intp))
     r2 = float(r2_score(y_eval, preds_intp))
 
-    return {"rmse": rmse, "bias": bias, "r2": r2, "n": int(inds.size), "preds_intp": np.asarray(preds_intp), "inds": inds}
+    return {"mse": mse, "bias": bias, "r2": r2, "n": int(inds.size), "preds_intp": np.asarray(preds_intp), "inds": inds}
 
 
 # Executed Code
@@ -283,17 +283,17 @@ if __name__ == '__main__':
     results_1["preds1"] = preds1
     results_1["preds1_intp"] = fm1_test["preds_intp"]
 
-    results_1["rmse"] = fm1_test["rmse"]
+    results_1["mse"] = fm1_test["mse"]
     results_1["bias"] = fm1_test["bias"]
     results_1["r2"]   = fm1_test["r2"]
     
-    results_1["rmse_30"] = fm1_test_30["rmse"]
+    results_1["mse_30"] = fm1_test_30["mse"]
     results_1["bias_30"] = fm1_test_30["bias"]
     results_1["r2_30"]   = fm1_test_30["r2"]
 
     print(f"FM1 Test Accuracy")
-    print(f"    RMSE: {results_1['rmse']}")
-    print(f"    RMSE30: {results_1['rmse_30']}")
+    print(f"    MSE: {results_1['mse']}")
+    print(f"    MSE30: {results_1['mse_30']}")
 
     # FM100
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -378,12 +378,12 @@ if __name__ == '__main__':
     results_100["preds100"] = preds100
     results_100["preds100_intp"] = fm100_test["preds_intp"]
 
-    results_100["rmse"] = fm100_test["rmse"]
+    results_100["mse"] = fm100_test["mse"]
     results_100["bias"] = fm100_test["bias"]
     results_100["r2"]   = fm100_test["r2"]
     
     print(f"FM100 Test Accuracy")
-    print(f"    RMSE: {results_100['rmse']}")
+    print(f"    MSE: {results_100['mse']}")
 
 
 
@@ -471,12 +471,12 @@ if __name__ == '__main__':
     results_1000["preds1000"] = preds1000
     results_1000["preds1000_intp"] = fm1000_test["preds_intp"]
 
-    results_1000["rmse"] = fm1000_test["rmse"]
+    results_1000["mse"] = fm1000_test["mse"]
     results_1000["bias"] = fm1000_test["bias"]
     results_1000["r2"]   = fm1000_test["r2"]
     
     print(f"FM1000 Test Accuracy")
-    print(f"    RMSE: {results_1000['rmse']}")
+    print(f"    MSE: {results_1000['mse']}")
         
 
     # Output

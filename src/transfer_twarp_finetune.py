@@ -84,7 +84,7 @@ def eval_interp_metrics(
     threshold=None,
 ):
     """
-    Evaluate RMSE/bias/R2 after interpolating model predictions (on t_model_col)
+    Evaluate MSE/bias/R2 after interpolating model predictions (on t_model_col)
     to observation times (t_obs_col) for non-missing observations.
 
     Parameters
@@ -107,7 +107,7 @@ def eval_interp_metrics(
     -------
     out : dict
         {
-          "rmse": float,
+          "mse": float,
           "bias": float,
           "r2": float,
           "n": int,
@@ -129,13 +129,13 @@ def eval_interp_metrics(
     # Non-missing observation indices
     inds = np.where(y != missing_value)[0]
     if inds.size == 0:
-        return {"rmse": np.nan, "bias": np.nan, "r2": np.nan, "n": 0, "preds_intp": np.array([]), "inds": inds}
+        return {"mse": np.nan, "bias": np.nan, "r2": np.nan, "n": 0, "preds_intp": np.array([]), "inds": inds}
 
     # Optional threshold filter (applied after missing filter)
     if threshold is not None:
         inds = inds[y[inds] <= threshold]
         if inds.size == 0:
-            return {"rmse": np.nan, "bias": np.nan, "r2": np.nan, "n": 0, "preds_intp": np.array([]), "inds": inds}
+            return {"mse": np.nan, "bias": np.nan, "r2": np.nan, "n": 0, "preds_intp": np.array([]), "inds": inds}
 
     # Interpolate predictions to observed times
     preds_intp = time_intp(
@@ -145,11 +145,11 @@ def eval_interp_metrics(
     )
 
     y_eval = y[inds]
-    rmse = float(np.sqrt(mean_squared_error(y_eval, preds_intp)))
+    mse = float(mean_squared_error(y_eval, preds_intp))
     bias = float(np.mean(y_eval - preds_intp))
     r2 = float(r2_score(y_eval, preds_intp))
 
-    return {"rmse": rmse, "bias": bias, "r2": r2, "n": int(inds.size), "preds_intp": np.asarray(preds_intp), "inds": inds}
+    return {"mse": mse, "bias": bias, "r2": r2, "n": int(inds.size), "preds_intp": np.asarray(preds_intp), "inds": inds}
 
 
 # Executed Code
@@ -272,7 +272,7 @@ if __name__ == '__main__':
     print()
     print(f"N time-warp Param Combos: {len(fm1_grid)}")
 
-    #d Loop over param grids, fit to training data w early stop, calculate RMSE on val
+    #d Loop over param grids, fit to training data w early stop, calculate MSE on val
     results_1 = {}
     for i, bs in enumerate(fm1_grid):
         print("~"*50)
@@ -288,16 +288,16 @@ if __name__ == '__main__':
         val_mse = np.float32(mse_masked(y_val.flatten(), preds.flatten()))
         print(f"    {val_mse=}")
         results_1[i]={}
-        results_1[i]["val_rmse"] = np.sqrt(val_mse)
+        results_1[i]["val_mse"] = val_mse
         results_1[i]["params"] = bs
         results_1[i]["preds"] = preds  
 
-    # Find min val_rmse case
-    fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["val_rmse"])
+    # Find min val_mse case
+    fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["val_mse"])
     fm1_best = results_1[fm1_best_key]
     print()
     print("Best Config from Val Error:")
-    print(f"Min Val RMSE: {np.round(fm1_best['val_rmse'], 4)}")
+    print(f"Min Val MSE: {np.round(fm1_best['val_mse'], 4)}")
     print(f"Time-Warp Params: {fm1_best['params']}")
 
     # Re-train using best params (clean run)
@@ -348,17 +348,17 @@ if __name__ == '__main__':
     )
     
     # Example storing into your fm1_best dict
-    fm1_best["rmse"] = fm1_test["rmse"]
+    fm1_best["mse"] = fm1_test["mse"]
     fm1_best["bias"] = fm1_test["bias"]
     fm1_best["r2"]   = fm1_test["r2"]
     
-    fm1_best["rmse_30"] = fm1_test_30["rmse"]
+    fm1_best["mse_30"] = fm1_test_30["mse"]
     fm1_best["bias_30"] = fm1_test_30["bias"]
     fm1_best["r2_30"]   = fm1_test_30["r2"]
 
     print(f"FM1 Test Accuracy")
-    print(f"    RMSE: {fm1_test['rmse']}")
-    print(f"    RMSE30: {fm1_test_30['rmse']}")
+    print(f"    MSE: {fm1_test['mse']}")
+    print(f"    MSE30: {fm1_test_30['mse']}")
 
     # FM100
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -412,7 +412,7 @@ if __name__ == '__main__':
     print()
     print(f"N time-warp Param Combos: {len(fm100_grid)}")
 
-    #d Loop over param grids, fit to training data w early stop, calculate RMSE on val
+    #d Loop over param grids, fit to training data w early stop, calculate MSE on val
     results_100 = {}
     for i, bs in enumerate(fm100_grid):
         print("~"*50)
@@ -428,17 +428,17 @@ if __name__ == '__main__':
         val_mse = np.float32(mse_masked(y_val.flatten(), preds.flatten()))
         print(f"    {val_mse=}")
         results_100[i]={}
-        results_100[i]["val_rmse"] = np.sqrt(val_mse)
+        results_100[i]["val_mse"] = val_mse
         results_100[i]["params"] = bs
         results_100[i]["preds"] = preds  
 
 
-    # Find min val_rmse case
-    fm100_best_key = min(results_100, key=lambda ci: results_100[ci]["val_rmse"])
+    # Find min val_mse case
+    fm100_best_key = min(results_100, key=lambda ci: results_100[ci]["val_mse"])
     fm100_best = results_100[fm100_best_key]
     print()
     print("Best Config from Val Error:")
-    print(f"Min Val RMSE: {np.round(fm100_best['val_rmse'], 4)}")
+    print(f"Min Val MSE: {np.round(fm100_best['val_mse'], 4)}")
     print(f"Time-Warp Params: {fm100_best['params']}")
 
     # Re-train using best params (clean run)
@@ -479,12 +479,12 @@ if __name__ == '__main__':
     )
     
     # Example storing into your fm100_best dict
-    fm100_best["rmse"] = fm100_test["rmse"]
+    fm100_best["mse"] = fm100_test["mse"]
     fm100_best["bias"] = fm100_test["bias"]
     fm100_best["r2"]   = fm100_test["r2"]
     
     print(f"FM100 Test Accuracy")
-    print(f"    RMSE: {fm100_test['rmse']}")
+    print(f"    MSE: {fm100_test['mse']}")
 
 
 
@@ -541,7 +541,7 @@ if __name__ == '__main__':
     print()
     print(f"N time-warp Param Combos: {len(fm1000_grid)}")
 
-    #d Loop over param grids, fit to training data w early stop, calculate RMSE on val
+    #d Loop over param grids, fit to training data w early stop, calculate MSE on val
     results_1000 = {}
     for i, bs in enumerate(fm1000_grid):
         print("~"*50)
@@ -557,17 +557,17 @@ if __name__ == '__main__':
         val_mse = np.float32(mse_masked(y_val.flatten(), preds.flatten()))
         print(f"    {val_mse=}")
         results_1000[i]={}
-        results_1000[i]["val_rmse"] = np.sqrt(val_mse)
+        results_1000[i]["val_mse"] = val_mse
         results_1000[i]["params"] = bs
         results_1000[i]["preds"] = preds  
 
 
-    # Find min val_rmse case
-    fm1000_best_key = min(results_1000, key=lambda ci: results_1000[ci]["val_rmse"])
+    # Find min val_mse case
+    fm1000_best_key = min(results_1000, key=lambda ci: results_1000[ci]["val_mse"])
     fm1000_best = results_1000[fm1000_best_key]
     print()
     print("Best Config from Val Error:")
-    print(f"Min Val RMSE: {np.round(fm1000_best['val_rmse'], 4)}")
+    print(f"Min Val MSE: {np.round(fm1000_best['val_mse'], 4)}")
     print(f"Time-Warp Params: {fm1000_best['params']}")
 
     # Re-train using best params (clean run)
@@ -608,12 +608,12 @@ if __name__ == '__main__':
     )
     
     # Example storing into your fm1000_best dict
-    fm1000_best["rmse"] = fm1000_test["rmse"]
+    fm1000_best["mse"] = fm1000_test["mse"]
     fm1000_best["bias"] = fm1000_test["bias"]
     fm1000_best["r2"]   = fm1000_test["r2"]
     
     print(f"FM1000 Test Accuracy")
-    print(f"    RMSE: {fm1000_test['rmse']}")
+    print(f"    MSE: {fm1000_test['mse']}")
         
 
     # Output

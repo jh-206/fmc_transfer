@@ -40,7 +40,7 @@ params_lm = Dict(read_yml(osp.join(CONFIG_DIR, "params_static.yaml"), subkey="lm
 
 def calc_metrics(y_true: np.ndarray, y_pred: np.ndarray, mask: np.ndarray | None = None) -> dict:
     """
-    Helper func =eturns rmse, r2, bias using NaN-safe means.
+    Helper func =eturns mse, r2, bias using NaN-safe means.
     - NaNs are excluded based on y_true.
     - Optional `mask` further subsets the valid points.
     """
@@ -50,14 +50,14 @@ def calc_metrics(y_true: np.ndarray, y_pred: np.ndarray, mask: np.ndarray | None
 
     # If no valid points, return NaNs (keeps downstream code from crashing unexpectedly)
     if not np.any(valid):
-        return {"rmse": np.nan, "r2": np.nan, "bias": np.nan, "n": 0}
+        return {"mse": np.nan, "r2": np.nan, "bias": np.nan, "n": 0}
 
     err = y_pred[valid] - y_true[valid]
     mse = np.mean(err**2)              # safe: err has no NaN
     bias = np.mean(y_true[valid] - y_pred[valid])
     r2 = r2_score(y_true[valid], y_pred[valid])
 
-    return {"rmse": np.sqrt(mse), "r2": r2, "bias": bias, "n": int(np.sum(valid))}
+    return {"mse": mse, "r2": r2, "bias": bias, "n": int(np.sum(valid))}
 
 
 # Executed Code
