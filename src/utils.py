@@ -2,22 +2,25 @@ import numpy as np
 import yaml
 from datetime import datetime, timezone
 import pandas as pd
+import matplotlib.pyplot as plt
+from statsmodels.tsa.stattools import acf, pacf
 
 plot_styles = {
     'fm': {'color': '#468a29', 'linestyle': '-', 'label': 'Observed FM10'},
     'model': {'color': '#468a29', 'linestyle': '-', 'label': 'Predicted FM10'},
     
-    'fm1': {'color': '#94c576', 'linestyle': '--', 'label': 'Observed FM1'},
-    'model1': {'color': '#94c576', 'linestyle': '--', 'label': 'Predicted FM1'},
-    'fm100': {'color': '#1f5e17', 'linestyle': ':', 'label': 'Observed FM100'},
-    'model100': {'color': '#1f5e17', 'linestyle': ':', 'label': 'Predicted FM100'},
-    'fm1000': {'color': '#0b2f0a', 'linestyle': '-.', 'label': 'Observed FM100'},
-    'model1000': {'color': '#0b2f0a', 'linestyle': '-.', 'label': 'Predicted FM1000'},
+    'fm1': {'color': '#a6d36a', 'linestyle': '-', 'label': 'Observed FM1'},
+    'model1': {'color': '#a6d36a', 'linestyle': '-', 'label': 'Predicted FM1'},
+    'fm100': {'color': '#1f5d1a', 'linestyle': '-', 'label': 'Observed FM100'},
+    'model100': {'color': '#1f5d1a', 'linestyle': '-', 'label': 'Predicted FM100'},
+    'fm1000': {'color': '#0b2f0a', 'linestyle': '-', 'label': 'Observed FM100'},
+    'model1000': {'color': '#0b2f0a', 'linestyle': '-', 'label': 'Predicted FM1000'},
             
     'Ed': {'color': '#EF847C', 'linestyle': '--', 'alpha':.8, 'label': 'Drying EQ'},
     'Ew': {'color': '#7CCCEF', 'linestyle': '--', 'alpha':.8, 'label': 'Wetting EQ'},
     'rain': {'color': 'b', 'linestyle': '-', 'alpha':.9, 'label': 'Rain'},    
 }
+
 
 
 class Dict(dict):
@@ -208,3 +211,126 @@ def print_dict_summary(d,indent=0,first=[],first_num=3):
             print(indent_str,key,":",value)
         if key in first:
             print_first(value,num=first_num,indent=indent+5)
+
+
+def plt_acf(ts, max_k=54, title=None, vlines=None, save_path=None, color=None):
+    """
+    Wrapper for ACF plot using bars instead of the default statsmodels' dots and whiskers.
+
+    Parameters:
+        ts (np.array or list): The time series to analyze.
+        max_k (int, optional): Maximum number of lags to display. Default is 54.
+        title (str, optional): Title of the plot. Default is None.
+        vlines (list, optional): List of lag values where vertical lines should be drawn. Default is None.
+        save_path (str, optional): Path to save the plot, including file name and extension. Default is None.
+
+    Returns:
+        None
+    """
+    
+    # Calculate ACF values
+    acf_values = acf(ts, nlags=max_k, fft=True)
+    lags = np.arange(len(acf_values))
+
+    # Initialize the plot
+    fig, ax = plt.subplots(figsize=(10, 5))
+    
+    # Plot ACF as bars
+    if color is None:
+        color = plt.rcParams['axes.prop_cycle'].by_key()['color'][0]
+    ax.bar(lags, acf_values, width=0.6, color=color, alpha=0.7, label='ACF')
+    
+    # Add horizontal lines for confidence intervals
+    conf_int = 1.96 / np.sqrt(len(ts))
+    ax.axhline(y=conf_int, linestyle='--', color='gray', linewidth=1, label="95% CI")
+    ax.axhline(y=-conf_int, linestyle='--', color='gray', linewidth=1)
+    ax.axhline(y=0, color='black', linewidth=0.8)
+
+    # Set the title
+    if title:
+        ax.set_title(title, fontsize=14, fontweight='bold')
+
+    # Add vertical lines if specified
+    if vlines:
+        for lag in vlines:
+            ax.axvline(x=lag, color=color, linestyle='--', linewidth=1)
+            ax.text(
+                x=lag, y=ax.get_ylim()[1] * 0.9, 
+                s=f'Lag {lag}', color=color, rotation=90,
+                va='top', ha='center', fontsize=10, fontweight='bold'
+            )
+
+    # Customize grid and axis
+    ax.grid(alpha=0.3)
+    ax.set_xlabel("Lag", fontsize=14)
+    ax.set_ylabel("Autocorrelation", fontsize=14)
+    ax.tick_params(axis='both', labelsize=14)
+    ax.legend(fontsize=13)
+
+    # Save the plot if a path is specified
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+
+    # Display the plot
+    plt.show()
+
+def plt_pacf(ts, max_k=54, title=None, vlines=None, save_path=None, color=None):
+    """
+    Wrapper for PACF plot using bars instead of the default statsmodels' dots and whiskers.
+
+    Parameters:
+        ts (np.array or list): The time series to analyze.
+        max_k (int, optional): Maximum number of lags to display. Default is 54.
+        title (str, optional): Title of the plot. Default is None.
+        vlines (list, optional): List of lag values where vertical lines should be drawn. Default is None.
+        save_path (str, optional): Path to save the plot, including file name and extension. Default is None.
+
+    Returns:
+        None
+    """
+    
+    # Calculate PACF values
+    pacf_values = pacf(ts, nlags=max_k)
+    lags = np.arange(len(pacf_values))
+
+    # Initialize the plot
+    fig, ax = plt.subplots(figsize=(10, 5))
+    
+    # Plot PACF as bars
+    if color is None:
+        color = plt.rcParams['axes.prop_cycle'].by_key()['color'][0]
+    ax.bar(lags, pacf_values, width=0.6, color=color, alpha=0.7, label='PACF')
+    
+    # Add horizontal lines for confidence intervals
+    conf_int = 1.96 / np.sqrt(len(ts))
+    ax.axhline(y=conf_int, linestyle='--', color='gray', linewidth=1, label="95% CI")
+    ax.axhline(y=-conf_int, linestyle='--', color='gray', linewidth=1)
+    ax.axhline(y=0, color='black', linewidth=0.8)
+
+    # Set the title
+    if title:
+        ax.set_title(title, fontsize=14, fontweight='bold')
+
+    # Add vertical lines if specified
+    if vlines:
+        for lag in vlines:
+            ax.axvline(x=lag, color=color, linestyle='--', linewidth=1)
+            ax.text(
+                x=lag, y=ax.get_ylim()[1] * 0.9, 
+                s=f'Lag {lag}', color=color, rotation=90,
+                va='top', ha='center', fontsize=10, fontweight='bold'
+            )
+
+    # Customize grid and axis
+    ax.grid(alpha=0.3)
+    ax.set_xlabel("Lag", fontsize=14)
+    ax.set_ylabel("Partial Autocorrelation", fontsize=14)
+    ax.tick_params(axis='both', labelsize=14)
+    ax.legend(fontsize=13)
+
+    # Save the plot if a path is specified
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+
+    # Display the plot
+    plt.show()

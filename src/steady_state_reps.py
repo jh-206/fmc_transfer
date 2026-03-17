@@ -60,23 +60,47 @@ def make_sine_eq_case(scaler, nsteps=168):
     xs_scaled = xs_scaled[None, :, :] # make 3d array for RNN
     return xs, xs_scaled
 
-def make_raws_case(scaler, dat, nsteps=168):
-    x1 = dat1[params["features_list"]].to_numpy(dtype=np.float32)
+def make_raws_constant_case(scaler, dat, params, nsteps=168):
+    x1 = dat[params["features_list"]].to_numpy(dtype=np.float32)
     x1 = np.repeat(x1[None, :], nsteps, axis=0)
     x1_scaled = scaler.transform(x1.copy())
     x1_scaled = x1_scaled[None, :, :] # make 3d array for RNN
     return x1, x1_scaled
 
+def make_raws_case(scaler, dat, params, nsteps=168):
+    x2 = dat[params["features_list"]].to_numpy(dtype=np.float32)
+    x2_scaled = scaler.transform(x2.copy())
+    x2_scaled = x2_scaled[None, :, :] # make 3d array for RNN
+    return x2, x2_scaled
 
-# Executing Code
+
+def warp_weights(weights0, bi_warp, bf_warp):
+    """
+    Given LSTM layer weights and time-warp parameters, return a new list
+    of time-warped LSTM weights without modifying the input weights.
+    """
+    # Copy all arrays to avoid mutating the originals
+    w_warped = [w.copy() for w in weights0]
+    # Bias vector (Keras LSTM layout: [i, f, c, o])
+    b = w_warped[2]
+    # Infer number of LSTM units from bias length
+    if b.ndim != 1 or b.shape[0] % 4 != 0:
+        raise ValueError("Unexpected LSTM bias shape.")
+    lstm_units = b.shape[0] // 4
+    # Input gate biases (i)
+    b[0:lstm_units] += bi_warp
+    # Forget gate biases (f)
+    b[lstm_units:2 * lstm_units] += bf_warp
+
+    return w_warped
+
+# Executed Code
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Hard coded run params
 
 nsteps=168 
 st1 = "AENC2"
-st2 = "BAWC2"
-bf_warp = 0.5
-bi_warp = 0.5
+
 
 
 if __name__ == '__main__':
@@ -117,8 +141,8 @@ if __name__ == '__main__':
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ml_data = pd.read_pickle(osp.join(conf.rnn_dir, "ml_data.pkl"))
     dat1 = ml_data[st1]["data"].iloc[-1] # Last available time
-    dat2 = ml_data[st2]["data"].iloc[12345] 
-
+    dat2 = ml_data[st1]["data"].iloc[-nsteps:] # Last nsteps
+    
     # Loop Over Reps - make cases with scaler, generate predictions for time-warp scenarios
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     results = {} # return object
@@ -129,11 +153,12 @@ if __name__ == '__main__':
         weight_path = osp.join(reps_dir, subdir, "rnn.weights.h5")
         scaler = joblib.load(osp.join(reps_dir, subdir, "scaler.joblib")) 
 
+        
         # Make data cases
         x0, x0_scaled = make_const_mean_case(scaler)
         xs, xs_scaled = make_sine_eq_case(scaler)
-        x1, x1_scaled = make_raws_case(scaler, dat1)
-        x2, x2_scaled = make_raws_case(scaler, dat2)
+        x1, x1_scaled = make_raws_constant_case(scaler, dat1, params=params)
+        x2, x2_scaled = make_raws_case(scaler, dat2, params=params)
         
         # Set RNN weights based on rep, copy to make stable
         rnn.load_weights(weight_path)
@@ -144,40 +169,6 @@ if __name__ == '__main__':
         p1 = rnn.predict(x1_scaled, verbose=0).flatten()
         p2 = rnn.predict(x2_scaled, verbose=0).flatten()
         results[subdir]["base"] = {
-            'p0': p0,
-            'ps': ps,
-            'p1': p1,
-            'p2': p2            
-        }
-
-        
-        # Set up time-warp cases
-        weights_fast = rnn.get_layer("lstm").get_weights()
-        weights_fast[2][0:units]       = weights0[2][0:units] + bi_warp       # input gate
-        weights_fast[2][units:2*units] = weights0[2][units:2*units] - bf_warp # forget gate
-        rnn.get_layer("lstm").set_weights(weights_fast)
-        # Predictions for fast case
-        p0 = rnn.predict(x0_scaled, verbose=0).flatten()
-        ps = rnn.predict(xs_scaled, verbose=0).flatten()
-        p1 = rnn.predict(x1_scaled, verbose=0).flatten()
-        p2 = rnn.predict(x2_scaled, verbose=0).flatten()
-        results[subdir]["fast"] = {
-            'p0': p0,
-            'ps': ps,
-            'p1': p1,
-            'p2': p2            
-        }        
-        
-        weights_slow = rnn.get_layer("lstm").get_weights()
-        weights_slow[2][0:units]       = weights0[2][0:units] - bi_warp       # input gate
-        weights_slow[2][units:2*units] = weights0[2][units:2*units] + bf_warp # forget gate
-        rnn.get_layer("lstm").set_weights(weights_slow)
-        # Predictions for slow case
-        p0 = rnn.predict(x0_scaled, verbose=0).flatten()
-        ps = rnn.predict(xs_scaled, verbose=0).flatten()
-        p1 = rnn.predict(x1_scaled, verbose=0).flatten()
-        p2 = rnn.predict(x2_scaled, verbose=0).flatten()
-        results[subdir]["slow"] = {
             'p0': p0,
             'ps': ps,
             'p1': p1,

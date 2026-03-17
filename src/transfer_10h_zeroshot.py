@@ -76,7 +76,7 @@ if __name__ == '__main__':
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     print(f"Time Period: {conf.train_start} to {conf.f_end}")
     print("NOTE: no train nor validation set for this analysis, the whole period can be treated as a test set")
-
+    
     # Data
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     weather = pd.read_excel(osp.join(DATA_DIR, "processed_data/dvdk_weather.xlsx"))
@@ -123,7 +123,7 @@ if __name__ == '__main__':
     # Accuracy
     df = fm10.copy()
     df["preds"] = preds2
-
+    results["times"] = df10.utc.to_numpy()
     results["preds"] = preds
     results["preds_intp"] = preds2
     results["rmse"] = np.sqrt(mean_squared_error(df.fm10, df.preds))
