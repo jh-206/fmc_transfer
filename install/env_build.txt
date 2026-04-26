@@ -7,3 +7,5 @@ conda install -y tensorflow -c conda-forge
 conda install -y openpyxl
 conda install -y joblib
 conda install -y scikit-learn
+conda install -c conda-forge statsmodels
+
