@@ -1,25 +1,71 @@
 # Transfer Learning for Different Fuel Sizes
 
-The goal of this repo is to effectively train machine learning models of dead fuel moisture content for more fuel sizes than the standard 10h stick, including 1h and 100h fuels. We will test various transfer learning methods to adapt a RNN pre-trained on 10h sensor data to predict other fuel types.
+The goal of this repo is to effectively train machine learning models of dead fuel moisture content for more fuel sizes than the standard 10h stick, including 1h and 100h fuels. We test transfer learning methods to adapt a RNN pre-trained on 10h sensor data to predict other fuel types, including a new approach based on time-warping the learned recurrent dynamics.
 
 Corresponding email: jonathon.hirschi@ucdenver.edu
 
 Advisor: Jan Mandel, CU Denver
 
+## Required Citation for Carlson Data
+
+If you use `data/oklahoma_Carlson_data.xlsx` or derivative datasets based on it, please cite the original data-study source:
+
+Carlson, J. D., Bradshaw, L. S., Nelson, R. M., Jr., Bensch, R. R., and Jabrzemski, R. (2007). Application of the Nelson model to four timelag fuel classes using Oklahoma field observations: Model evaluation and comparison with National Fire Danger Rating System algorithms. *International Journal of Wildland Fire*, 16, 204--216. https://doi.org/10.1071/WF06073
+
+## Related Thesis
+
+This repository formed the basis of the PhD thesis:
+
+Hirschi, J. (defended April 2026). *Time-Warping Recurrent Neural Networks for Transfer Learning*.
+Preprint: [https://arxiv.org/abs/2604.02474](https://arxiv.org/abs/2604.02474)
+An official ProQuest link will be added when available.
+
+The thesis studies transfer learning for fuel moisture prediction using a time-warping approach applied to recurrent neural networks.
+In particular, it investigates transfer learning by modifying the learned dynamics of a pre-trained LSTM to adapt models across fuel classes.
+
+## Relationship to Prior RNN Work
+
+The transfer-learning experiments in this repository build on pre-trained models developed in `openwfm/ml_fmda`:
+[https://github.com/openwfm/ml_fmda](https://github.com/openwfm/ml_fmda)
+
+Those source models are associated with:
+
+Mandel, J., Farguell, A., Haley, C., and colleagues. *A Recurrent Neural Network for Forecasting Dead Fuel Moisture Content with Inputs from Numerical Weather Models*. *Fire*, 9(1), 26. [https://doi.org/10.3390/fire9010026](https://doi.org/10.3390/fire9010026)
+
+Reproducing the thesis results in this repository requires the corresponding pre-trained model weights from that upstream project.
+
 ## Data
 
 The 1996-1997 field study by Carlson et al is a foundational dataset in FMC modeling. It was used to calibrate the Nelson model for operational use. As far as we can tell, this is the only controlled study of 100h fuels in CONUS. This will be used as the main dataset to adapt a model pre-trained on 10h sensors to other fuels.
 
-- Larger Fuels: 100h and 1000h datasets are built using the FEMS API with code originally developed by Angel Farguell and collaborators at WIRC.
+### Source Data Provenance
+
+The file `data/oklahoma_Carlson_data.xlsx` contains the Oklahoma field observations used in this project, including FMC measurements and associated weather-sensor data.
+The version distributed in this repository was provided in this formatted form by Derek W. van der Kamp for the study:
+
+Van der Kamp, D. W., Moore, R. D., and McKendry, I. G. (2017). A model for simulating the moisture content of standardized fuel sticks of various sizes. *Agricultural and Forest Meteorology*, 236, 123--134. https://doi.org/10.1016/j.agrformet.2017.01.013
+
+The underlying study data originate from Carlson et al.
+This repository includes the formatted file with permission from the original author.
+
+- Larger Fuels:
+  - Oklahoma field study for 100h and 1000h fuels
+  - FEMS field samples built using the FEMS API with code originally developed by Angel Farguell and collaborators at WIRC
 - Fine fuels datasets: these data come from small-scale academic studies. Please email the listed correspondance in this document for access to these datasets
-	- Oklahoma field study 1996-1997 (Carlson 2007): study used to calibrate Nelson model
-	- Hawaii field study 2000-2001 (Weise 2004): study used to compare 1h models, including Nelson
+  - Oklahoma field study 1996-1997 (Carlson 2007): study used to calibrate Nelson model
+  - Hawaii field study 2000-2001 (Weise 2004): study used to compare 1h models, including Nelson
+  - FEMS field samples
 
 The code expects the following datasets to exist:
 
-* `data/oklahoma_Carlson_data.xlsx` : formatted data delivered by Derek van der Kamp, original FMC measurements from Carlson and hourly data from portable weather station
+* `data/oklahoma_Carlson_data.xlsx` : formatted Oklahoma field-study data including FMC measurements and weather-sensor observations
+* processed analysis data created by the notebooks in this repository
 
-The datasets for analysis are created in interactive jupyter notebooks. The notebooks can be opened and run with all cells. They also contain informative print statements and explain the logic used for processing the data. To recreate the datasets used in analysis, open and run: `process_carlson_data.ipynb`
+The datasets for analysis are created in interactive jupyter notebooks.
+These processed files reflect my own cleaning and preparation workflow and are the versions used in the reproducible analyses in this repository.
+The notebooks can be opened and run with all cells.
+They also contain informative print statements and explain the logic used for processing the data.
+To recreate the processed datasets used in analysis, open and run: `process_carlson_data.ipynb`
 
 ...weise data future work...
 
@@ -109,3 +155,10 @@ Transfer learning taking pretrained RNN and fine-tuning to OK field data with fr
 
 `python src/transfer_twarp_finetune.py etc/thesis_config.yaml`
 
+## AI Assistance Disclosure
+
+AI-based tools, including ChatGPT and Codex, were used in a limited support role during this project.
+They were used for coding assistance, literature search support, and technical editing of project text and documentation.
+
+These tools did not independently design the study, perform the scientific analysis, or determine the conclusions.
+All substantive analytical decisions, data preparation choices, model evaluation, result interpretation, and final written claims were made and verified by the author.
