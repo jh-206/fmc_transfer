@@ -71,13 +71,15 @@ To recreate the processed datasets used in analysis, open and run: `process_carl
 
 ## Pretrained RNNs
 
-The pretrained RNN used as the source learning task is from the project `openwfm/ml_fmda`. Instructions on how to recreate those models are in the README. The steps involve retrieving and formatting all HRRR and RAWS within a spatial domain (Rocky Mountain GACC for the paper and this thesis). Then, `train_cpu_reps.sh` is run with the config file `etc/train_config.yaml`, generating 100 replications of the RNN. The replications vary train/val split in training and initial weights of the RNN. No test set is utilized for the source domain in this case. The target tasks make the test set in this project. The source domain RNN was validated with an extensive spatiotemporal cross validation and reported in the paper. 
-
 The required models to recreate the thesis are the set of weights for each 100 replication, and live in the directory `models/reps/seed_i` for i=0,...,99
 
-## Recreating Outputs
+The pretrained RNN used as the source learning task is from the project `openwfm/ml_fmda`. Instructions on how to recreate those models are in the README. The steps involve retrieving and formatting all HRRR and RAWS within a spatial domain (Rocky Mountain GACC for the paper and this thesis). Then, `train_cpu_reps.sh` is run with the config file `etc/train_config.yaml`, generating 100 replications of the RNN. The replications vary train/val split in training and initial weights of the RNN. No test set is utilized for the source domain in this case. The target tasks make the test set in this project. The source domain RNN was validated with an extensive spatiotemporal cross validation and reported in the paper. 
+
+## Replicating Outputs
 
 The analyses are run with statistical replications using SLURM arrays. To recreate efficiently you will need access to a computing cluster with slurm workflow. Individual python modules could be run with individual seeds as a check, but it won't be efficient to recreate the entire analysis. 
+
+Additional outputs, including summary tables and figures, were created using interactive jupyter notebooks. The directory `docs/` contains several notebooks that generated outputs used in the thesis and the paper. Notebooks with the prefix `analyze_*` were run to create tables, which were manually copied into latex form for the papers, and figures that are saved to the `outputs/` directory
 
 ### FM10 Zeroshot
 
@@ -86,9 +88,6 @@ The analyses are run with statistical replications using SLURM arrays. To recrea
 
 `python src/analyze_zeroshot_reps.py`
 
-To recreate the accuracy metrics and visualizations associated with the FM10 zeroshot analysis, run all cells in `rnn_10h_zeroshot.ipynb`. The accuracy metrics are printed in-line and two figures are saved:
-- `outputs/ts_rnn_zeroshot.png`
-- `outputs/ts_BAWC2.png`
 
 ### Stability of the Learned Gate Bias Structure
 
