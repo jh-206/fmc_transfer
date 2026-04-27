@@ -100,9 +100,9 @@ if __name__ == '__main__':
     fm10 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_10h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
     fm100 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_100h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
     fm1000 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_1000h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
-    weather["date"] = pd.to_datetime(weather["date"], utc=True)
+    weather["utc"] = pd.to_datetime(weather["utc"], utc=True)
     for df in [fm1, fm10, fm100, fm1000]:
-        for col in ["date", "utc_rounded", "utc_prov"]:
+        for col in ["utc_rounded", "utc_prov"]:
             df[col] = pd.to_datetime(df[col], utc=True)
 
     # Set up output object

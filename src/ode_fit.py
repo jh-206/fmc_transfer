@@ -90,9 +90,9 @@ df10 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_10h.csv"), parse_dates=
 df100 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_100h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
 df1000 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_1000h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
 weather = pd.read_csv(osp.join(DATA_DIR, "processed_data/weather.csv"), parse_dates=["date", "utc"])
-weather["date"] = pd.to_datetime(weather["date"], utc=True)
+weather["utc"] = pd.to_datetime(weather["utc"], utc=True)
 for df in [df1, df10, df100, df1000]:
-    for col in ["date", "utc_rounded", "utc_prov"]:
+    for col in ["utc_rounded", "utc_prov"]:
         df[col] = pd.to_datetime(df[col], utc=True)
 
 df1 = df1.rename(columns={"utc_rounded": "utc"})
