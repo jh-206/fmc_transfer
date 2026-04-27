@@ -183,11 +183,15 @@ if __name__ == '__main__':
 
     # Data
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    weather = pd.read_excel(osp.join(DATA_DIR, "processed_data/dvdk_weather.xlsx"))
-    fm1 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_1h.xlsx"))
-    fm10 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_10h.xlsx"))
-    fm100 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_100h.xlsx"))
-    fm1000 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_1000h.xlsx"))
+    weather = pd.read_csv(osp.join(DATA_DIR, "processed_data/weather.csv"), parse_dates=["date", "utc"])
+    fm1 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_1h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
+    fm10 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_10h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
+    fm100 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_100h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
+    fm1000 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_1000h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
+    weather["date"] = pd.to_datetime(weather["date"], utc=True)
+    for df in [fm1, fm10, fm100, fm1000]:
+        for col in ["date", "utc_rounded", "utc_prov"]:
+            df[col] = pd.to_datetime(df[col], utc=True)
     
     # FM1
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -488,8 +492,6 @@ if __name__ == '__main__':
     print(f"Writing Output to: {out_file}")
     with open(out_file, "wb") as f:
         pickle.dump(results_test, f, protocol=pickle.HIGHEST_PROTOCOL)
-
-
 
 
 

@@ -79,8 +79,11 @@ if __name__ == '__main__':
     
     # Data
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    weather = pd.read_excel(osp.join(DATA_DIR, "processed_data/dvdk_weather.xlsx"))
-    fm10 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_10h.xlsx"))
+    weather = pd.read_csv(osp.join(DATA_DIR, "processed_data/weather.csv"), parse_dates=["date", "utc"])
+    fm10 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_10h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
+    weather["date"] = pd.to_datetime(weather["date"], utc=True)
+    for col in ["date", "utc_rounded", "utc_prov"]:
+        fm10[col] = pd.to_datetime(fm10[col], utc=True)
 
     # FM10
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -85,11 +85,15 @@ def ode_kf_fit(df, params, tstep = 1, fm_col = "fm1"):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Data
-df1 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_1h.xlsx"))
-df10 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_10h.xlsx"))
-df100 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_100h.xlsx"))
-df1000 = pd.read_excel(osp.join(DATA_DIR, "processed_data/ok_1000h.xlsx"))
-weather = pd.read_excel(osp.join(DATA_DIR, "processed_data/dvdk_weather.xlsx"))
+df1 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_1h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
+df10 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_10h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
+df100 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_100h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
+df1000 = pd.read_csv(osp.join(DATA_DIR, "processed_data/ok_1000h.csv"), parse_dates=["date", "utc_rounded", "utc_prov"])
+weather = pd.read_csv(osp.join(DATA_DIR, "processed_data/weather.csv"), parse_dates=["date", "utc"])
+weather["date"] = pd.to_datetime(weather["date"], utc=True)
+for df in [df1, df10, df100, df1000]:
+    for col in ["date", "utc_rounded", "utc_prov"]:
+        df[col] = pd.to_datetime(df[col], utc=True)
 
 df1 = df1.rename(columns={"utc_rounded": "utc"})
 df10 = df10.rename(columns={"utc_rounded": "utc"})
