@@ -75,6 +75,16 @@ The required models to recreate the thesis are the set of weights for each 100 r
 
 The pretrained RNN used as the source learning task is from the project `openwfm/ml_fmda`. Instructions on how to recreate those models are in the README. The steps involve retrieving and formatting all HRRR and RAWS within a spatial domain (Rocky Mountain GACC for the paper and this thesis). Then, `train_cpu_reps.sh` is run with the config file `etc/train_config.yaml`, generating 100 replications of the RNN. The replications vary train/val split in training and initial weights of the RNN. No test set is utilized for the source domain in this case. The target tasks make the test set in this project. The source domain RNN was validated with an extensive spatiotemporal cross validation and reported in the paper. 
 
+## System Requirements
+
+This project is designed to be run on a Unix-like system with the following available:
+
+* A SLURM workload manager for submitting array jobs used in the replicated analyses
+* Conda available on the command line, so the provided shell scripts can activate project environments
+
+The full replicated analyses were designed for a computing-cluster workflow.
+Some individual python modules can be run directly for spot checks or smaller tests, but reproducing the main results efficiently assumes access to a SLURM-compatible system.
+
 ## Replicating Outputs
 
 The analyses are run with statistical replications using SLURM arrays. To recreate efficiently you will need access to a computing cluster with slurm workflow. Individual python modules could be run with individual seeds as a check, but it won't be efficient to recreate the entire analysis. 
