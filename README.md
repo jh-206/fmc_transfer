@@ -101,13 +101,7 @@ Additional outputs, including summary tables and figures, were created using int
 
 ### Stability of the Learned Gate Bias Structure
 
-Run `rnn_timewarp_reps.ipynb`
-
-### Steady State Analysis
-
-`python src/steady_state_reps.py etc/thesis_config.yaml`
-
-`analyze_steadystate_results.ipynb`
+Open jupyter notebook and run all cells in `docs/analyze_bias_reps.ipynb`
 
 ## Transfer Learning Scenarios
 
