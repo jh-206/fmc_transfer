@@ -2,10 +2,21 @@
 
 This document describes the inputs, environment, and execution workflow needed to reproduce the main transfer-learning analyses in this repository. The primary targets are the PhD thesis preprint, *Time-Warping Recurrent Neural Networks for Transfer Learning* ([arXiv:2604.02474](https://arxiv.org/abs/2604.02474)), and the corresponding transfer-learning paper based on the same analysis workflow, currently in preparation for publication.
 
+## Quick Setup
+
+From the project root, run:
+
+`bash setup.sh`
+
+This script attempts to activate the `fmc` conda environment, checks for the required processed data files, checks for the required config files, and verifies that the pretrained RNN replication archive is available under `models/rnn_rocky_23-24_reps/`. If the pretrained replication directory is missing or incomplete, the script downloads the archive from Zenodo and extracts it into `models/`.
+
+Zenodo record for the pretrained RNN replications:
+[https://zenodo.org/records/19927293](https://zenodo.org/records/19927293)
+
 ## Starting Point
 
-- `100` pretrained RNN replications: available at `PLACEHOLDER`. Download the archive, unzip it, and place the resulting directory at `models/rnn_rocky_23-24_reps/`.
-- `data/processed_data/` files: these are included in the GitHub repository as the starting analysis datasets. The processed datasets can also be regenerated interactively from `data/oklahoma_Carlson_data.xlsx` by opening and running `docs/process_carlson_data.ipynb`.
+- `100` pretrained RNN replications: archived on Zenodo at [https://zenodo.org/records/19927293](https://zenodo.org/records/19927293). These are external pretrained-model inputs for the transfer-learning analyses. After download, unzip the archive and place the resulting directory at `models/rnn_rocky_23-24_reps/`.
+- `data/processed_data/` files: these are included in the GitHub repository as the starting analysis datasets, including `weather.csv`, `ok_1h.csv`, `ok_10h.csv`, `ok_100h.csv`, and `ok_1000h.csv`. They can also be regenerated interactively from `data/oklahoma_Carlson_data.xlsx` by opening and running `docs/process_carlson_data.ipynb`.
 
 ## System Requirements
 
@@ -17,14 +28,6 @@ This project is designed to be run on a Unix-like system with the following avai
 
 The full replicated analyses were designed for a computing-cluster workflow.
 Some individual python modules can be run directly for spot checks or smaller tests, but reproducing the main results efficiently assumes access to a SLURM-compatible system.
-# Reproducibility Guide
-
-This document describes the inputs, environment, and execution workflow needed to reproduce the main transfer-learning analyses in this repository. The primary targets are the PhD thesis preprint, *Time-Warping Recurrent Neural Networks for Transfer Learning* ([arXiv:2604.02474](https://arxiv.org/abs/2604.02474)), and the corresponding transfer-learning paper based on the same analysis workflow, currently in preparation for publication.
-
-## Starting Point
-
-- `100` pretrained RNN replications: available at `PLACEHOLDER`. Download the archive, unzip it, and place the resulting directory at `models/rnn_rocky_23-24_reps/`.
-- `data/processed_data/` files: these are included in the GitHub repository as the starting analysis datasets, including `weather.csv`, `ok_1h.csv`, `ok_10h.csv`, `ok_100h.csv`, and `ok_1000h.csv`. They can also be regenerated interactively from `data/oklahoma_Carlson_data.xlsx` by opening and running `docs/process_carlson_data.ipynb`.
 
 ## Replicating Outputs
 

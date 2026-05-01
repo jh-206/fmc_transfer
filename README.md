@@ -2,6 +2,8 @@
 
 The goal of this repo is to effectively train machine learning models of dead fuel moisture content for more fuel sizes than the standard 10h stick, including 1h and 100h fuels. We test transfer learning methods to adapt a RNN pre-trained on 10h sensor data to predict other fuel types, including a new approach based on time-warping the learned recurrent dynamics.
 
+Step-by-step reproduction instructions are provided in [REPRODUCIBILITY.md](/Users/hirschij/Documents/Projects/Wildfire/fmc_transfer/REPRODUCIBILITY.md).
+
 Corresponding email: jonathon.hirschi@ucdenver.edu
 
 Advisor: Jan Mandel, CU Denver
@@ -71,9 +73,16 @@ To recreate the processed datasets used in analysis, open and run: `process_carl
 
 ## Pretrained RNNs
 
-The required models to recreate the thesis are the set of weights for each 100 replication, and live in the directory `models/reps/seed_i` for i=0,...,99
+The transfer-learning analyses in this repository require a set of `100` pretrained FM10 RNN replications, used as the source-model starting point for the replicated transfer experiments.
 
-The pretrained RNN used as the source learning task is from the project `openwfm/ml_fmda`. Instructions on how to recreate those models are in the README. The steps involve retrieving and formatting all HRRR and RAWS within a spatial domain (Rocky Mountain GACC for the paper and this thesis). Then, `train_cpu_reps.sh` is run with the config file `etc/train_config.yaml`, generating 100 replications of the RNN. The replications vary train/val split in training and initial weights of the RNN. No test set is utilized for the source domain in this case. The target tasks make the test set in this project. The source domain RNN was validated with an extensive spatiotemporal cross validation and reported in the paper. 
+These replications are archived on Zenodo:
+[https://zenodo.org/records/19927293](https://zenodo.org/records/19927293)
+
+Citation:
+
+Hirschi, J. (2026). *RNN Replications: FM10 Rocky Mountain GACC 2023-2024* [Data set]. Zenodo. https://doi.org/10.5281/zenodo.19927293
+
+The source-task RNN was originally developed in the related project `openwfm/ml_fmda`, and the transfer-learning analyses in this repository use those archived replications as external pretrained-model inputs.
 
 ## AI Assistance Disclosure
 
