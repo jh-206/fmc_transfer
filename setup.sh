@@ -3,7 +3,7 @@
 set -u
 
 RNN_REPS_DIR="models/rnn_rocky_23-24_reps"
-RNN_REPS_ZIP="models/rnn_rocky_23-24_reps.zip"
+RNN_REPS_ZIP="rnn_rocky_23-24_reps.zip"
 RNN_REPS_URL="https://zenodo.org/api/records/19927293/files-archive"
 
 warn_missing() {
@@ -41,7 +41,10 @@ fi
 if [ "$seed_count" -ne 100 ]; then
     echo "RNN replication directory missing or incomplete, downloading archive"
     curl -L "$RNN_REPS_URL" -o "$RNN_REPS_ZIP"
-    unzip -o "$RNN_REPS_ZIP" -d models
+    echo "Unzipping"
+    unzip -o "$RNN_REPS_ZIP"
+    unzip -o rnn_rocky_23-24_reps.zip
+    rm "$RNN_REPS_ZIP"
 
     seed_count=0
     if [ -d "$RNN_REPS_DIR" ]; then
