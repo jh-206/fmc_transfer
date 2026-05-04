@@ -14,7 +14,7 @@ SEED="$SLURM_ARRAY_TASK_ID"
 CONF_PATH="$1"
 
 # Set up environment
-source ~/.bashrc
+eval "$(conda shell.bash hook)"
 conda activate fmc
 
 python src/transfer_twarp_finetune.py $CONF_PATH $SEED 
