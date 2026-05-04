@@ -4,6 +4,10 @@ This document describes the inputs, environment, and execution workflow needed t
 
 ## Quick Setup
 
+Clone the github repository (change final `fmc_transfer` below to send to a different directory):
+
+`git clone https://github.com/jh-206/fmc_transfer.git fmc_transfer`
+
 From the project root, run:
 
 `bash setup.sh`
