@@ -1,9 +1,11 @@
-# recipe for creating conda env
+# Core environment for main results. Works as of 5-May-2026
+## Notes: conda install for tensorflow too unstable, using pip. Statsmodels and xgboost outputs created in jupyter notebooks. Including them in main env too unstable
+conda create -y -n fmc-test -c conda-forge python=3.11 pandas numpy matplotlib jupyter pyyaml joblib scikit-learn
+conda activate fmc-test
+pip install tensorflow==2.20.0
 
-conda create -y -n fmc python=3.11
-conda activate fmc
-conda install -y pandas numpy matplotlib jupyter pyyaml
-conda install -y tensorflow -c conda-forge
-conda install -y openpyxl
-conda install -y joblib
-conda install -y scikit-learn
+# Extra packages for paper results.
+conda install -c conda-forge statsmodels xgboost
+
+
+
