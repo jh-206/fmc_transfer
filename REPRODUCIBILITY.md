@@ -8,6 +8,10 @@ Clone the github repository (change final `fmc_transfer` below to send to a diff
 
 `git clone https://github.com/jh-206/fmc_transfer.git fmc_transfer`
 
+Build the conda environment from the directions `install/env_build.txt`, then:
+
+`conda activate fmc` 
+
 From the project root, run:
 
 `bash setup.sh`
