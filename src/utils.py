@@ -3,7 +3,6 @@ import yaml
 from datetime import datetime, timezone
 import pandas as pd
 import matplotlib.pyplot as plt
-from statsmodels.tsa.stattools import acf, pacf
 
 plot_styles = {
     'fm': {'color': '#468a29', 'linestyle': '-', 'label': 'Observed FM10'},
@@ -227,7 +226,8 @@ def plt_acf(ts, max_k=54, title=None, vlines=None, save_path=None, color=None):
     Returns:
         None
     """
-    
+
+    from statsmodels.tsa.stattools import acf, pacf 
     # Calculate ACF values
     acf_values = acf(ts, nlags=max_k, fft=True)
     lags = np.arange(len(acf_values))
@@ -288,7 +288,8 @@ def plt_pacf(ts, max_k=54, title=None, vlines=None, save_path=None, color=None):
     Returns:
         None
     """
-    
+    from statsmodels.tsa.stattools import acf, pacf
+
     # Calculate PACF values
     pacf_values = pacf(ts, nlags=max_k)
     lags = np.arange(len(pacf_values))

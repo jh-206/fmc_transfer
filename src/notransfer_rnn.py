@@ -32,7 +32,7 @@ from models.moisture_rnn import RNN_Flexible, mse_masked, build_training_batches
 # Metadata files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-params = Dict(read_yml(osp.join(PROJECT_ROOT, "models/params.yaml")))
+params = Dict(read_yml(osp.join(PROJECT_ROOT, "etc/params_models.yaml"), subkey="rnn"))
 
 
 

@@ -422,7 +422,7 @@ if __name__ == '__main__':
         print("~"*50)
         print(f"FM100 Param Combo {i+1} out of {len(fm100_grid)}")
         print(f"Params: {bs}")    
-        rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras')) # reset weights to baseline
+        rnn.load_weights(weights_path)
         weightsi = warp_weights(lweights, bi_warp = bs["bi"], bf_warp = bs["bf"])
         rnn.get_layer("lstm").set_weights(weightsi)
         rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
@@ -448,7 +448,7 @@ if __name__ == '__main__':
     # Re-train using best params (clean run)
     # Reset to baseline pretrained weights
     reproducibility.set_seed(seed)
-    rnn.load_weights(osp.join(conf.rnn_dir, "rnn.keras"))
+    rnn.load_weights(weights_path)
     
     # Apply best warp to the LSTM weights
     weights_best = warp_weights(
@@ -550,8 +550,8 @@ if __name__ == '__main__':
     for i, bs in enumerate(fm1000_grid):
         print("~"*50)
         print(f"FM1000 Param Combo {i+1} out of {len(fm1000_grid)}")
-        print(f"Params: {bs}")    
-        rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras')) # reset weights to baseline
+        print(f"Params: {bs}")   
+        rnn.load_weights(weights_path)
         weightsi = warp_weights(lweights, bi_warp = bs["bi"], bf_warp = bs["bf"])
         rnn.get_layer("lstm").set_weights(weightsi)
         rnn.fit(X_train_samples, y_train_samples, validation_data = (XX_val, yy_val), batch_size=params.batch_size, epochs=params.epochs, verbose_fit = False, plot_history=False)
@@ -577,8 +577,8 @@ if __name__ == '__main__':
     # Re-train using best params (clean run)
     # Reset to baseline pretrained weights
     reproducibility.set_seed(seed)
-    rnn.load_weights(osp.join(conf.rnn_dir, "rnn.keras"))
-    
+    rnn.load_weights(weights_path)
+
     # Apply best warp to the LSTM weights
     weights_best = warp_weights(
         lweights,

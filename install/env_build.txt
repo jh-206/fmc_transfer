@@ -1,8 +1,14 @@
 # Core environment for main results. Works as of 5-May-2026
-## Notes: conda install for tensorflow too unstable, using pip. Statsmodels and xgboost outputs created in jupyter notebooks. Including them in main env too unstable
-conda create -y -n fmc-test -c conda-forge python=3.11 pandas numpy matplotlib jupyter pyyaml joblib scikit-learn
-conda activate fmc-test
-pip install tensorflow==2.20.0
+## Notes: 
+## Tensorflow build with CPU, project uses SLURM to run 100s of iterations, not feasible with GPU
+## Statsmodels and xgboost outputs created in jupyter notebooks. Including them in main env too unstable
+## 
+
+conda create -y -n fmc -c conda-forge python=3.11 pip
+conda activate fmc
+pip install --upgrade pip
+pip install tensorflow==2.20.0 pandas numpy matplotlib jupyter pyyaml joblib scikit-learn
+
 
 # Extra packages for paper results.
 conda install -c conda-forge statsmodels xgboost

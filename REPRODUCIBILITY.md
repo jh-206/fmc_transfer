@@ -37,6 +37,8 @@ This project is designed to be run on a Unix-like system with the following avai
 The full replicated analyses were designed for a computing-cluster workflow.
 Some individual python modules can be run directly for spot checks or smaller tests, but reproducing the main results efficiently assumes access to a SLURM-compatible system.
 
+The RNN training is done on CPUs. The process uses SLURM for 100s of replications, not viable with GPU. The FMC modeling task is relatively light-weight. The longest-running process takes less than 1 day.
+
 ## Replicating Outputs
 
 The analyses are run with statistical replications using SLURM arrays. To recreate efficiently you will need access to a computing cluster with slurm workflow. Individual python modules could be run with individual seeds as a check, but it won't be efficient to recreate the entire analysis. The slurm array number defines a random seed. This is used to extract the right pretrained RNN replication from the directory `models/rnn_rocky_23-24_reps/seed_*`, and also it sets the random seed in that local environment. 
@@ -45,8 +47,9 @@ Additional outputs, including summary tables and figures, were created using int
 
 ### FM10 Zeroshot
 
-`./run_reps.sh run_10h_zeroshot.sh etc/thesis_config.yaml 100`
 
+`./run_reps.sh run_10h_zeroshot.sh etc/thesis_config.yaml 100`
+* Runtime on Alderaan: ~1min
 
 `python src/analyze_zeroshot_reps.py`
 
@@ -57,17 +60,13 @@ Open jupyter notebook and run all cells in `docs/analyze_bias_reps.ipynb`
 
 ## Transfer Learning Scenarios
 
-### No Transfer Baselines - Static Models
-
-`python src/notransfer_static.py etc/thesis_config.yaml`
-
-`analyze_static_results.ipynb`
-
 ### No Transfer Baselines - RNN Direct Train
 
-`./run_reps.sh run_notransfer.sh etc/thesis_config.yaml 100`
 
-`python src/notransfer_rnn.py etc/thesis_config.yaml`
+`./run_reps.sh run_notransfer.sh etc/thesis_config.yaml 100`
+* Runtime on Alderaan: ~2.5 min
+
+`python src/analyze_notl_results.py etc/thesis_config.yaml`
 
 ### FMC Time Warp Transfer - No Fine Tune
 
@@ -76,6 +75,8 @@ Fits timewarp params, all other weights frozen
 Makes grid of timewarp params and picks best on validation set. Uses to predict test set.
 
 `./run_reps.sh run_twarp.sh etc/thesis_config.yaml 100`
+* Runtime on Alderaan: ~18min. Note: the grid search is slow, this encompasses 625 individual model runs per fuel class with for loops
+
 
 `python src/analyze_twarp0_reps.py`
 
@@ -84,6 +85,7 @@ Makes grid of timewarp params and picks best on validation set. Uses to predict 
 No time warp, no frozen layers
 
 `./run_reps.sh run_finetune.sh etc/thesis_config.yaml 100`
+* Runtime on Alderaan: ~1min
 
 `python src/analyze_finetune.py`
 
@@ -92,6 +94,7 @@ No time warp, no frozen layers
 Transfer learning taking pretrained RNN and fine-tuning to OK field data with frozen recurrent layer. No time warping
 
 `./run_reps.sh run_freeze_recurrent.sh etc/thesis_config.yaml 100`
+* Runtime on Alderaan: ~1min
 
 `python src/analyze_freeze_recurrent.py`
 
@@ -100,6 +103,7 @@ Transfer learning taking pretrained RNN and fine-tuning to OK field data with fr
 Transfer learning taking pretrained RNN and fine-tuning to OK field data with frozen dense layer. No time warping
 
 `./run_reps.sh run_freeze_dense.sh etc/thesis_config.yaml 100`
+* Runtime on Alderaan: ~1min
 
 `python src/analyze_freeze_dense.py`
 
@@ -108,4 +112,12 @@ Transfer learning taking pretrained RNN and fine-tuning to OK field data with fr
 
 `./run_reps.sh run_twarp_finetune.sh etc/thesis_config.yaml 100`
 
-`python src/transfer_twarp_finetune.py etc/thesis_config.yaml`
+`python src/analyze_twarp_finetune.py etc/thesis_config.yaml`
+
+### No Transfer Baselines - Static Models
+NOTE: this requires installing xgboost, not part of the main env build due to stability. 
+
+
+`python src/notransfer_static.py etc/thesis_config.yaml`
+
+`analyze_static_results.ipynb`
