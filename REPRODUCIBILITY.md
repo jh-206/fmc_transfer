@@ -12,7 +12,7 @@ Build the conda environment from the directions `install/env_build.txt`, then:
 
 `conda activate fmc` 
 
-From the project root, run:
+From the project root:
 
 `bash setup.sh`
 
@@ -47,9 +47,11 @@ Additional outputs, including summary tables and figures, were created using int
 
 ### FM10 Zeroshot
 
+To run the zeroshot FM10 prediction run:
 
 `./run_reps.sh run_10h_zeroshot.sh etc/thesis_config.yaml 100`
-* Runtime on Alderaan: ~1min
+
+Then generate accuracy results with:
 
 `python src/analyze_zeroshot_reps.py`
 
@@ -62,62 +64,77 @@ Open jupyter notebook and run all cells in `docs/analyze_bias_reps.ipynb`
 
 ### No Transfer Baselines - RNN Direct Train
 
+To run direct training with no transfer:
 
 `./run_reps.sh run_notransfer.sh etc/thesis_config.yaml 100`
-* Runtime on Alderaan: ~2.5 min
+
+Then generate accuracy results with:
 
 `python src/analyze_notl_results.py etc/thesis_config.yaml`
 
 ### FMC Time Warp Transfer - No Fine Tune
 
-Fits timewarp params, all other weights frozen
-
-Makes grid of timewarp params and picks best on validation set. Uses to predict test set.
+To run the time-warping transfer, with no fine-tuning:
 
 `./run_reps.sh run_twarp.sh etc/thesis_config.yaml 100`
-* Runtime on Alderaan: ~18min. Note: the grid search is slow, this encompasses 625 individual model runs per fuel class with for loops
 
+Then generate accuracy results with:
 
 `python src/analyze_twarp0_reps.py`
 
+
+
 ### Transfer - Full Fine Tune
 
-No time warp, no frozen layers
+To run transfer learning with full fine-tuning:
 
 `./run_reps.sh run_finetune.sh etc/thesis_config.yaml 100`
-* Runtime on Alderaan: ~1min
+
+Then generate accuracy results with:
 
 `python src/analyze_finetune.py`
 
 ### Transfer - Freeze Recurrent Layer
 
-Transfer learning taking pretrained RNN and fine-tuning to OK field data with frozen recurrent layer. No time warping
+To run transfer learning with frozen recurrent layer:
 
 `./run_reps.sh run_freeze_recurrent.sh etc/thesis_config.yaml 100`
-* Runtime on Alderaan: ~1min
+
+Then generate accuracy results with:
 
 `python src/analyze_freeze_recurrent.py`
 
 ### Transfer - Freeze Dense Layer
 
-Transfer learning taking pretrained RNN and fine-tuning to OK field data with frozen dense layer. No time warping
+To run transfer learning with frozen dense layer:
 
 `./run_reps.sh run_freeze_dense.sh etc/thesis_config.yaml 100`
-* Runtime on Alderaan: ~1min
+
+Then generate accuracy results with:
 
 `python src/analyze_freeze_dense.py`
 
 
 ### Transfer - TimeWarp and Full Fine Tune
 
+Note: this is the slowest process, it took about 4hr on Alderaan. The grid search over time warping paramters is slow and in for loops, it could be optimized in the future.
+
+To run transfer learning with time-warping + fine-tuning:
+
 `./run_reps.sh run_twarp_finetune.sh etc/thesis_config.yaml 100`
+
+Then generate accuracy results with:
 
 `python src/analyze_twarp_finetune.py etc/thesis_config.yaml`
 
 ### No Transfer Baselines - Static Models
 NOTE: this requires installing xgboost, not part of the main env build due to stability. 
 
+To run static models baseline:
 
 `python src/notransfer_static.py etc/thesis_config.yaml`
 
-`analyze_static_results.ipynb`
+Then generate accuracy results with:
+
+`python src/analyze_static.py etc/thesis_config.yaml 100`
+
