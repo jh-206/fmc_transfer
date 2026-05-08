@@ -281,7 +281,8 @@ if __name__ == '__main__':
     for i, bs in enumerate(fm1_grid):
         print("~"*50)
         print(f"FM1 Param Combo {i+1} out of {len(fm1_grid)}")
-        print(f"Params: {bs}")    
+        print(f"Params: {bs}")   
+        reproducibility.set_seed(seed)
         rnn.load_weights(weights_path) # reset weights to baseline
         weightsi = warp_weights(lweights, bi_warp = bs["bi"], bf_warp = bs["bf"])
         rnn.get_layer("lstm").set_weights(weightsi)
@@ -421,7 +422,8 @@ if __name__ == '__main__':
     for i, bs in enumerate(fm100_grid):
         print("~"*50)
         print(f"FM100 Param Combo {i+1} out of {len(fm100_grid)}")
-        print(f"Params: {bs}")    
+        print(f"Params: {bs}")   
+        reproducibility.set_seed(seed)
         rnn.load_weights(weights_path)
         weightsi = warp_weights(lweights, bi_warp = bs["bi"], bf_warp = bs["bf"])
         rnn.get_layer("lstm").set_weights(weightsi)
@@ -550,7 +552,8 @@ if __name__ == '__main__':
     for i, bs in enumerate(fm1000_grid):
         print("~"*50)
         print(f"FM1000 Param Combo {i+1} out of {len(fm1000_grid)}")
-        print(f"Params: {bs}")   
+        print(f"Params: {bs}")  
+        reproducibility.set_seed(seed)
         rnn.load_weights(weights_path)
         weightsi = warp_weights(lweights, bi_warp = bs["bi"], bf_warp = bs["bf"])
         rnn.get_layer("lstm").set_weights(weightsi)
