@@ -1,6 +1,6 @@
 # Reproducibility Guide
 
-This document describes the inputs, environment, and execution workflow needed to reproduce the main transfer-learning analyses in this repository. The primary targets are the PhD thesis preprint, *Time-Warping Recurrent Neural Networks for Transfer Learning* ([arXiv:2604.02474](https://arxiv.org/abs/2604.02474)), and the corresponding transfer-learning paper based on the same analysis workflow, currently in preparation for publication.
+This document describes the inputs, environment, and execution workflow needed to reproduce the main transfer-learning analyses in this repository. The primary targets are the PhD thesis preprint, *Time-Warping Recurrent Neural Networks for Transfer Learning* ([arXiv:2604.02474](https://arxiv.org/abs/2604.02474)), and the corresponding transfer-learning paper based on the same analysis workflow, currently in preparation for publication. The results are associated with the tagged `paper-v1`.
 
 ## Quick Setup
 
