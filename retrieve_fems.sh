@@ -20,7 +20,7 @@ CONF_PATH="$1"
 OUT_PATH="$2"
 
 # Set up environment
-source ~/.bashrc
+eval "$(conda shell.bash hook)"
 conda activate fems
 
 export PYTHONUNBUFFERED=1
