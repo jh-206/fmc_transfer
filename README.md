@@ -2,7 +2,7 @@
 
 The goal of this repo is to effectively train machine learning models of dead fuel moisture content for more fuel sizes than the standard 10h stick, including 1h and 100h fuels. We test transfer learning methods to adapt a RNN pre-trained on 10h sensor data to predict other fuel types, including a new approach based on time-warping the learned recurrent dynamics.
 
-Step-by-step reproduction instructions are provided in [REPRODUCIBILITY.md](/Users/hirschij/Documents/Projects/Wildfire/fmc_transfer/REPRODUCIBILITY.md).
+The published results are from the tagged `paper-v1`. Step-by-step reproduction instructions are provided in [REPRODUCIBILITY.md](/Users/hirschij/Documents/Projects/Wildfire/fmc_transfer/REPRODUCIBILITY.md).
 
 Corresponding email: jonathon.hirschi@ucdenver.edu
 
