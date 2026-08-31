@@ -4,7 +4,8 @@
 #SBATCH --job-name=twarp
 #SBATCH --partition=math-alderaan
 #SBATCH --output=logs/reps_%j.out
-#SBATCH --ntasks=4
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
 #SBATCH --mem=64G
 
 # Shell file to run a replications of time warp, all other weights frozen 
@@ -15,6 +16,10 @@ CONF_PATH="$1"
 
 # Set up environment
 eval "$(conda shell.bash hook)"
+echo "Activating conda env: fmc"
 conda activate fmc
 
-python src/transfer_twarp_analysis.py $CONF_PATH $SEED 
+echo "python src/transfer_twarp_analysis.py $CONF_PATH $SEED"
+python src/transfer_twarp_analysis.py $CONF_PATH $SEED
+
+
