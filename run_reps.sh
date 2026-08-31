@@ -4,7 +4,8 @@
 #SBATCH --job-name=reps
 #SBATCH --partition=math-alderaan
 #SBATCH --output=logs/reps_%j.out
-#SBATCH --ntasks=4
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
 #SBATCH --mem=64G
 
 # Shell file to run a python module with different replications. 
@@ -23,4 +24,8 @@ SHELL_PATH="$1"
 CONF_PATH="$2"
 NREPS="$3"
 
-sbatch --array=0-$((NREPS-1)) --output=logs/%x_%A_%a.out --ntasks=4 --mem=64G $SHELL_PATH $CONF_PATH 
+echo "Submitting SLURM job: SHELL_PATH=$SHELL_PATH, CONF_PATH=$CONF_PATH, NREPS=$NREPS"
+
+echo "Running: sbatch --array=0-$((NREPS-1)) --output=logs/%x_%A_%a.out --ntasks=1 --cpus-per-task=4 --mem=64G $SHELL_PATH $CONF_PATH"
+
+sbatch --array=0-$((NREPS-1)) --output=logs/%x_%A_%a.out --ntasks=1 --cpus-per-task=4 --mem=64G $SHELL_PATH $CONF_PATH 
