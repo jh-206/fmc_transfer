@@ -1,3 +1,5 @@
+import os
+import os.path as osp
 import numpy as np
 import yaml
 from datetime import datetime, timezone
@@ -21,6 +23,16 @@ plot_styles = {
 }
 
 
+def save_yaml(yfile, output_dir, filename):
+    """Save yaml once, safely across concurrent processes."""
+    os.makedirs(output_dir, exist_ok=True)
+    path = osp.join(output_dir, filename)
+
+    try:
+        with open(path, "x") as f:
+            yaml.dump(yfile, f, default_flow_style=False, sort_keys=False)
+    except FileExistsError:
+        pass
 
 class Dict(dict):
     """
