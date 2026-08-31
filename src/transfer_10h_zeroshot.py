@@ -26,8 +26,9 @@ DATA_DIR = osp.join(PROJECT_ROOT, "data")
 
 # Local Modules
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-from utils import read_yml, Dict, time_range, time_intp
+from utils import read_yml, Dict, time_range, time_intp, save_yaml
 from models import moisture_rnn as mrnn
+from data_funcs import calc_doy_trig, calc_hod_trig
 import reproducibility
 from models.moisture_rnn import RNN_Flexible
 
@@ -54,8 +55,9 @@ if __name__ == '__main__':
     if seed is not None:
         reproducibility.set_seed(seed)
         output_dir = osp.join(conf.output_dir, "zeroshot_10h_reps", f"seed_{seed}")
+        save_yaml(dict(conf), osp.dirname(output_dir), "config.yaml")
         print(f"RNN Model Dir: {osp.join(conf.reps_dir, f'seed_{seed}')}")
-        params = Dict(read_yml(osp.join(conf.reps_dir, f"seed_{seed}", "params.yaml")))
+        params = Dict(read_yml(osp.join(conf.reps_dir, "params.yaml")))
         rnn = mrnn.RNN_Flexible(params=params)
         scaler = joblib.load(osp.join(conf.reps_dir, f"seed_{seed}", "scaler.joblib"))
         rnn.load_weights(osp.join(conf.reps_dir, f"seed_{seed}", 'rnn.keras'))
@@ -63,6 +65,7 @@ if __name__ == '__main__':
         seed = 11001000 # arbitrary, made it by combining 1-100-1000
         reproducibility.set_seed(seed)
         output_dir = osp.join(conf.output_dir, "zeroshot_10h")
+        save_yaml(dict(conf), osp.dirname(output_dir), "config.yaml")
         print(f"RNN Model Dir: {conf.rnn_dir}")
         params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
         rnn = mrnn.RNN_Flexible(params=params)
@@ -84,6 +87,9 @@ if __name__ == '__main__':
     weather["utc"] = pd.to_datetime(weather["utc"], utc=True)
     for col in ["utc_rounded", "utc_prov"]:
         fm10[col] = pd.to_datetime(fm10[col], utc=True)
+    weather["hod_sin"], weather["hod_cos"] = calc_hod_trig(weather["hod_utc"])
+    weather["doy_sin"], weather["doy_cos"] = calc_doy_trig(weather["doy_utc"])
+    weather["lograin"] = np.log1p(weather["rain"])
 
     # FM10
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

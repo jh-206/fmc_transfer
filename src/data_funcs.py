@@ -215,7 +215,31 @@ class StaticMLData(MLData):
                 print(f"X_val shape: {self.X_val.shape}, y_val shape: {self.y_val.shape}")
             if self.X_test is not None:
                 print(f"X_test shape: {self.X_test.shape}, y_test shape: {self.y_test.shape}")
-            
+
+
+
+def calc_hod_trig(hod):
+    """ 
+    Convert hour of day (0-23) to cyclic sine and cosine features.
+    Args:
+        hod: Scalar or array-like hour of day.
+    Returns:
+        Tuple (hod_sin, hod_cos).
+    """
+    hod_sin = np.sin(2 * np.pi * hod / 24) 
+    hod_cos = np.cos(2 * np.pi * hod / 24) 
+    return hod_sin, hod_cos
+def calc_doy_trig(doy):
+    """ 
+    Convert day of year (1-365) to cyclic sine and cosine features.
+    Args:
+        doy: Scalar or array-like day of year.
+    Returns:
+        Tuple (doy_sin, doy_cos).
+    """
+    doy_sin = np.sin(2 * np.pi * (doy - 1) / 365)
+    doy_cos = np.cos(2 * np.pi * (doy - 1) / 365)
+    return doy_sin, doy_cos
   
 if __name__ == '__main__':
 
