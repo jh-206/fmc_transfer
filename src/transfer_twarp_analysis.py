@@ -26,8 +26,9 @@ DATA_DIR = osp.join(PROJECT_ROOT, "data")
 
 # Local Modules
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-from utils import read_yml, Dict, time_range, time_intp
+from utils import read_yml, Dict, time_range, time_intp, save_yaml
 from models import moisture_rnn as mrnn
+from data_funcs import calc_doy_trig, calc_hod_trig
 import reproducibility
 
 # Metadata files
@@ -70,6 +71,7 @@ def warp_weights(weights0, bi_warp, bf_warp):
 
     return w_warped
 
+
 # Executed Code
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -79,11 +81,10 @@ if __name__ == '__main__':
         print(f"Usage: {sys.argv[0]} <config_path> [seed]")
         print("Example: python src/transfer_twarp_analysis.py etc/thesis_config.yaml")
         print("Example: python src/transfer_twarp_analysis.py etc/thesis_config.yaml 17")
-        sys.exit(-1)
+        sys.exit(1)
 
     # Setup 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
     confpath = sys.argv[1]
     seed = int(sys.argv[2]) if len(sys.argv) == 3 else None
     conf = Dict(read_yml(confpath))
@@ -94,8 +95,10 @@ if __name__ == '__main__':
     if seed is not None:
         reproducibility.set_seed(seed)
         output_dir = osp.join(conf.output_dir, "transfer0_reps", f"seed_{seed}")
+        save_yaml(dict(conf), osp.dirname(output_dir), "config.yaml")
         print(f"RNN Model Dir: {osp.join(conf.reps_dir, f'seed_{seed}')}")
-        params = Dict(read_yml(osp.join(conf.reps_dir, f"seed_{seed}", "params.yaml")))
+        params = Dict(read_yml(osp.join(conf.reps_dir, "params.yaml")))
+        save_yaml(dict(params), osp.dirname(output_dir), "params.yaml")
         rnn = mrnn.RNN_Flexible(params=params)
         scaler = joblib.load(osp.join(conf.reps_dir, f'seed_{seed}', "scaler.joblib"))
         rnn.load_weights(osp.join(conf.reps_dir, f"seed_{seed}", 'rnn.keras'))
@@ -103,14 +106,17 @@ if __name__ == '__main__':
         seed = 11001000 # arbitrary, made it by combining 1-100-1000
         reproducibility.set_seed(seed)
         output_dir = osp.join(conf.output_dir, "transfer0")
+        save_yaml(dict(conf), output_dir, "config.yaml")
         print(f"RNN Model Dir: {conf.rnn_dir}")
         params = Dict(read_yml(osp.join(conf.rnn_dir, "params.yaml")))
+        save_yaml(dict(params), output_dir, "params.yaml")
         rnn = mrnn.RNN_Flexible(params=params)
         scaler = joblib.load(osp.join(conf.rnn_dir, "scaler.joblib"))
         rnn.load_weights(osp.join(conf.rnn_dir, 'rnn.keras'))     
     
+    # Create output directory, copy config objects
     os.makedirs(output_dir, exist_ok=True)
-    
+
     # Time params
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     train_times = time_range(conf.train_start, conf.train_end, freq="1h")
@@ -146,34 +152,22 @@ if __name__ == '__main__':
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Geographic Variables from Slapout station
     # NOTE: combining train and val periods, this method doesn't need train/val split
+    
+    # Derived Features
+    weather["hod_sin"], weather["hod_cos"] = calc_hod_trig(weather["hod_utc"])
+    weather["doy_sin"], weather["doy_cos"] = calc_doy_trig(weather["doy_utc"])
+    weather["lograin"] = np.log1p(weather["rain"])
+    
+    # Static Features
+    weather["lat"] = conf.ok_lat
+    weather["lon"] = conf.ok_lon
+    weather["elev"] = conf.ok_elev 
+
+    # CV Split
     wtrain = weather[(weather.utc >= conf.train_start) & (weather.utc <= conf.val_end)]
     wtest  = weather[(weather.utc >= conf.f_start) & (weather.utc <= conf.f_end)]
-    
-    X_train = pd.DataFrame({
-        "Ed": wtrain.Ed,
-        "Ew": wtrain.Ew,
-        "solar": wtrain["solar"],
-        "wind": wtrain["wind"],
-        "elev": conf.ok_elev,
-        "lon": conf.ok_lon,
-        "lat": conf.ok_lat,
-        "rain": wtrain["rain"],
-        "hod": wtrain.hod_utc,
-        "doy": wtrain.doy_utc
-    })
-    X_test = pd.DataFrame({
-        "Ed": wtest.Ed,
-        "Ew": wtest.Ew,
-        "solar": wtest["solar"],
-        "wind": wtest["wind"],
-        "elev": conf.ok_elev,
-        "lon": conf.ok_lon,
-        "lat": conf.ok_lat,
-        "rain": wtest["rain"],
-        "hod": wtest.hod_utc,
-        "doy": wtest.doy_utc
-    })
-
+    X_train = wtrain[params.features_list]
+    X_test  = wtest[params.features_list]
     
     assert X_train.columns.equals(pd.Index(params['features_list'])), f"Features list doesn't match built data columns, {params['features_list']=}, \n {X_train.columns}"
     assert X_train.columns.equals(X_test.columns), f"Train and Test columns don't match, {X_train.columns=}, \n, {X_test.columns}"
@@ -255,7 +249,6 @@ if __name__ == '__main__':
         print(f"Accuracy Metrics:")
         print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
         print(f"RMSE (FM1<=30): {rmse_30.round(4)},   R2 (FM1<=30): {np.round(r2_30, 4)}")
-
         
     # Find min RMSE config, basing on RMSE less than 30 for 1h alone
     fm1_best_key = min(results_1, key=lambda ci: results_1[ci]["rmse_30"])
@@ -321,7 +314,6 @@ if __name__ == '__main__':
         print(f"Accuracy Metrics:")
         print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
         
-        
     # Find min RMSE config
     fm100_best_key = min(results_100, key=lambda ci: results_100[ci]["rmse"])
     fm100_best = results_100[fm100_best_key]
@@ -386,7 +378,7 @@ if __name__ == '__main__':
 
         print(f"Accuracy Metrics:")
         print(f"RMSE: {rmse.round(4)},   R2: {np.round(r2, 4)}")
-        
+
     # Find min RMSE config
     fm1000_best_key = min(results_1000, key=lambda ci: results_1000[ci]["rmse"])
     fm1000_best = results_1000[fm1000_best_key]
@@ -405,7 +397,6 @@ if __name__ == '__main__':
 
     # Output object
     results_test = {}
-
     # 1hr
     bs = fm1_best['params']
     weights1 = warp_weights(weights10, bi_warp = bs["bi"], bf_warp = bs["bf"])
