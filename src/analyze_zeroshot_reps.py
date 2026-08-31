@@ -11,7 +11,7 @@ import os
 import os.path as osp
 import matplotlib.pyplot as plt
 from pathlib import Path
-
+import sys
 
 # Set Project Paths
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,7 +23,7 @@ DATA_DIR = osp.join(PROJECT_ROOT, "data")
 
 # Local Modules
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-from utils import read_yml, Dict, plot_styles
+from utils import read_yml, Dict, save_yaml
 
 
 # Executed Code
@@ -31,14 +31,18 @@ from utils import read_yml, Dict, plot_styles
 
 if __name__ == '__main__':
 
-    reps_dir = "outputs/zeroshot_10h_reps"
+    if len(sys.argv) == 2:
+        reps_dir = sys.argv[1]
+    else:
+        raise ValueError("Usage: python analyze_zeroshot_reps.py [/path/to/outputs]")
+
     if not osp.exists(reps_dir):
         print(f"Can't find required output directory: {reps_dir}")
         sys.exit(-1)
 
     print(f"Summarizing 10h Zeroshot Transfer Results from directory: {reps_dir}")
-    conf = Dict(read_yml(osp.join(CONFIG_DIR, "thesis_config.yaml")))
-    
+    conf = Dict(read_yml(osp.join(reps_dir, "config.yaml")))
+
     # Get all results files across replications
     files = sorted(Path(reps_dir).glob("seed_*/results_zeroshot_*.pkl"),key=lambda x: int(x.parent.name.split("_")[-1]))
     results = [pd.read_pickle(f) for f in files]
