@@ -137,7 +137,7 @@ if __name__ == '__main__':
     with open(osp.join(reps_dir, "fm1_median_rep_report.txt"), "w") as f:
         f.write(f"Median replication index: {median_idx}\n")
         f.write(f"Seed directory: {seed_path.resolve()}\n\n")
-        f.write(f"Twarp Params: {fm1[median_idx]['params']}")
+        f.write(f"Twarp Params: {fm1[median_idx]['params']}\n")
         f.write("Metrics:\n")
         
         for m in metrics:
